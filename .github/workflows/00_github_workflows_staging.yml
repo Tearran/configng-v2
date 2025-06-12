@@ -1,55 +1,49 @@
-name: "Check ./staging/ has matching .sh and .meta files"
+name: Check .sh and .meta file pairs
 
 on:
+  push:
+    paths:
+      - '*.sh'
+      - '*.meta'
   pull_request:
     paths:
-      - 'staging/**'
-      - '.github/workflows/check-staging-matching-files.yml'
-  workflow_dispatch:
+      - '*.sh'
+      - '*.meta'
 
 jobs:
-  check-matching-files:
+  check-meta-sh-pairs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Check for matching .sh and .meta files in ./staging/
+      - uses: actions/checkout@v4
+      - name: Check for matching .sh and .meta files
         run: |
-          set -x
-          cd staging
-          sh_files=$(find . -maxdepth 1 -type f -name "*.sh" | sed 's|^\./||' | sed 's|\.sh$||' | sort)
-          meta_files=$(find . -maxdepth 1 -type f -name "*.meta" | sed 's|^\./||' | sed 's|\.meta$||' | sort)
-          echo "sh_files: '$sh_files'"
-          echo "meta_files: '$meta_files'"
-          if [ -z "$sh_files" ] && [ -z "$meta_files" ]; then
-            echo "ERROR: ./staging/ is empty. Add at least one .sh and one .meta file."
-            echo "To create a  the scaffold for ./staging:"
-            echo "try:"
-            echo "    ./tools/staging_setup_scaffold.sh"
+          set -e
+          shopt -s nullglob
+          sh_files=(*.sh)
+          meta_files=(*.meta)
+          fail=0
+
+          # Check that every .sh has a matching .meta
+          for sh in "${sh_files[@]}"; do
+            root="${sh%.sh}"
+            if [[ ! -f "$root.meta" ]]; then
+              echo "No matching .meta file for $sh"
+              fail=1
+            fi
+          done
+
+          # Check that every .meta has a matching .sh
+          for meta in "${meta_files[@]}"; do
+            root="${meta%.meta}"
+            if [[ ! -f "$root.sh" ]]; then
+              echo "No matching .sh file for $meta"
+              fail=1
+            fi
+          done
+
+          if [[ $fail -eq 1 ]]; then
+            echo "One or more .sh/.meta file pairs are missing!"
             exit 1
           fi
-          missing_meta=$(comm -23 <(echo "$sh_files") <(echo "$meta_files"))
-          missing_sh=$(comm -13 <(echo "$sh_files") <(echo "$meta_files"))
-          echo "missing_meta: '$missing_meta'"
-          echo "missing_sh: '$missing_sh'"
-          error=0
-          if [ -n "$missing_meta" ]; then
-            echo "ERROR: The following .sh files do not have matching .meta files:"
-            echo "$missing_meta"
-            error=1
-          fi
-          if [ -n "$missing_sh" ]; then
-            echo "ERROR: The following .meta files do not have matching .sh files:"
-            echo "$missing_sh"
-            error=1
-          fi
-          if [ $error -ne 0 ]; then
-            echo ""
-            echo "To create or fix the scaffold in ./staging, run:"
-            echo "    tools/staging_setup_scaffold.sh"
-            echo ""
-            exit 1
-          else
-            echo "All .sh files have matching .meta files and vice versa."
-          fi
+
+          echo "All .sh and .meta files have matching root names."
