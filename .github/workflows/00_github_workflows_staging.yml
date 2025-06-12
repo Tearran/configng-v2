@@ -1,21 +1,18 @@
 name: Check .sh and .meta file pairs
 
 on:
-  push:
-    paths:
-      - '*.sh'
-      - '*.meta'
   pull_request:
     paths:
       - '*.sh'
       - '*.meta'
 
 jobs:
-  check-meta-sh-pairs:
+  check-pairs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check for matching .sh and .meta files
+
+      - name: Check .sh/.meta pairs
         run: |
           set -e
           shopt -s nullglob
@@ -23,7 +20,6 @@ jobs:
           meta_files=(*.meta)
           fail=0
 
-          # Check that every .sh has a matching .meta
           for sh in "${sh_files[@]}"; do
             root="${sh%.sh}"
             if [[ ! -f "$root.meta" ]]; then
@@ -32,7 +28,6 @@ jobs:
             fi
           done
 
-          # Check that every .meta has a matching .sh
           for meta in "${meta_files[@]}"; do
             root="${meta%.meta}"
             if [[ ! -f "$root.sh" ]]; then
@@ -42,8 +37,8 @@ jobs:
           done
 
           if [[ $fail -eq 1 ]]; then
-            echo "One or more .sh/.meta file pairs are missing!"
+            echo "Missing .sh/.meta file pairs!"
             exit 1
           fi
 
-          echo "All .sh and .meta files have matching root names."
+          echo "All .sh/.meta file pairs are present."
