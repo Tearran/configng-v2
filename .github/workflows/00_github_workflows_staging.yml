@@ -16,17 +16,23 @@ jobs:
 
       - name: Check for matching .sh and .meta files in ./staging/
         run: |
+          set -x
           cd staging
           sh_files=$(find . -maxdepth 1 -type f -name "*.sh" | sed 's|^\./||' | sed 's|\.sh$||' | sort)
           meta_files=$(find . -maxdepth 1 -type f -name "*.meta" | sed 's|^\./||' | sed 's|\.meta$||' | sort)
+          echo "sh_files: '$sh_files'"
+          echo "meta_files: '$meta_files'"
           if [ -z "$sh_files" ] && [ -z "$meta_files" ]; then
             echo "ERROR: ./staging/ is empty. Add at least one .sh and one .meta file."
-            echo "To create or fix the scaffold in ./staging, run:"
-            echo "    tools/staging_setup_scaffold.sh"
+            echo "To create a  the scaffold for ./staging:"
+            echo "try:"
+            echo "    ./tools/staging_setup_scaffold.sh"
             exit 1
           fi
           missing_meta=$(comm -23 <(echo "$sh_files") <(echo "$meta_files"))
           missing_sh=$(comm -13 <(echo "$sh_files") <(echo "$meta_files"))
+          echo "missing_meta: '$missing_meta'"
+          echo "missing_sh: '$missing_sh'"
           error=0
           if [ -n "$missing_meta" ]; then
             echo "ERROR: The following .sh files do not have matching .meta files:"
