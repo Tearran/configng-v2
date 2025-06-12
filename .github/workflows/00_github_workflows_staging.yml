@@ -1,6 +1,7 @@
 name: "Check ./staging/ has matching .sh and .meta files on PR"
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - 'staging/**'
