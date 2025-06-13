@@ -1,38 +1,18 @@
-name: Style and CI
+name: 00 Coding style check
 
 on:
-  workflow_dispatch:
   pull_request:
-    branches: [ main ]
+    types: [opened, reopened, edited, synchronize, review_requested]
 
 concurrency:
-  group: staging-${{ github.event.pull_request.number }}
+  group: coding-style-${{github.event.pull_request.number}}
   cancel-in-progress: true
 
 jobs:
-  style:
+  editorconfig:
+    name: "Coding style check"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Run style checks
-        run: ./scripts/check_style.sh
-
-  test:
-    needs: style
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Run tests
-        run: ./scripts/run_tests.sh
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Deploy
-        run: ./scripts/deploy.sh
+      - uses: actions/checkout@v4
+      - uses: editorconfig-checker/action-editorconfig-checker@main
+      - run: editorconfig-checker
