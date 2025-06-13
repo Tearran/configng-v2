@@ -20,7 +20,7 @@ if [[ ! -d "$STAGING_DIR" ]]; then
 fi
 
 # Output .meta template inside ./staging
-cat > "${STAGING_DIR}/${MODULE}.meta" <<EOF
+cat > "${STAGING_DIR}/meta${MODULE}.conf" <<EOF
 # Armbian ConfigNG module metadata
 
 [${MODULE}]
@@ -40,7 +40,18 @@ port=\${port:-false}
 EOF
 
 # Output .sh module template inside ./staging
-cat > "${STAGING_DIR}/${MODULE}.sh" <<EOF
+cat > "${STAGING_DIR}/src_${MODULE}.sh" <<EOF
+#!/bin/bash
+# ${MODULE}.sh - Armbian ConfigNG module
+
+${MODULE}() {
+  # TODO: implement module logic
+  echo "Module '${MODULE}' called"
+}
+EOF
+
+# Output .sh module template inside ./staging
+cat > "${STAGING_DIR}/test_${MODULE}.sh" <<EOF
 #!/bin/bash
 # ${MODULE}.sh - Armbian ConfigNG module
 
