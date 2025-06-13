@@ -1,0 +1,29 @@
+name: 02-b Module CI Test
+
+on:
+  push:
+    branches: [ main, staging, testing ]
+  pull_request:
+    branches: [ main, staging, testing ]
+
+jobs:
+  module-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run module test from staging (if exists)
+        run: |
+          if [ -f ./staging/test_module_simple.sh ]; then
+            chmod +x ./staging/test_module_simple.sh
+            ./staging/test_module_simple.sh
+          fi
+
+      - name: Run module test from tests (if exists)
+        run: |
+          if [ -f ./tests/test_module_simple.sh ]; then
+            chmod +x ./tests/test_module_simple.sh
+            ./tests/test_module_simple.sh
+          fi
