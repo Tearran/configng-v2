@@ -12,12 +12,6 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-# Bash binaries with no extension (heuristic: shebang line)
-[**]
-# Applies to all files; overridden below for known types
-trim_trailing_whitespace = true
-insert_final_newline = true
-
 # YAML files
 [*.yml]
 indent_style = tab
