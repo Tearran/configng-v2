@@ -54,6 +54,8 @@ EOF
 # Output .sh module template inside ./staging
 cat > "${STAGING_DIR}/test_${MODULE}.sh" <<EOF
 #!/bin/bash
+set -euo pipefail
+
 # ${MODULE} - Armbian Config V3 test
 
 if [[ "\${BASH_SOURCE[0]}" == "${0}" ]]; then
