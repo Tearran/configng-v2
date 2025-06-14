@@ -1,2 +1,2 @@
-# templates - Armbian Config V3 module
+# templates - Armbian Config V3 extra documents
 
