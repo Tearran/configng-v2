@@ -1,41 +1,23 @@
-name: 01 Staging Directory File Check
+name: 00 Staging Check
 
 on:
+  push:
+    paths:
+      - 'staging/**'
+      - 'tools/staging_check_required.sh'
+      - '.github/workflows/staging-check.yml'
   pull_request:
     paths:
       - 'staging/**'
-  workflow_dispatch:
+      - 'tools/staging_check_required.sh'
+      - '.github/workflows/staging-check.yml'
 
 jobs:
-  check-staging-files:
+  staging-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check for required files in ./staging
-        id: check_files
-        run: |
-          cd ./staging
-
-          # Required patterns
-          patterns=( 'test_*.sh' 'src_*.sh' 'meta_*.conf' )
-          missing=()
-          for pat in "${patterns[@]}"; do
-            if ! compgen -G "$pat" > /dev/null; then
-              missing+=("$pat")
-            fi
-          done
-
-          # Check for documentation files
-          if ! compgen -G 'doc_*.md' > /dev/null; then
-            echo "docs_missing=yes" >> $GITHUB_ENV
-          else
-            echo "docs_missing=no" >> $GITHUB_ENV
-          fi
-
-          # Fail if any required file pattern is missing
-          if [ ${#missing[@]} -ne 0 ]; then
-            echo "Missing required file(s) matching: ${missing[*]}"
-            exit 1
-          fi
+      - name: Run staging required check
+        run: bash tools/staging_check_required.sh
