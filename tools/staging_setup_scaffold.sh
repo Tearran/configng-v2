@@ -21,7 +21,7 @@ if [[ ! -d "$STAGING_DIR" ]]; then
 fi
 
 # Output .meta template inside ./staging
-cat > "${STAGING_DIR}/meta${MODULE}.conf" <<EOF
+cat > "${STAGING_DIR}/meta_${MODULE}.conf" <<EOF
 # ${MODULE} - Armbian Config V3 metadata
 
 [${MODULE}]
