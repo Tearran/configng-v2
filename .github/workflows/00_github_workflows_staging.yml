@@ -1,4 +1,4 @@
-name: Staging Directory File Check
+name: 00 Staging Directory File Check
 
 on:
   push:
