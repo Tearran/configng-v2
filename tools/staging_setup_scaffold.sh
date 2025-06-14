@@ -56,10 +56,12 @@ cat > "${STAGING_DIR}/test_${MODULE}.sh" <<EOF
 #!/bin/bash
 # ${MODULE} - Armbian Config V3 test
 
-${MODULE}() {
-  # TODO: implement module logic
-  echo "Module '${MODULE}' called"
-}
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  echo "${MODULE} - Armbian Config V3 test"
+  echo "Scaffold test"
+  exit 1
+fi
+
 EOF
 
 # Output .sh module template inside ./staging
