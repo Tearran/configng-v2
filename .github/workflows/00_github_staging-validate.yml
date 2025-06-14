@@ -1,43 +1,25 @@
-name: Validate Staging Modules
+name: Staging Gate
 
 on:
-	pull_request:
-		paths:
-			- 'staging/**'
+  pull_request:
+    paths:
+      - 'staging/**'
+      - 'tools/staging-check.sh'
 
 jobs:
-	staging-check:
-		runs-on: ubuntu-latest
-		steps:
-			- uses: actions/checkout@v4
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-			- name: Fail if staging folder is missing or empty
-				run: |
-					if [ ! -d staging ] || [ -z "$(ls -A staging)" ]; then
-						echo "::error ::staging folder is missing or empty. Please add or update at least one module."
-						exit 1
-					fi
+      - name: Fail if staging folder is missing or empty
+        run: |
+          if [ ! -d staging ] || [ -z "$(ls -A staging)" ]; then
+          	echo "::error ::staging folder is missing or empty. Please add or update at least one module."
+          	exit 1
+          fi
 
-			- name: Check required files in each staging module
-				run: |
-					ret=0
-					for dir in staging/*/; do
-						modname=$(basename "$dir")
-						mainfun=$(echo "$modname" | sed 's/^module_//')
-						# Required files
-						for file in "src_${mainfun}.sh" "test_${mainfun}.sh" "meta_${mainfun}.conf"; do
-							if [ ! -f "${dir}${file}" ]; then
-								echo "::error file=${dir}${file}::Missing required file: ${file} in ${dir}"
-								ret=1
-							fi
-						done
-					done
-					exit $ret
-
-	# Example: downstream job only runs if staging-check passes
-	downstream-job:
-		needs: staging-check
-		runs-on: ubuntu-latest
-		if: success()
-		steps:
-			- run: echo "Downstream job runs only if staging-check passes"
+      - name: Staging compatibility check
+        run: |
+          chmod +x tools/staging_check_required.sh
+          tools/staging_check_required.sh
