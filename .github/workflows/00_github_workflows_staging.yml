@@ -1,9 +1,6 @@
 name: 00 Staging Directory File Check
 
 on:
-  push:
-    paths:
-      - 'staging/**'
   pull_request:
     paths:
       - 'staging/**'
