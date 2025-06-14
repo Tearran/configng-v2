@@ -9,19 +9,19 @@ STAGING_DIR="./staging"
 
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: $0 <module_name>"
-  exit 1
+	echo "Usage: $0 <module_name>"
+	exit 1
 fi
 
 MODULE="$1"
 
 # Ensure ./staging exists
 if [[ ! -d "$STAGING_DIR" ]]; then
-  mkdir -p "$STAGING_DIR"
+	mkdir -p "$STAGING_DIR"
 fi
 
 # Output .meta template inside ./staging
-cat > "${STAGING_DIR}/meta${MODULE}.conf" <<EOF
+cat > "${STAGING_DIR}/meta_${MODULE}.conf" <<EOF
 # ${MODULE} - Armbian Config V3 metadata
 
 [${MODULE}]
@@ -46,8 +46,8 @@ cat > "${STAGING_DIR}/src_${MODULE}.sh" <<EOF
 # ${MODULE} - Armbian Config V3 module
 
 ${MODULE}() {
-  # TODO: implement module logic
-  echo "Module '${MODULE}' called"
+	# TODO: implement module logic
+	echo "Module '${MODULE}' called"
 }
 EOF
 
@@ -57,9 +57,9 @@ cat > "${STAGING_DIR}/test_${MODULE}.sh" <<EOF
 # ${MODULE} - Armbian Config V3 test
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  echo "${MODULE} - Armbian Config V3 test"
-  echo "Scaffold test"
-  exit 1
+	echo "${MODULE} - Armbian Config V3 test"
+	echo "Scaffold test"
+	exit 1
 fi
 
 EOF
