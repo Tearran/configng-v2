@@ -5,7 +5,7 @@ on:
     types: [opened, reopened, edited, synchronize, review_requested]
 
 concurrency:
-  group: coding-style-${{github.event.pull_request.number}}
+  group:modules-${{github.event.pull_request.number}}
   cancel-in-progress: true
 
 jobs:
