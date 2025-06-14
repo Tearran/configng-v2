@@ -1,16 +1,12 @@
 name: 00 Staging Check
 
 on:
-  push:
-    paths:
-      - 'staging/**'
-      - 'tools/staging_check_required.sh'
-      - '.github/workflows/staging-check.yml'
   pull_request:
-    paths:
-      - 'staging/**'
-      - 'tools/staging_check_required.sh'
-      - '.github/workflows/staging-check.yml'
+    types: [opened, reopened, edited, synchronize, review_requested]
+
+concurrency:
+  group: coding-style-${{github.event.pull_request.number}}
+  cancel-in-progress: true
 
 jobs:
   staging-check:
