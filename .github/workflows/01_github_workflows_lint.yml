@@ -1,4 +1,4 @@
-name: 02 Lint scripts
+name: 01 Lint scripts
 
 on:
   workflow_dispatch:
