@@ -1,4 +1,7 @@
 # checkpoint
+
+Provides timing, debugging, and progress checkpoint utilities for Bash modules. Supports debug timing, UX/UI marks, and elapsed time reporting for module development and diagnostics.
+
 ```
 Usage: checkpoint <option> <message>
 Options:
