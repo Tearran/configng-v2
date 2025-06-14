@@ -3,10 +3,10 @@ name: Staging Directory File Check
 on:
   push:
     paths:
-      - 'repo./staging/**'
+      - './staging/**'
   pull_request:
     paths:
-      - 'repo./staging/**'
+      - './staging/**'
   workflow_dispatch:
 
 jobs:
@@ -16,10 +16,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check for required files in repo./staging
+      - name: Check for required files in ./staging
         id: check_files
         run: |
-          cd repo./staging
+          cd ./staging
 
           # Required patterns
           patterns=( 'test_*.sh' 'src_*.sh' 'meta_*.conf' )
@@ -42,8 +42,3 @@ jobs:
             echo "Missing required file(s) matching: ${missing[*]}"
             exit 1
           fi
-
-      - name: Suggest documentation if missing
-        if: env.docs_missing == 'yes'
-        run: |
-          echo "::warning::No doc_*.md documentation found in repo./staging. Consider adding documentation files (doc_*.md) for your modules."
