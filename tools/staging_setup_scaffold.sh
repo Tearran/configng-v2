@@ -70,5 +70,4 @@ cat > "${STAGING_DIR}/doc_${MODULE}.md" <<EOF
 
 EOF
 
-
 echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
