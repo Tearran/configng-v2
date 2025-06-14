@@ -6,4 +6,3 @@ if [[ "${BASH_SOURCE[0]}" == "tools/staging_setup_scaffold.sh" ]]; then
 	echo "Scaffold test"
 	exit 1
 fi
-
