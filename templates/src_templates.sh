@@ -1,5 +1,5 @@
 #!/bin/bash
-# templates.sh - Armbian ConfigNG module
+# templates - Armbian Config V3 module
 
 templates() {
   # TODO: implement module logic
