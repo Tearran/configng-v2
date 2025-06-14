@@ -1,13 +1,14 @@
 #!/bin/bash
+set -euo pipefail
 
 # Basic usage: ./staging_files.sh <module_name>
 # Example: ./staging_files.sh my_new_module
 
-set -e
 
 STAGING_DIR="./staging"
 
-if [[ -z "$1" ]]; then
+
+if [[ $# -lt 1 ]]; then
   echo "Usage: $0 <module_name>"
   exit 1
 fi
@@ -21,7 +22,7 @@ fi
 
 # Output .meta template inside ./staging
 cat > "${STAGING_DIR}/meta${MODULE}.conf" <<EOF
-# Armbian ConfigNG module metadata
+# ${MODULE} - Armbian Config V3 metadata
 
 [${MODULE}]
 feature=${MODULE}
@@ -42,7 +43,7 @@ EOF
 # Output .sh module template inside ./staging
 cat > "${STAGING_DIR}/src_${MODULE}.sh" <<EOF
 #!/bin/bash
-# ${MODULE}.sh - Armbian ConfigNG module
+# ${MODULE} - Armbian Config V3 module
 
 ${MODULE}() {
   # TODO: implement module logic
@@ -53,7 +54,7 @@ EOF
 # Output .sh module template inside ./staging
 cat > "${STAGING_DIR}/test_${MODULE}.sh" <<EOF
 #!/bin/bash
-# ${MODULE}.sh - Armbian ConfigNG module
+# ${MODULE} - Armbian Config V3 test
 
 ${MODULE}() {
   # TODO: implement module logic
@@ -61,4 +62,11 @@ ${MODULE}() {
 }
 EOF
 
-echo "Generated: ${STAGING_DIR}/${MODULE}.meta and ${STAGING_DIR}/${MODULE}.sh"
+# Output .sh module template inside ./staging
+cat > "${STAGING_DIR}/doc_${MODULE}.md" <<EOF
+# ${MODULE} - Armbian Config V3 module
+
+EOF
+
+
+echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
