@@ -3,10 +3,10 @@ name: Staging Directory File Check
 on:
   push:
     paths:
-      - './staging/**'
+      - 'staging/**'
   pull_request:
     paths:
-      - './staging/**'
+      - 'staging/**'
   workflow_dispatch:
 
 jobs:
