@@ -9,7 +9,7 @@ templates() {
 	echo "Scaffold test"
 }
 
-_abouttemplates() {
+_about_templates() {
 	# TODO: implement standard help message
 	echo "use: ${MODULE} - ..."
 	echo "help - this message"

@@ -53,7 +53,7 @@ ${MODULE}() {
 	echo "Scaffold test"
 }
 
-_about${MODULE}() {
+_about_${MODULE}() {
 	# TODO: implement standard help message
 	echo "use: \${MODULE} - ..."
 	echo "help - this message"
