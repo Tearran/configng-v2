@@ -4,8 +4,8 @@ on:
   pull_request:
     paths:
       - 'staging/**'
-      - 'tools/staging_check_required.sh'
-      - 'tools/staging_setup_scaffold.sh'
+      - 'tools/**'
+
 
 jobs:
   gate:
@@ -22,4 +22,4 @@ jobs:
 
       - name: Staging compatibility check
         run: |
-          bash tools/staging_check_required.sh
+          bash tools/staging_01_check_required.sh
