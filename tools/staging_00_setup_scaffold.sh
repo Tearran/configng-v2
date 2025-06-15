@@ -52,6 +52,13 @@ ${MODULE}() {
 	echo "\${MODULE} - Armbian Config V3 test"
 	echo "Scaffold test"
 }
+
+_about${MODULE}() {
+	# TODO: implement standard help message
+	echo "use: \${MODULE} - ..."
+	echo "help - this message"
+}
+
 EOF
 
 # Output .sh module template inside ./staging
