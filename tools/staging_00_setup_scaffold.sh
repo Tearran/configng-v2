@@ -21,7 +21,7 @@ if [[ ! -d "$STAGING_DIR" ]]; then
 fi
 
 # Output .meta template inside ./staging
-cat > "${STAGING_DIR}/meta_${MODULE}.conf" <<EOF
+cat > "${STAGING_DIR}/${MODULE}.conf" <<EOF
 # ${MODULE} - Armbian Config V3 metadata
 
 [${MODULE}]
@@ -41,8 +41,10 @@ port=\${port:-false}
 EOF
 
 # Output .sh module template inside ./staging
-cat > "${STAGING_DIR}/src_${MODULE}.sh" <<EOF
+cat > "${STAGING_DIR}/${MODULE}.sh" <<EOF
 #!/bin/bash
+set -euo pipefail
+
 # ${MODULE} - Armbian Config V3 module
 
 ${MODULE}() {
