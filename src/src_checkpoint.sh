@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -euo pipefail
 
 _checkpoint_add() {
 	local type="$1" msg="$2"

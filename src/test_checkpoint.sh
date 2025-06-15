@@ -1,7 +1,6 @@
 #!/bin/bash
-# checkpoint - Armbian Config V3 test
-
-if [[ "${BASH_SOURCE[0]}" == "tools/staging_setup_scaffold.sh" ]]; then
+set -euo pipefail
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	echo "${MODULE} - Armbian Config V3 test"
 	echo "Scaffold test"
 	exit 1
