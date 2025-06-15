@@ -47,18 +47,21 @@ cat > "${STAGING_DIR}/src_${MODULE}.sh" <<EOF
 
 ${MODULE}() {
 	# TODO: implement module logic
-	echo "Module '${MODULE}' called"
+	echo "\${MODULE} - Armbian Config V3 test"
+	echo "Scaffold test"
 }
 EOF
 
 # Output .sh module template inside ./staging
 cat > "${STAGING_DIR}/test_${MODULE}.sh" <<EOF
 #!/bin/bash
+set -euo pipefail
+
 # ${MODULE} - Armbian Config V3 test
 
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	echo "${MODULE} - Armbian Config V3 test"
-	echo "Scaffold test"
+if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
+	echo "\${MODULE} - Armbian Config V3 test"
+	echo "# TODO: implement module logic"
 	exit 1
 fi
 
