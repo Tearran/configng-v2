@@ -42,7 +42,7 @@ EOF
 
 # Output .sh module template inside ./staging
 cat > "${STAGING_DIR}/${MODULE}.sh" <<EOF
- #!/bin/bash
+#!/bin/bash
 set -euo pipefail
 
 # ${MODULE} - Armbian Config V3 module
