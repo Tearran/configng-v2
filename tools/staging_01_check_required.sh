@@ -13,7 +13,7 @@ check_module_files() {
 	fail=0
 
 	# Required files
-	for req in "test_${module}.sh" "src_${module}.sh" "meta_${module}.conf"; do
+	for req in "test_${module}.sh" "${module}.sh" "${module}.conf"; do
 		if [[ -f "${STAGING_DIR}/${req}" ]]; then
 			echo "PASS: Found required ${req}"
 		else
