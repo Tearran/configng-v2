@@ -20,7 +20,7 @@ if [[ ! -d "$STAGING_DIR" ]]; then
 	mkdir -p "$STAGING_DIR"
 fi
 
-# Output .meta template inside ./staging
+# Output .conf metadata template inside ./staging
 cat > "${STAGING_DIR}/${MODULE}.conf" <<EOF
 # ${MODULE} - Armbian Config V3 metadata
 
