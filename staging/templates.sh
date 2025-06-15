@@ -1,4 +1,6 @@
-#!/bin/bash
+ #!/bin/bash
+set -euo pipefail
+
 # templates - Armbian Config V3 module
 
 templates() {
