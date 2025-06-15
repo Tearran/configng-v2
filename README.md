@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="#build-framework">
+  <a href="#overview">
     <img src="https://raw.githubusercontent.com/armbian/configng/main/share/icons/hicolor/scalable/configng-tux.svg" width="128" alt="Armbian Config Logo" />
   </a><br>
   <strong>Armbian Config: V3 (configng V2)</strong><br>
