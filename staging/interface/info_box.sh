@@ -24,20 +24,20 @@ info_box() {
 			;;
 	esac
 
-	local input  
-	local dialog="${DIALOG:-}"  
-	if [[ "$dialog" != "dialog" && "$dialog" != "whiptail" ]]; then  
-		dialog="whiptail"  
-	fi  
+	local input
+	local dialog="${DIALOG:-}"
+	if [[ "$dialog" != "dialog" && "$dialog" != "whiptail" ]]; then
+		dialog="whiptail"
+	fi
 
 	# Ensure the binary exists  
-	if ! command -v "$dialog" >/dev/null 2>&1; then  
-		echo "Error: neither dialog nor whiptail found in \$PATH." >&2  
-		return 127  
-	fi  
+	if ! command -v "$dialog" >/dev/null 2>&1; then
+		echo "Error: neither dialog nor whiptail found in \$PATH." >&2
+		return 127
+	fi
 
-	local title="${TITLE:-Info}"  
-	local -a buffer  
+	local title="${TITLE:-Info}"
+	local -a buffer
 	local lines=16 width=90 max_lines=18
 
 	if [ -p /dev/stdin ]; then
@@ -59,5 +59,5 @@ info_box() {
 		TERM=ansi $dialog --title "$title" --infobox "$input" 6 80
 		sleep 2
 	fi
-	echo -ne '\033[3J' # clear the screen
+	echo -ne '\033[3J' # put curser at end
 }
