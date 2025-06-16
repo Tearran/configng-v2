@@ -21,7 +21,16 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	fi
 
 	debug "debug initialized"
-	debug "$(debug help)"
+
+	# --- Capture and assert help output ---
+	help_output="$(debug help)"              # Capture
+	echo "$help_output" | grep -q "Usage: debug" || {  # Assert
+		echo "Help output does not contain expected usage string"
+		exit 1
+	}
+	# --- end assertion ---
+
+	debug "$help_output"
 	sleep 1
 	debug "Help message true"
 	debug total
