@@ -12,6 +12,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	debug reset
 	debug "Wait one second"
 	sleep 1
-	debug "Done, end script"
+	debug "Done"
+	debug total
+	exit 1
 fi
 
