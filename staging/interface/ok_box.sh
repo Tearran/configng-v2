@@ -3,7 +3,7 @@
 
 function _about_ok_box() {
 	cat <<EOF
-Usage: interface_message ["message"]
+Usage: ok_box ["message"]
 Examples:
 	ok_box "Operation completed successfully."
 	echo "Hello from stdin" | ok_box
