@@ -59,5 +59,5 @@ info_box() {
 		TERM=ansi $dialog --title "$title" --infobox "$input" 6 80
 		sleep 2
 	fi
-	echo -ne '\033[3J' # put curser at end
+	echo -ne '\033[3J' # put cursor at end
 }
