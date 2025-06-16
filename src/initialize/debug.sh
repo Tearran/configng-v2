@@ -36,12 +36,14 @@ debug() {
 
 _about_debug() {
 	cat <<-EOF
-	debug <option> <message>
+
+Usage: debug <option> || <"message string">
 	Options:
+		help               Show this help message
 		"message string"   Show debug message (DEBUG non-zero)
 		reset              (Re)set starting point
 		total              Show total time and reset
-		help               Show this help screen
+
 
 	When providing a "message string", elapsed time since last debug call is shown if DEBUG is set.
 	EOF
