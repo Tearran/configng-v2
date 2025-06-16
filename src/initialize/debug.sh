@@ -34,6 +34,17 @@ debug() {
 }
 
 
+# Displays usage information and available options for the debug function.
+#
+# Outputs:
+#
+# * Prints help text to STDOUT, describing how to use the debug utility and its available commands.
+#
+# Example:
+#
+# ```bash
+# _about_debug
+# ```
 _about_debug() {
 	cat <<-EOF
 
