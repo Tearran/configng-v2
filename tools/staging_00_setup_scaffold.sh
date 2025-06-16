@@ -49,9 +49,16 @@ set -euo pipefail
 
 ${MODULE}() {
 	# TODO: implement module logic
-	echo "\${MODULE} - Armbian Config V3 test"
+	echo "${MODULE} - Armbian Config V3 test"
 	echo "Scaffold test"
 }
+
+_about_${MODULE}() {
+	# TODO: implement standard help message
+	echo "use: ${MODULE} - ..."
+	echo "help - this message"
+}
+
 EOF
 
 # Output .sh module template inside ./staging
@@ -62,7 +69,7 @@ set -euo pipefail
 # ${MODULE} - Armbian Config V3 test
 
 if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
-	echo "\${MODULE} - Armbian Config V3 test"
+	echo "${MODULE} - Armbian Config V3 test"
 	echo "# TODO: implement module logic"
 	exit 1
 fi
