@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-function _about_interface_message() {
+function _about_ok_box() {
 	cat <<EOF
 Usage: interface_message ["message"]
 Examples:
@@ -23,13 +23,13 @@ function ok_box() {
 	fi
 
 	if [[ "$message" == "help" || "$message" == "-h" ]]; then
-		_about_interface_message
+		_about_ok_box
 		return 0
 	fi
 
 	if [[ -z "$message" ]]; then
 		echo "Error: Missing message." >&2
-		_about_interface_message
+		_about_ok_box
 		return 1
 	fi
 
