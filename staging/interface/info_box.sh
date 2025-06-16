@@ -30,7 +30,7 @@ info_box() {
 		dialog="whiptail"
 	fi
 
-	# Ensure the binary exists  
+	# Ensure the binary exists
 	if ! command -v "$dialog" >/dev/null 2>&1; then
 		echo "Error: neither dialog nor whiptail found in \$PATH." >&2
 		return 127
