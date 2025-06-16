@@ -5,6 +5,13 @@ set -euo pipefail
 
 templates() {
 	# TODO: implement module logic
-	echo "${MODULE} - Armbian Config V3 test"
+	echo "templates - Armbian Config V3 test"
 	echo "Scaffold test"
 }
+
+_about_templates() {
+	# TODO: implement standard help message
+	echo "use: templates - ..."
+	echo "help - this message"
+}
+
