@@ -20,5 +20,5 @@ jobs:
       - name: Run consolidate_00_lib_src.sh
         run: ${{ github.workspace }}/tools/consolidate_00_lib_src.sh
 
-      - name: Run assemble_array.sh
-        run: ${{ github.workspace }}/tools/lib_assemble_array.sh
+      - name: Run consolidate_01_lib_metadata.sh
+        run: ${{ github.workspace }}/tools/consolidate_01_lib_metadata.sh
