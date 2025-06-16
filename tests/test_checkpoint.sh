@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DEBUG=${DEBUG:-}
 	UXMODE=${UXMODE:-}
