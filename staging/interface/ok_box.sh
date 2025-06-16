@@ -5,14 +5,14 @@ function _about_interface_message() {
 	cat <<EOF
 Usage: interface_message ["message"]
 Examples:
-	interface_ok_box "Operation completed successfully."
-	echo "Hello from stdin" | interface_ok_box
-	interface_ok_box <<< "Message from here-string"
+	ok_box "Operation completed successfully."
+	echo "Hello from stdin" | ok_box
+	ok_box <<< "Message from here-string"
 EOF
 
 }
 
-function interface_ok_box() {
+function ok_box() {
 	local message="${1:-}"
 
 	if [[ "$message" == "help" || "$message" == "-h" ]]; then

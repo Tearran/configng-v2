@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 
-_about_interface_info_box() {
+_about_info_box() {
 	cat <<EOF
-Usage: interface_info_box
+Usage: info_box
 
 Displays a rolling info box using dialog/whiptail.
 Reads lines from stdin and displays them live.
 If not used with a pipe, shows a single message.
 
 Examples:
-	some_command | interface_info_box
-	echo "Hello" | interface_info_box
-	interface_info_box -h|--help|help
+	some_command | info_box
+	echo "Hello" | info_box
+	info_box -h|--help|help
 EOF
 }
 
-interface_info_box() {
+info_box() {
 	# Help flag: show about if -h or --help is the first argument
 	case "${1:-}" in
 		-h|--help|help)
-			_about_interface_info_box
+			_about_info_box
 			return 0
 			;;
 	esac
@@ -46,7 +46,7 @@ interface_info_box() {
 		input="${1:-}"
 		if [[ -z "$input" ]]; then
 			echo "Error: No input provided." >&2
-			_about_interface_info_box
+			_about_info_box
 			return 1
 		fi
 		TERM=ansi $dialog --title "$title" --infobox "$input" 6 80
