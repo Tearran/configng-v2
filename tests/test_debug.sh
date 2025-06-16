@@ -22,6 +22,6 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	debug "debug initialized"
 	debug total
-	exit 1 # tet fail
+
 fi
 
