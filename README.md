@@ -32,9 +32,6 @@ The tool supports both command-line interfaces (CLI) and text user interfaces (T
 - **Migrate and Refactor:**  
 	Transition legacy code and features into a standard, modern development structure.
 
-- **Promote Code Reuse:**  
-	Encourage modular, reusable Bash code for consistent configuration handling.
-
 - **Enable Testing:**  
 	Facilitate robust unit and integration testing for all modules and helpers.
 
