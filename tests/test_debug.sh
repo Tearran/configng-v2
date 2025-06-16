@@ -31,8 +31,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# --- end assertion ---
 
 	debug "$help_output"
-	sleep 1
-	debug "Help message true"
+	debug "test complete"
 	debug total
 
 fi
