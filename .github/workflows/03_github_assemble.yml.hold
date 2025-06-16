@@ -17,8 +17,8 @@ jobs:
       - name: Make setup and test scripts executable
         run: chmod +x ${{ github.workspace }}/tools/*.sh
 
-      - name: Run assemble_src.sh
-        run: ${{ github.workspace }}/tools/lib_assemble_src.sh
+      - name: Run consolidate_00_lib_src.sh
+        run: ${{ github.workspace }}/tools/consolidate_00_lib_src.sh
 
       - name: Run assemble_array.sh
         run: ${{ github.workspace }}/tools/lib_assemble_array.sh
