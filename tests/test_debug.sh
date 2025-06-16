@@ -14,6 +14,5 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	sleep 1
 	debug "Done"
 	debug total
-	exit 1
 fi
 
