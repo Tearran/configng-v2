@@ -13,7 +13,14 @@ EOF
 }
 
 function ok_box() {
-	local message="${1:-}"
+
+	local message
+
+	if [[ -n "$1" ]]; then
+		message="$1"
+	else
+		message="$(cat)"
+	fi
 
 	if [[ "$message" == "help" || "$message" == "-h" ]]; then
 		_about_interface_message
