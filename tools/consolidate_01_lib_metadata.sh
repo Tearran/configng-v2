@@ -7,6 +7,7 @@ set -euo pipefail
 SRC_ROOT="./src"
 OUT_FILE="./lib/armbian-config/module_options_arrays.sh"
 
+
 declare -A array_entries
 declare -A group_counts  # For unique id per group
 
@@ -73,6 +74,7 @@ for meta in "$SRC_ROOT"/*/*.conf; do
 	emit_section "$section" section_kv
 done
 
+mkdir -p "$(dirname "$OUT_FILE")"
 {
 	echo -e "######## Auto-generated. Do not edit. ########\n"
 	for arr in $(printf "%s\n" "${!array_entries[@]}" | sort); do
