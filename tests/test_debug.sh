@@ -21,6 +21,9 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	fi
 
 	debug "debug initialized"
+	debug "$(debug help)"
+	sleep 1
+	debug "Help message true"
 	debug total
 
 fi

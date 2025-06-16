@@ -36,7 +36,7 @@ debug() {
 
 _about_debug() {
 	cat <<-EOF
-	debug <option> <message>
+	debug <option> || <"message string">
 	Options:
 		"message string"   Show debug message (DEBUG non-zero)
 		reset              (Re)set starting point
