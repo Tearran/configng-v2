@@ -1,4 +1,4 @@
-review:
+reviews:
   waitForChecks: true
   path_instructions:
     - path: "src/**/*.sh"
