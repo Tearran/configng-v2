@@ -27,7 +27,7 @@ cat > "${STAGING_DIR}/${MODULE}.conf" <<EOF
 [${MODULE}]
 feature=${MODULE}
 description=\${description:-}
-extend_disc=\${extend_disc:-false}
+extend_desc=\${extend_desc:-false}
 documents=\${documents:-false}
 options=\${options:-}
 parent=\${parent:-system}

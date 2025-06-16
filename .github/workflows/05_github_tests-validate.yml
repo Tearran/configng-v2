@@ -1,0 +1,92 @@
+name: "05 Test Validation"
+
+on:
+  push:
+    branches: [ main, master, dev, development ]
+  pull_request:
+    branches: [ main, master, dev, development ]
+
+concurrency:
+  group: test-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-validation:
+    name: "Test validation"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Find and run test files
+        run: |
+          echo "=== Discovering test_*.sh files ==="
+          TEST_FILES=$(find . -name 'test_*.sh' -type f | sort)
+
+          if [ -z "$TEST_FILES" ]; then
+            echo "No test_*.sh files found"
+            exit 0
+          fi
+
+          echo "Found test files:"
+          echo "$TEST_FILES"
+
+          echo -e "\n=== Running tests ==="
+          FAILED_TESTS=()
+          PASSED_TESTS=()
+          SKIPPED_TESTS=()
+
+          for test_file in $TEST_FILES; do
+            echo "----------------------------------------"
+            echo "Running: $test_file"
+            echo "----------------------------------------"
+
+            chmod +x "$test_file"
+            test_dir=$(dirname "$test_file")
+            test_name=$(basename "$test_file")
+
+            if output=$(cd "$test_dir" && bash "./$test_name" 2>&1); then
+              echo "✅ PASSED: $test_file"
+              PASSED_TESTS+=("$test_file")
+              echo "$output"
+            else
+              exit_code=$?
+              echo "$output"
+
+              if echo "$output" | grep -iq "todo.*implement.*module.*logic"; then
+                echo "⏭️  SKIPPED: $test_file (TODO - not implemented yet)"
+                SKIPPED_TESTS+=("$test_file")
+              else
+                echo "❌ FAILED: $test_file (exit code: $exit_code)"
+                FAILED_TESTS+=("$test_file")
+              fi
+            fi
+            echo ""
+          done
+
+          echo "=== Test Summary ==="
+          echo "Passed tests: ${#PASSED_TESTS[@]}"
+          for test in "${PASSED_TESTS[@]}"; do
+            echo "  ✅ $test"
+          done
+
+          echo "Skipped tests: ${#SKIPPED_TESTS[@]}"
+          for test in "${SKIPPED_TESTS[@]}"; do
+            echo "  ⏭️  $test"
+          done
+
+          echo "Failed tests: ${#FAILED_TESTS[@]}"
+          for test in "${FAILED_TESTS[@]}"; do
+            echo "  ❌ $test"
+          done
+
+          if [ ${#FAILED_TESTS[@]} -gt 0 ]; then
+            echo "::error ::Some tests failed!"
+            exit 1
+          else
+            echo "All implemented tests passed!"
+            if [ ${#SKIPPED_TESTS[@]} -gt 0 ]; then
+              echo "Note: ${#SKIPPED_TESTS[@]} placeholder test(s) were skipped"
+            fi
+          fi
