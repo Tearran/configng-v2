@@ -41,6 +41,5 @@ promote_module() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	tools/staging_01_check_required.sh
 	promote_module
 fi

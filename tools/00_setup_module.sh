@@ -1,27 +1,44 @@
 #!/bin/bash
 set -euo pipefail
 
-# Basic usage: ./staging_files.sh <module_name>
-# Example: ./staging_files.sh my_new_module
+_about_setup_module() {
+	cat << EOF
+
+usage: $0 <module_name>"
+
+Creates Armbian Config V3 module scaffolding in ./staging/"
+
+	<module_name>   Name of the new module (required)."
+
+Outputs:"
+	- <module_name>.conf   Module metadata template"
+	- <module_name>.sh     Module Bash template"
+	- docs_<module_name>.md  Documentation stub"
+
+Example:"
+	$0 mymodule"
+EOF
+}
+
+setup_module() {
+		
+	STAGING_DIR="./staging"
 
 
-STAGING_DIR="./staging"
+	if [[ $# -lt 1 ]]; then
+		echo "Usage: $0 <module_name>"
+		exit 1
+	fi
 
+	MODULE="$1"
 
-if [[ $# -lt 1 ]]; then
-	echo "Usage: $0 <module_name>"
-	exit 1
-fi
+	# Ensure ./staging exists
+	if [[ ! -d "$STAGING_DIR" ]]; then
+		mkdir -p "$STAGING_DIR"
+	fi
 
-MODULE="$1"
-
-# Ensure ./staging exists
-if [[ ! -d "$STAGING_DIR" ]]; then
-	mkdir -p "$STAGING_DIR"
-fi
-
-# Output .conf metadata template inside ./staging
-cat > "${STAGING_DIR}/${MODULE}.conf" <<EOF
+	# Output .conf metadata template inside ./staging
+	cat > "${STAGING_DIR}/${MODULE}.conf" <<EOF
 # ${MODULE} - Armbian Config V3 metadata
 
 [${MODULE}]
@@ -43,7 +60,7 @@ helpers=_about_${MODULE}
 EOF
 
 # Output .sh module template inside ./staging
-cat > "${STAGING_DIR}/${MODULE}.sh" <<EOF
+	cat > "${STAGING_DIR}/${MODULE}.sh" <<EOF
 #!/bin/bash
 set -euo pipefail
 
@@ -72,11 +89,19 @@ fi
 EOF
 
 # Output .sh module template inside ./staging
-cat > "${STAGING_DIR}/docs_${MODULE}.md" <<EOF
+	cat > "${STAGING_DIR}/docs_${MODULE}.md" <<EOF
 # ${MODULE} - Armbian Config V3 extra documents
 
 ## TODO: EXTRA Documents about the feature. 
 
 EOF
 
-echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
+	echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	foo="${1:-help}"
+	[[ $foo = "help" ]] && _about_setup_module && exit 1
+	setup_module "$foo"
+	unset foo
+fi
