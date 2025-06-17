@@ -1,58 +1,47 @@
 #!/bin/bash
 set -euo pipefail
 
-STAGING_DIR="./staging"
-
-extract_module_names() {
-	find "$STAGING_DIR" -maxdepth 1 -type f | \
-		sed -n 's/.*\/[a-z]\+_\([^.]*\)\..*/\1/p' | sort -u
+check_md() {
+	file="$1"
+	if [ ! -f "$file" ]; then
+		echo "MISSING: $file"
+		exit 1
+	fi
+	if ! grep -q "^# " "$file"; then
+		echo "WARN: $file missing top-level header"
+		exit 1
+	fi
+	echo "OK: $file"
 }
 
-check_module_files() {
-	module="$1"
-	fail=0
-
-	# Required files
-	for req in "${module}.sh" "${module}.conf"; do
-		if [[ -f "${STAGING_DIR}/${req}" ]]; then
-			echo "PASS: Found required ${req}"
-		else
-			echo "FAIL: Missing required ${req}"
-			fail=1
-		fi
-	done
-
-	# Optional file
-	opt="docs_${module}.md"
-	if [[ -f "${STAGING_DIR}/${opt}" ]]; then
-		echo "PASS: Found optional ${opt}"
-	else
-		echo "NOTE: Optional ${opt} not found"
+check_sh() {
+	file="$1"
+	if [ ! -f "$file" ]; then
+		echo "MISSING: $file"
+		exit 2
 	fi
-
-	return $fail
+	if ! grep -q "^help()" "$file"; then
+		echo "WARN: $file missing help()"
+		exit 2
+	fi
+	echo "OK: $file"
 }
 
-check_required() {
-	[[ -d "$STAGING_DIR" ]] || { echo "No staging directory."; exit 1; }
-	modules=($(extract_module_names))
-	overall_fail=0
-
-	for mod in "${modules[@]}"; do
-		echo "== Checking module: ($mod) =="
-		check_module_files "$mod" || overall_fail=1
-		echo
-	done
-
-	if [[ "$overall_fail" -eq 0 ]]; then
-		echo "PASS: All required files present for all detected modules."
-	else
-		echo "FAIL: One or more required files missing for at least one module."
+check_conf() {
+	file="$1"
+	if [ ! -f "$file" ]; then
+		echo "MISSING: $file"
+		exit 3
 	fi
-
-	exit $overall_fail
+	if ! grep -qv '^\s*#' "$file"; then
+		echo "WARN: $file is only comments or empty"
+		exit 3
+	fi
+	echo "OK: $file"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	check_required
+	check_md "./staging/docs_foo.md"
+	check_sh "./staging/foo.sh"
+	check_conf "./staging/foo.conf"
 fi
