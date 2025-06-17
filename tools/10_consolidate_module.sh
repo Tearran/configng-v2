@@ -136,5 +136,5 @@ consolidate_module() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	consolidate_module "$@"
+	consolidate_module all
 fi
