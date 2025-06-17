@@ -38,7 +38,9 @@ info_box() {
 
 	local title="${TITLE:-Info}"
 	local -a buffer
-	local lines="${LINES:-16}" width="${WIDTH:-90}" max_lines="${MAX_LINES:-18}"
+	local lines="${LINES:-16}"
+	local width="${WIDTH:-90}"
+	local max_lines="${MAX_LINES:-18}"
 
 	if [ -p /dev/stdin ]; then
 		while IFS= read -r line; do
