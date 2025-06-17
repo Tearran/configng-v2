@@ -92,7 +92,7 @@ EOF
 	cat > "${STAGING_DIR}/docs_${MODULE}.md" <<EOF
 # ${MODULE} - Armbian Config V3 extra documents
 
-## TODO: EXTRA Documents about the feature. 
+## TODO: EXTRA Documents about the feature.
 
 EOF
 
