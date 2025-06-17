@@ -3,7 +3,7 @@ set -euo pipefail
 
 
 promote_module() {
-	
+
 	DOC_ROOT="${DOC_ROOT:-./docs}"
 
 	mkdir -p "$DOC_ROOT"
