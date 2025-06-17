@@ -4,16 +4,16 @@ set -euo pipefail
 _about_setup_module() {
 	cat << EOF
 
-usage: $0 <module_name>"
+usage: $0 <module_name>
 
-Creates Armbian Config V3 module scaffolding in ./staging/"
+Creates Armbian Config V3 module scaffolding in ./staging/
 
-	<module_name>   Name of the new module (required)."
+	<module_name>   Name of the new module (required).
 
 Outputs:"
-	- <module_name>.conf   Module metadata template"
-	- <module_name>.sh     Module Bash template"
-	- docs_<module_name>.md  Documentation stub"
+	- <module_name>.conf   Module metadata template
+	- <module_name>.sh     Module Bash template
+	- docs_<module_name>.md  Documentation stub
 
 Example:"
 	$0 mymodule"
