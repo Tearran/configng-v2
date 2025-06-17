@@ -14,8 +14,8 @@ promote_module() {
 	# Move docs_*.sh scripts from staging to docs/
 	for docs_file in ./staging/docs_*.md; do
 		[ -f "$docs_file" ] || continue
-		echo "Moving $docs_file to ./docs/"
-		mv "$docs_file" ./docs/
+		echo "Moving $docs_file to $DOC_ROOT/"
+		mv "$docs_file" "$DOC_ROOT/"
 	done
 
 	# Move *.sh (not docs_*.sh) with a matching .conf file to src/$parent/
