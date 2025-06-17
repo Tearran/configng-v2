@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 SRC_ROOT="./src"
 LIB_ROOT="./lib/armbian-config"

@@ -35,7 +35,7 @@ group=\${group:-managers}
 contributor=\${contributor:-}
 maintainer=\${maintainer:-false}
 arch=\${arch:-"arm64 armhf x86-64"}
-require_os=\${require_os:-"Debian Ubuntu"}
+require_os=\${require_os:-"Armbian Debian Ubuntu"}
 require_kernel=\${require_kernel:-5.15+}
 port=\${port:-false}
 helpers=_about_${MODULE}
@@ -61,14 +61,7 @@ _about_${MODULE}() {
 	echo "help - this message"
 }
 
-EOF
-
-# Output .sh module template inside ./staging
-cat > "${STAGING_DIR}/test_${MODULE}.sh" <<EOF
-#!/bin/bash
-set -euo pipefail
-
-# ${MODULE} - Armbian Config V3 test
+# ${MODULE} - Armbian Config V3 Test
 
 if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
 	echo "${MODULE} - Armbian Config V3 test"
@@ -79,8 +72,10 @@ fi
 EOF
 
 # Output .sh module template inside ./staging
-cat > "${STAGING_DIR}/doc_${MODULE}.md" <<EOF
+cat > "${STAGING_DIR}/docs_${MODULE}.md" <<EOF
 # ${MODULE} - Armbian Config V3 extra documents
+
+## TODO: EXTRA Documents about the feature. 
 
 EOF
 

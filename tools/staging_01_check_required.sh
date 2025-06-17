@@ -13,7 +13,7 @@ check_module_files() {
 	fail=0
 
 	# Required files
-	for req in "test_${module}.sh" "${module}.sh" "${module}.conf"; do
+	for req in "${module}.sh" "${module}.conf"; do
 		if [[ -f "${STAGING_DIR}/${req}" ]]; then
 			echo "PASS: Found required ${req}"
 		else
@@ -23,7 +23,7 @@ check_module_files() {
 	done
 
 	# Optional file
-	opt="doc_${module}.md"
+	opt="docs_${module}.md"
 	if [[ -f "${STAGING_DIR}/${opt}" ]]; then
 		echo "PASS: Found optional ${opt}"
 	else
@@ -33,13 +33,13 @@ check_module_files() {
 	return $fail
 }
 
-main() {
+check_required() {
 	[[ -d "$STAGING_DIR" ]] || { echo "No staging directory."; exit 1; }
 	modules=($(extract_module_names))
 	overall_fail=0
 
 	for mod in "${modules[@]}"; do
-		echo "== Checking module: $mod =="
+		echo "== Checking module: ($mod) =="
 		check_module_files "$mod" || overall_fail=1
 		echo
 	done
@@ -54,5 +54,5 @@ main() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	main
+	check_required
 fi
