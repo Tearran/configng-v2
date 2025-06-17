@@ -38,6 +38,8 @@ arch=\${arch:-"arm64 armhf x86-64"}
 require_os=\${require_os:-"Debian Ubuntu"}
 require_kernel=\${require_kernel:-5.15+}
 port=\${port:-false}
+helpers=_about_${MODULE}
+
 EOF
 
 # Output .sh module template inside ./staging
