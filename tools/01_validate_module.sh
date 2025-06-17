@@ -82,6 +82,7 @@ validate_module() {
 	case "$cmd" in
 		help|--help|-h)
 			_about_validate_module
+			exit 0
 		;;
 		*)
 			_check_md "./staging/docs_$cmd.md"
