@@ -136,5 +136,6 @@ consolidate_module() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	DEBUG="${DEBUG:-}"
 	consolidate_module all
 fi
