@@ -22,4 +22,4 @@ jobs:
 
       - name: Staging compatibility check
         run: |
-          bash tools/staging_01_check_required.sh
+          bash tools/02_validate_module.sh
