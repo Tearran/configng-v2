@@ -28,7 +28,7 @@ _make_module() {
 	# Validate module name
 	if [[ -z "$MODULE" ]]; then
 		echo "No argument provided"
-		exit 1
+		_about_setup_module
 	fi
 	if ! [[ "$MODULE" =~ ^[a-zA-Z0-9_]+$ ]]; then
 		echo "Invalid module name: $MODULE"
