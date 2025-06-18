@@ -35,16 +35,36 @@ debug() {
 
 
 _about_debug() {
-	cat <<-EOF
+	cat <<EOF
 
 Usage: debug <option> || <"message string">
-	Options:
-		help               Show this help message
-		"message string"   Show debug message (DEBUG non-zero)
-		reset              (Re)set starting point
-		total              Show total time and reset
+Options:
+	help               Show this help message
+	"message string"   Show debug message (DEBUG non-zero)
+	reset              (Re)set starting point
+	total              Show total time and reset
 
 
 	When providing a "message string", elapsed time since last debug call is shown if DEBUG is set.
-	EOF
+EOF
 }
+
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	DEBUG=${DEBUG:-true}
+
+	debug "debug initialized"
+
+	# --- Capture and assert help output ---
+	help_output="$(debug help)"              # Capture
+	echo "$help_output" | grep -q "Usage: debug" || {  # Assert
+		echo "Help output does not contain expected usage string"
+		exit 1
+	}
+	# --- end assertion ---
+
+	debug "$help_output"
+	debug "test complete"
+	debug total
+
+fi
