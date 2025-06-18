@@ -10,35 +10,46 @@ Creates Armbian Config V3 module scaffolding in ./staging/
 
 	<module_name>   Name of the new module (required).
 
-Outputs:"
-	- <module_name>.conf   Module metadata template
-	- <module_name>.sh     Module Bash template
-	- docs_<module_name>.md  Documentation stub
+Outputs:
+	- <module_name>.conf    Module metadata template
+	- <module_name>.sh      Module Bash template
+	- <module_name>.md      Documentation stub
 
-Example:"
-	$0 mymodule"
+Example:
+	$0 mymodule
+
 EOF
 }
 
-setup_module() {
+_make_module() {
+	local STAGING_DIR="${STAGING_DIR:-./staging}"
+	local MODULE="${1:-}"
 
-	STAGING_DIR="./staging"
-
-
-	if [[ $# -lt 1 ]]; then
-		echo "Usage: $0 <module_name>"
+	# Validate module name
+	if [[ -z "$MODULE" ]]; then
+		echo "No argument provided"
+		_about_setup_module
+	fi
+	if ! [[ "$MODULE" =~ ^[a-zA-Z0-9_]+$ ]]; then
+		echo "Invalid module name: $MODULE"
 		exit 1
 	fi
-
-	MODULE="$1"
 
 	# Ensure ./staging exists
 	if [[ ! -d "$STAGING_DIR" ]]; then
 		mkdir -p "$STAGING_DIR"
 	fi
 
-	# Output .conf metadata template inside ./staging
-	cat > "${STAGING_DIR}/${MODULE}.conf" <<EOF
+	local created=0
+	local skipped=0
+
+	# .conf
+	local conf="${STAGING_DIR}/${MODULE}.conf"
+	if [[ -f "$conf" ]]; then
+		echo "Skip: $conf already exists"
+		skipped=$((skipped+1))
+	else
+		cat > "$conf" <<EOF
 # ${MODULE} - Armbian Config V3 metadata
 
 [${MODULE}]
@@ -49,18 +60,25 @@ documents=false
 options=
 parent=
 group=
-contributor=\${contributor:-}
+contributor=
 maintainer=false
 arch=arm64 armhf x86-64
 require_os=Armbian Debian Ubuntu
 require_kernel=5.15+
 port=false
-helpers=${helpers:-}
-
+helpers=   # Will list _*_${MODULE}() helpers when available
 EOF
+		echo "Created: $conf"
+		created=$((created+1))
+	fi
 
-# Output .sh module template inside ./staging
-	cat > "${STAGING_DIR}/${MODULE}.sh" <<EOF
+	# .sh
+	local modsh="${STAGING_DIR}/${MODULE}.sh"
+	if [[ -f "$modsh" ]]; then
+		echo "Skip: $modsh already exists"
+		skipped=$((skipped+1))
+	else
+		cat > "$modsh" <<EOF
 #!/bin/bash
 set -euo pipefail
 
@@ -87,25 +105,43 @@ if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
 fi
 
 EOF
+		echo "Created: $modsh"
+		created=$((created+1))
+	fi
 
-# Output .sh module template inside ./staging
-	cat > "${STAGING_DIR}/${MODULE}.md" <<EOF
+	# .md
+	local md="${STAGING_DIR}/${MODULE}.md"
+	if [[ -f "$md" ]]; then
+		echo "Skip: $md already exists"
+		skipped=$((skipped+1))
+	else
+		cat > "$md" <<EOF
 # ${MODULE} - Armbian Config V3 extra documents
 
 ## TODO: EXTRA Documents about the feature.
 
 EOF
+		echo "Created: $md"
+		created=$((created+1))
+	fi
 
 	echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
+	echo "Created: $created, Skipped: $skipped"
 }
 
 
+setup_module() {
+	local arg="${1:-help}"
+	case "$arg" in
+		help|--help|-h)
+			_about_setup_module
+			;;
+		*)
+			_make_module "$arg"
+			;;
+	esac
+}
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	foo="${1:-help}"
-	if [[ $foo = "help" ]]; then
-		_about_setup_module && exit 1
-	else
-		setup_module "$foo"
-	fi
-	unset foo
+	setup_module "${1:-help}"
 fi
