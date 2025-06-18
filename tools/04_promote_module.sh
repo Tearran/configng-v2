@@ -1,13 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-
 promote_module() {
 
 	DOC_ROOT="${DOC_ROOT:-./docs}"
-
-	declare -A array_entries
-	declare -A group_counts  # For unique id per group
 
 	# Move *.sh (not docs_*.sh) with a matching .conf file to src/$parent/
 	for sh_file in ./staging/*.sh; do
@@ -27,16 +23,27 @@ promote_module() {
 			fi
 		fi
 	done
+
 	# Move *.md scripts from staging to docs/
 	for docs_file in ./staging/*.md; do
-		if [ -n "$parent" ]; then
-			mkdir -p "$DOC_ROOT"
-			[ -f "$docs_file" ] || continue
-			echo "Moving $docs_file to $DOC_ROOT/"
-			mv "$docs_file" "$DOC_ROOT/"
-		fi
+		[ -f "$docs_file" ] || continue
+		mkdir -p "$DOC_ROOT"
+		echo "Moving $docs_file to $DOC_ROOT/"
+		mv "$docs_file" "$DOC_ROOT/"
 	done
 
+	# Check if ./staging is empty now
+	if [ -d "./staging" ]; then
+		if [ -z "$(ls -A ./staging)" ]; then
+			echo "Removing empty ./staging directory."
+			rmdir ./staging
+		else
+			echo "WARNING: ./staging is not empty after promotion."
+			echo "Leftover files:"
+			ls -l ./staging
+			exit 1
+		fi
+	fi
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
