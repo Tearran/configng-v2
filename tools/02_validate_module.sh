@@ -79,15 +79,20 @@ _check_conf() {
 
 validate_module() {
 	local cmd="${1:-help}"
+	local status=0
 	case "$cmd" in
 		help|--help|-h)
 			_about_validate_module
 			exit 0
 		;;
 		*)
-			_check_md "./staging/docs_$cmd.md"
-			_check_sh "./staging/$cmd.sh"
-			_check_conf "./staging/$cmd.conf"
+			_check_md "./staging/docs_$cmd.md" || status=1
+			_check_sh "./staging/$cmd.sh" || status=1
+			_check_conf "./staging/$cmd.conf" || status=1
+			if [[ "$status" -ne 0 ]]; then
+				echo "One or more validation checks failed for module: $cmd" >&2
+				exit 1
+			fi
 		;;
 	esac
 }
