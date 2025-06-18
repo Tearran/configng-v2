@@ -6,21 +6,11 @@ promote_module() {
 
 	DOC_ROOT="${DOC_ROOT:-./docs}"
 
-	mkdir -p "$DOC_ROOT"
 	declare -A array_entries
 	declare -A group_counts  # For unique id per group
 
-
-	# Move docs_*.sh scripts from staging to docs/
-	for docs_file in ./staging/docs_*.md; do
-		[ -f "$docs_file" ] || continue
-		echo "Moving $docs_file to $DOC_ROOT/"
-		mv "$docs_file" "$DOC_ROOT/"
-	done
-
 	# Move *.sh (not docs_*.sh) with a matching .conf file to src/$parent/
 	for sh_file in ./staging/*.sh; do
-		[[ "$sh_file" == *docs_*.sh ]] && continue
 		[ -f "$sh_file" ] || continue
 		base_name=$(basename "$sh_file" .sh)
 		conf_file="./staging/${base_name}.conf"
@@ -35,6 +25,15 @@ promote_module() {
 			else
 				echo "No parent= in $conf_file, skipping $sh_file"
 			fi
+		fi
+	done
+	# Move *.md scripts from staging to docs/
+	for docs_file in ./staging/*.md; do
+		if [ -n "$parent" ]; then
+			mkdir -p "$DOC_ROOT"
+			[ -f "$docs_file" ] || continue
+			echo "Moving $docs_file to $DOC_ROOT/"
+			mv "$docs_file" "$DOC_ROOT/"
 		fi
 	done
 

@@ -89,7 +89,7 @@ fi
 EOF
 
 # Output .sh module template inside ./staging
-	cat > "${STAGING_DIR}/docs_${MODULE}.md" <<EOF
+	cat > "${STAGING_DIR}/${MODULE}.md" <<EOF
 # ${MODULE} - Armbian Config V3 extra documents
 
 ## TODO: EXTRA Documents about the feature.
