@@ -25,8 +25,8 @@ setup_module() {
 	STAGING_DIR="./staging"
 
 
-	if [[ $# -lt 1 ]]; then
-		echo "Usage: $0 <module_name>"
+	if [[ -z "$1" ]]; then
+		echo "No argument provided"
 		exit 1
 	fi
 
