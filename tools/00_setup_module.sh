@@ -20,17 +20,15 @@ Example:"
 EOF
 }
 
-setup_module() {
+_make_module() {
 
-	STAGING_DIR="./staging"
+	STAGING_DIR="${STAGING_DIR:-./staging}"
+	MODULE="${1:-}"
 
-
-	if [[ -z "$1" ]]; then
+	if [[ -z "$MODULE" ]]; then
 		echo "No argument provided"
 		exit 1
 	fi
-
-	MODULE="$1"
 
 	# Ensure ./staging exists
 	if [[ ! -d "$STAGING_DIR" ]]; then
@@ -49,13 +47,13 @@ documents=false
 options=
 parent=
 group=
-contributor=\${contributor:-}
+contributor=
 maintainer=false
 arch=arm64 armhf x86-64
 require_os=Armbian Debian Ubuntu
 require_kernel=5.15+
 port=false
-helpers=${helpers:-}
+helpers=${helpers:-} #TODO iterate staged module for _*_<module> 
 
 EOF
 
@@ -100,12 +98,22 @@ EOF
 }
 
 
+setup_module() {
+	local cmd="${1:-help}"
+	local status=0
+	case "$cmd" in
+		help|--help|-h)
+			_about_setup_module
+		;;
+		*)
+			_make_module
+		;;
+	esac
+}
+
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	foo="${1:-help}"
-	if [[ $foo = "help" ]]; then
-		_about_setup_module && exit 1
-	else
-		setup_module "$foo"
-	fi
+	setup_module "$foo"
 	unset foo
 fi
