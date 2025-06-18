@@ -43,19 +43,19 @@ setup_module() {
 
 [${MODULE}]
 feature=${MODULE}
-description=\${description:-}
-extend_desc=\${extend_desc:-false}
-documents=\${documents:-false}
-options=\${options:-}
+description=
+extend_desc=false
+documents=false
+options=
 parent=
-group=\${group:-managers}
+group=
 contributor=\${contributor:-}
-maintainer=\${maintainer:-false}
-arch=\${arch:-"arm64 armhf x86-64"}
-require_os=\${require_os:-"Armbian Debian Ubuntu"}
-require_kernel=\${require_kernel:-5.15+}
-port=\${port:-false}
-helpers=_about_${MODULE}
+maintainer=false
+arch=arm64 armhf x86-64
+require_os=Armbian Debian Ubuntu
+require_kernel=5.15+
+port=false
+helpers=${helpers:-}
 
 EOF
 
