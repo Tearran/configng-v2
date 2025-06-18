@@ -33,7 +33,10 @@ _consolidate_src() {
 					break
 				fi
 			done
-			$skip && continue
+
+			if [[ "$skip" == true ]]; then
+				continue
+			fi
 
 			relpath="${DIR%/}/$fname"
 			echo -e "\n####### $relpath #######" >> "$OUT"
