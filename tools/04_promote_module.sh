@@ -25,7 +25,7 @@ promote_module() {
 		base_name=$(basename "$sh_file" .sh)
 		conf_file="./staging/${base_name}.conf"
 		if [ -f "$conf_file" ]; then
-			parent=$(awk -F= '/^parent=/{print $2}' "$conf_file" | head -n1)
+			parent=$(grep '^parent=' "$conf_file" | head -n1 | cut -d= -f2- | xargs)
 			if [ -n "$parent" ]; then
 				dest_dir="./src/$parent"
 				mkdir -p "$dest_dir"

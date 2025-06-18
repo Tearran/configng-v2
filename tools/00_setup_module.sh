@@ -47,7 +47,7 @@ description=\${description:-}
 extend_desc=\${extend_desc:-false}
 documents=\${documents:-false}
 options=\${options:-}
-parent=\${parent:-system}
+parent=
 group=\${group:-managers}
 contributor=\${contributor:-}
 maintainer=\${maintainer:-false}
@@ -99,9 +99,13 @@ EOF
 	echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
 }
 
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	foo="${1:-help}"
-	[[ $foo = "help" ]] && _about_setup_module && exit 1
-	setup_module "$foo"
+	if [[ $foo = "help" ]]; then
+		_about_setup_module && exit 1
+	else
+		setup_module "$foo"
+	fi
 	unset foo
 fi
