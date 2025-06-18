@@ -2,40 +2,80 @@
   <a href="#overview">
     <img src="https://raw.githubusercontent.com/armbian/configng/main/share/icons/hicolor/scalable/configng-tux.svg" width="128" alt="Armbian Config Logo" />
   </a><br>
-  <strong>Armbian Config: V3 (configng V2)</strong><br>
+  <strong>Armbian Config: V3<br>(@Tearran/configng-v2)</strong><br>
   <br>
 </p>
 
 ## Overview
 
-**armbian-config** is a system configuration tool for Armbian-based systems. It provides a straightforward, interactive environment for users to configure and manage system settings.
+**configng-v2** is an evolving system configuration framework for Armbian-based systems, forming the next stage of the classic `armbian-config` tool.  
+The project focuses on maintainable, modular Bash code, enabling robust system configuration via both command-line (CLI) and text user interfaces (TUI).
 
-The tool supports both command-line interfaces (CLI) and text user interfaces (TUI), catering to a range of usage scenarios and user preferences.
+---
+
+## Current State
+
+- **Modular Design:**  
+	Modules are standalone scripts, each handling a specific area (e.g., networking, services, system info), with a clear set of options for each.
+- **Unified Option Handling:**  
+	All modules follow the pattern `module_name.sh [option] [arguments]`. Each module provides a help message describing its options and usage.
+- **Helpers:**  
+	Shared logic is factored into helpers, promoting code reuse and maintainability.
+- **Config-v3 Scaffold:**  
+	Core dispatcher and module scaffolding are established. Reference modules (such as `module_webmin.sh`) demonstrate the new structure and conventions.
+- **Image-space Focus:**  
+	All actions are performed on the running system. No code in configng-v2 affects image build or customization at build time.
+
+---
+
+## Planned Goals
+
+- **Refinement and Expansion:**  
+	Migrate legacy modules to the new structure, update their option parsing, and add missing functionality as needed.
+- **Testing:**  
+	Introduce and maintain unit and integration tests for modules and helpers.  
+	Ensure changes do not break expected CLI or TUI behaviors.
+- **UI Separation:**  
+	Clean separation between backend (actual configuration logic) and UI (CLI/TUI) to support scripting, automation, and alternative interfaces.
+- **Documentation:**  
+	Update and clarify module help output and project documentation to reflect current standards and usage.  
+	Each module provides a help message like the following:
+    ```
+    Usage: module_network.sh [option]
+
+    Options:
+    	scan                  Scan for available networks
+    	connect <ssid> [psk]  Connect to a network (PSK optional)
+    	disconnect            Disconnect from the current network
+    	status                Show current network status
+    	help                  Show this help message
+    ```
 
 ---
 
 ## Scope and Responsibilities
 
-- **armbian-config operates only in image-space.**  
-	It is used exclusively on a running Armbian system and does **not** participate in the image build process. It does **not** affect image creation or customization at build time.
-
-- **Image build changes belong to the build scripts.**  
-	If you wish to change the default contents, packages, or configurations included in an Armbian image before it is built, those changes must be made in the Armbian build scripts—not in armbian-config.
-
-- **Limit feature requests and bug reports to image-space actions.**  
-	Feature requests or bug reports for armbian-config should only involve tasks that can be changed or applied on a running system. Requests relating to image creation or build-time customization should be directed to the Armbian build system.
+- **Image-space Only:**  
+	configng-v2 operates **only** on a running Armbian system.  
+	It does **not** modify or customize system images during build—use Armbian build scripts for that.
+- **Feature Requests and Bug Reports:**  
+	Limit requests to runtime (image-space) issues.  
+	Build-time changes are out of scope for this tool and should be directed to the build system.
 
 ---
 
-## Goals
+## Contribution Notes
 
-- **Migrate and Refactor:**  
-	Transition legacy code and features into a standard, modern development structure.
-
-- **Enable Testing:**  
-	Facilitate robust unit and integration testing for all modules and helpers.
-
-- **Support Automation and Multiple UIs:**  
-	Clean separation of backend configuration from interface logic to allow for both automation and various user-facing interfaces.
+- **Coding Style:**  
+	Bash/sh code uses tab indentation (not spaces).  
+	Modules and helpers should be clear, minimal, and function-oriented.
+- **Naming Conventions:**  
+	Modules are named `<feature>.sh`; helpers as `_<helper>_<feature>.sh`.
+- **Option Parsing:**  
+	Modules expect: `<feature> [option] [args...]`  
+- **Help Output:**  
+	Each module must provide a accurate help message per the above example.
 
 ---
+
+For further details, see individual module scripts and [CONTRIBUTING.md](CONTRIBUTING.md).
