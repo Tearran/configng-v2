@@ -22,8 +22,8 @@ EOF
 }
 
 _make_module() {
-	STAGING_DIR="${STAGING_DIR:-./staging}"
-	MODULE="${1:-}"
+	local STAGING_DIR="${STAGING_DIR:-./staging}"
+	local MODULE="${1:-}"
 
 	# Validate module name
 	if [[ -z "$MODULE" ]]; then
