@@ -12,7 +12,7 @@ Check results:
 	WARN    - File exists but is incomplete
 
 Checks performed:
-	- docs_<modulename>.md   (must have more than a top-level header)
+	- <modulename>.md   (must have more than a top-level header)
 	- <modulename>.sh        (must contain Help info in _about_<modulename>() function)
 	- <modulename>.conf      (must have non-comment content)
 
@@ -86,7 +86,7 @@ validate_module() {
 			exit 0
 		;;
 		*)
-			_check_md "./staging/docs_$cmd.md" || status=1
+			_check_md "./staging/$cmd.md" || status=1
 			_check_sh "./staging/$cmd.sh" || status=1
 			_check_conf "./staging/$cmd.conf" || status=1
 			if [[ "$status" -ne 0 ]]; then
