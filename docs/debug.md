@@ -1,10 +1,10 @@
 # debug
 
 ```
-debug <option> | <"message string">
+debug <option> or <"message string">
 ```
 
-#### Options
+## Options
 
 | Option            | Description                                           |
 |-------------------|-------------------------------------------------------|

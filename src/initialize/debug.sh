@@ -58,7 +58,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# --- Capture and assert help output ---
 	help_output="$(debug help)"              # Capture
 	echo "$help_output" | grep -q "Usage: debug" || {  # Assert
-		echo "Help output does not contain expected usage string"
+		echo "fail: Help output does not contain expected usage string"
+		debug "test complete"
 		exit 1
 	}
 	# --- end assertion ---
