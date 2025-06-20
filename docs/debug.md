@@ -4,7 +4,7 @@
 debug <option> or <"message string">
 ```
 
-#### Options
+## Options
 
 | Option            | Description                                           |
 |-------------------|-------------------------------------------------------|

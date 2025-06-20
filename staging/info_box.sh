@@ -62,8 +62,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	source ./src/initialize/debug.sh
 	debug "debug initialized"
 	info_box "$@"
-	# --- end assertion ---
-
+	# ttest debug
 	debug "$help_output"
 	debug "test complete"
 	debug total
