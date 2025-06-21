@@ -5,7 +5,6 @@ function _about_ok_box() {
 	cat <<EOF
 Usage: ok_box ["message"]
 Examples:
-	ok_box "Operation completed successfully."
 	echo "Hello from stdin" | ok_box
 	ok_box <<< "Message from here-string"
 EOF
@@ -15,7 +14,7 @@ EOF
 function ok_box() {
 	# Read the input from the pipe
 	input=$(cat)
-	TITLE="testing"
+	TITLE="${DIALOG:-$TITLE}"
 
 	case "${DIALOG:-}" in
 	whiptail)
