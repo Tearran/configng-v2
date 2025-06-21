@@ -1,9 +1,5 @@
-#!/bin/bash
-set -euo pipefail
-
-# ok_box - Armbian Config V3 module
 #!/usr/bin/env bash
-
+set -euo pipefail
 
 function _about_ok_box() {
 	cat <<EOF
