@@ -74,7 +74,7 @@ The project focuses on maintainable, modular Bash code, enabling robust system c
 - **Option Parsing:**  
 	Modules expect: `<feature> [option] [args...]`  
 - **Help Output:**  
-	Each module must provide a accurate help message per the above example.
+	Each module must provide an accurate help message per the above example.
 
 ---
 
