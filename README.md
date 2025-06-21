@@ -2,80 +2,81 @@
   <a href="#overview">
     <img src="https://raw.githubusercontent.com/armbian/configng/main/share/icons/hicolor/scalable/configng-tux.svg" width="128" alt="Armbian Config Logo" />
   </a><br>
-  <strong>Armbian Config: V3<br>(@Tearran/configng-v2)</strong><br>
+  <strong>configng-v2: Next Generation Armbian Configuration<br>(@Tearran/configng-v2)</strong><br>
   <br>
 </p>
 
 ## Overview
 
-**configng-v2** is an evolving system configuration framework for Armbian-based systems, forming the next stage of the classic `armbian-config` tool.  
-The project focuses on maintainable, modular Bash code, enabling robust system configuration via both command-line (CLI) and text user interfaces (TUI).
+**configng-v2** is an evolving, modular Bash framework for system configuration on Armbian-based systems.  
+It is the intended successor to [armbian/configng](https://github.com/armbian/configng), built for maintainability, flexibility, and robust CLI/TUI usage.
+
+> **Reference:**  
+> The module scaffold baseline is [tools/00_setup_module.sh](https://github.com/Tearran/configng-v2/blob/main/tools/00_setup_module.sh).
+
+---
+
+## Key Features
+
+- **Modular Architecture:**  
+	Each configuration area (network, system, services, etc.) is handled by a standalone module. Modules follow a unified CLI interface and can be invoked independently or by the main dispatcher.
+- **Helper Scripts:**  
+	Reusable logic is factored into helpers (`_helper_*.sh`) to maximize code reuse and maintainability.
+- **Consistent Option Parsing:**  
+	All modules use the pattern: `modulename.sh [option] [arguments]`. Each provides a help message with usage instructions.
+- **Runtime (Image-space) Focus:**  
+	All actions are performed on the running system only.  
+	No code in configng-v2 customizes system images at build time; for that, use [Armbian's build scripts](https://github.com/armbian/build).
+- **Tab-Indented Bash:**  
+	Code style is consistent and function-first—tabs for indentation, clear function blocks, minimal global logic.
 
 ---
 
 ## Current State
 
-- **Modular Design:**  
-	Modules are standalone scripts, each handling a specific area (e.g., networking, services, system info), with a clear set of options for each.
-- **Unified Option Handling:**  
-	All modules follow the pattern `module_name.sh [option] [arguments]`. Each module provides a help message describing its options and usage.
-- **Helpers:**  
-	Shared logic is factored into helpers, promoting code reuse and maintainability.
-- **Config-v3 Scaffold:**  
-	Core dispatcher and module scaffolding are established. Reference modules (such as `module_webmin.sh`) demonstrate the new structure and conventions.
-- **Image-space Focus:**  
-	All actions are performed on the running system. No code in configng-v2 affects image build or customization at build time.
+- Core dispatcher and scaffolding are established ([tools/00_setup_module.sh](https://github.com/Tearran/configng-v2/blob/main/tools/00_setup_module.sh)).
+- Reference modules (e.g., `module_webmin.sh`) demonstrate the new structure and conventions.
+- CLI and TUI interfaces are under active development.
+- Modules and helpers are being migrated from [armbian/configng](https://github.com/armbian/configng) and refactored for clarity and testability.
 
 ---
 
-## Planned Goals
+## Roadmap
 
-- **Refinement and Expansion:**  
-	Migrate legacy modules to the new structure, update their option parsing, and add missing functionality as needed.
+- **Migrate and Refine:**  
+	Gradually migrate legacy modules, update option parsing, and add new features as needed.
 - **Testing:**  
-	Introduce and maintain unit and integration tests for modules and helpers.  
-	Ensure changes do not break expected CLI or TUI behaviors.
+	Integrate automated and manual tests for all modules and helpers to ensure reliability.
 - **UI Separation:**  
-	Clean separation between backend (actual configuration logic) and UI (CLI/TUI) to support scripting, automation, and alternative interfaces.
+	Clean separation of backend logic and CLI/TUI UI to support scripting, automation, and alternative frontends.
 - **Documentation:**  
-	Update and clarify module help output and project documentation to reflect current standards and usage.  
-	Each module provides a help message like the following:
-    ```
-    Usage: module_network.sh [option]
+	Each module provides self-contained help output (see example below), and project documentation is updated as interfaces evolve.
 
-    Options:
-    	scan                  Scan for available networks
-    	connect <ssid> [psk]  Connect to a network (PSK optional)
-    	disconnect            Disconnect from the current network
-    	status                Show current network status
-    	help                  Show this help message
-    ```
-
----
-
-## Scope and Responsibilities
-
-- **Image-space Only:**  
-	configng-v2 operates **only** on a running Armbian system.  
-	It does **not** modify or customize system images during build—use Armbian build scripts for that.
-- **Feature Requests and Bug Reports:**  
-	Limit requests to runtime (image-space) issues.  
-	Build-time changes are out of scope for this tool and should be directed to the build system.
-
----
-
-## Contribution Notes
+## Contribution Guidelines
 
 - **Coding Style:**  
-	Bash/sh code uses tab indentation (not spaces).  
-	Modules and helpers should be clear, minimal, and function-oriented.
-- **Naming Conventions:**  
-	Modules are named `<feature>.sh`; helpers as `_<helper>_<feature>.sh`.
-- **Option Parsing:**  
-	Modules expect: `<feature> [option] [args...]`  
+	Bash and sh scripts use tab indentation, not spaces.  
+	Modules and helpers are minimal, function-oriented, and easy to read.
+- **Naming:**  
+	Modules: `<feature>.sh`  
+	Helpers: `_<helper>_<feature>.sh`
+- **Module Scaffold Reference:**  
+	Use [tools/00_setup_module.sh](https://github.com/Tearran/configng-v2/blob/main/tools/00_setup_module.sh) as the template for new modules.
 - **Help Output:**  
-	Each module must provide a accurate help message per the above example.
+	Each module must provide accurate, clear help output using the pattern above.
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more information on contributing, workflow, and best practices.
 
 ---
 
-For further details, see individual module scripts and [CONTRIBUTING.md](CONTRIBUTING.md).
+## Scope
+
+- **Image-space Only:**  
+	configng-v2 is for configuring a running Armbian system.  
+	Build-time changes belong in [armbian/build](https://github.com/armbian/build) or similar tools.
+- **Feature Requests & Bugs:**  
+	Limit requests to runtime (image-space) features and bugs.
+
+---
+
+For further details, see individual modules, helpers, and [CONTRIBUTING.md](CONTRIBUTING.md).
