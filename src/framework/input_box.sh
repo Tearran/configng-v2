@@ -55,7 +55,7 @@ input_box() {
 			echo "$result"
 			return 0
 			;;
-		"") # DIALOG not set
+		"")
 			echo "Error: DIALOG variable not set" >&2
 			return 3
 			;;
