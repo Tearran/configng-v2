@@ -139,3 +139,4 @@ validate_module() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	validate_module "${1:-all}"
 fi
+
