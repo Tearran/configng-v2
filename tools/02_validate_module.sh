@@ -95,6 +95,7 @@ _check_dup_src() {
 		echo "If not: rename the new module to avoid conflict."
 		return 1
 	fi
+	return 0
 }
 
 validate_module() {
