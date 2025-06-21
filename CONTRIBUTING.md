@@ -1,9 +1,7 @@
-# Development Guide: armbian-config V3 (configng-v2)
+# Development Guide: configng-v2 (Armbian Config Next Generation)
 
-##  Modules and Staging Workflow
-
-This guide outlines the module development and assembly process for **configng-v2**.  
-It defines the current approach, philosophy, and workflow for Bash-based modules, with practical steps for contributors and maintainers.
+This guide describes the module development and assembly process for **configng-v2**,  
+the intended upgrade to [armbian/configng](https://github.com/armbian/configng).  
 
 ---
 
@@ -12,7 +10,7 @@ It defines the current approach, philosophy, and workflow for Bash-based modules
 - **Modules are Bash scripts** designed to run independently (CLI/test/demo) or be sourced by the main framework (TUI/automation).
 - **Config files** (`.conf`) use simple, flat key=value pairs.
 - **No forced Pythonic patterns:**  
-	- Avoid unnecessary functions or complex/nested.
+	- Avoid unnecessary functions or complex/nested structures.
 	- Prefer simple, transparent Bash logic; use functions for clarity, not for forced structure.
 - **Independence is key:**  
 	- Each module should be testable, callable, and understandable on its own.
@@ -24,14 +22,14 @@ It defines the current approach, philosophy, and workflow for Bash-based modules
 
 - `staging/` — Where modules are created and refined before integration.
 - `src/` — Production-ready source files (promoted from staging).
-- `tests/` — Manual and automated test scripts for both staged and promoted modules.
 - `lib/` — Consolidated, production-assembled Bash libraries (flattened from `src/`).
 - `tools/` — Scripts for scaffolding, promotion, consolidation, packaging, and workflow automation.
+	- Module scaffold: [`tools/00_setup_module.sh`](https://github.com/Tearran/configng-v2/blob/main/tools/00_setup_module.sh)
 
 Each module consists of:
 - `modulename.sh` — The Bash implementation.
 - `modulename.conf` — Configuration and registration info (flat, Bash/INI style).
-- `[optional] test_modulename.sh` — Test script for the module.
+- `modulename.md` — Documentation for the module.
 
 ---
 
@@ -50,68 +48,45 @@ Create a new module scaffold:
 This generates:
 - `staging/<modulename>.sh`
 - `staging/<modulename>.conf`
-- (Optional) `staging/<modulename>_test.sh`
+- `staging/<modulename>.md`
 
 ### Step 2: Develop
 
 - Implement logic in `.sh` with **tabs** for indentation.
 - Fill out all required fields in the `.conf` file.
-- Write a test `test_*.sh` script that targets the staging version.
-- (Optional) Extra info about module `doc_*.md` 
+- Update the module documentation in the `.md` file as needed.
 
 ### Step 3: Verify & Test
 
-- GitHub actions Runs `shellcheck`, formatting checks, and required field validation.
-- run `tools/staging_01_check_required.sh` to varify files requierd are met
-- Execute test script(s) in `staging/` to confirm correctness and compatibility.
-
-##TODO
+- GitHub Actions runs `shellcheck`, formatting checks, and required field validation.
+- Run `tools/staging_01_check_required.sh` to verify required files are present.
+- Manually verify module behavior in `staging/` for correctness and compatibility.
 
 ### Step 4: Promote
 
 - Move module components to their target locations as defined in `.conf`:
 	- `.sh` → `src/<parent>/`
 	- `.conf` → `src/<parent>/`
-	- `.sh` test → `testing/`
+	- `.md` → `src/<parent>/`
 - This step makes the module part of the main tree and signals it's ready for assembly.
 
 ### Step 5: Consolidate
 
 - Flatten all `src/<parent>/*.sh` into a single `lib/<parent>.sh`.
-- This creates production-grade output files used by the main framework.
+- This creates production-grade output files used as the main framework.
 
-### Step 6: Production Test
+### TODO Step 6: Production Test
 
 - Run full framework tests using the consolidated scripts in `lib/`.
 - This ensures compatibility and functionality in their final state.
 
-### Step 7: Package
+### TODO: Step 7: Package
 
 - If production-test passes, package the tool (e.g., `.deb`) using the build system.
 - Output is stored in `build/` or `dist/`.
 
 **No steps should be skipped.  
 The workflow enforces modular clarity, testability, and maintainability.**
-
----
-
-## 4. Example Module Configuration (`.conf`)
-
-```conf name=staging/example_module.conf
-feature=example
-description=Configure Example Feature
-parent=system
-group=managers
-contributor=tearran
-maintainer=tearran
-arch=arm64 armhf x86-64
-require_os=Debian Ubuntu
-require_kernel=5.15+
-port=false
-placement=src/software/
-has_test=true
-test_file=example_test.sh
-```
 
 ---
 
@@ -131,15 +106,8 @@ test_file=example_test.sh
 
 ## 6. FAQ & Rationale
 
-
-**Q: Why `.conf` and not `.meta` or `.json`?**  
-A: `.conf` is universally editable, Bash-native, and works with Linux tooling. No extra parsing or editor config needed.
-
-**Q: Can I use arrays or complex data?**  
-A: Stick to simple, flat config for maximum portability and ease of parsing in Bash.
-
 **Q: Must every module be a function library?**  
-A: Bash doesn’t have “real” functions like other programming languages. In Bash, so-called functions are just named blocks of code:
+A: Bash doesn’t have “real” functions like other programming languages. In Bash, so-called functions are just named blocks of code.
 
 **Q: Why not a central controller?**  
 A: Independence makes modules more robust, easier to test, and more flexible for CLI, TUI, or automation.
