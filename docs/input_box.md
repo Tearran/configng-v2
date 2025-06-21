@@ -1,63 +1,93 @@
-# input_box
+#!/usr/bin/env bash
+set -euo pipefail
 
-Prompt the user for input using whiptail, dialog, or a simple shell read.
+_about_input_box() {
+	cat <<EOF
+Usage: input_box ["prompt_message"] [default_value]
+Prompt the user for input using whiptail, dialog, or shell.
+Returns the user input via stdout.
 
-## Script locations
+Examples:
+	echo "Enter your name:" | input_box
+	input_box <<< "Enter password:"
+	input_box "Enter hostname:" "localhost"
+	result=$(input_box "Enter port:" "8080")
 
-- Framework implementation: `src/framework/input_box.sh`  
-- Wrapper module: `staging/input_box.sh` (sources the framework version)
+Pass "help" or "-h" as the message to show this help.
+EOF
+}
 
-## Usage
+input_box() {
+	local message="${1:-$(cat)}"
+	local default_value="${2:-}"
 
-```bash
-input_box ["prompt_message"] [default_value]
-```
+	if [ "$message" = "help" ] || [ "$message" = "-h" ]; then
+		_about_input_box
+		return 0
+	fi
+	if [ -z "$message" ]; then
+		echo "Error: Missing prompt message" >&2
+		return 2
+	fi
 
-- If the first argument is `help` or `-h`, displays this help and exits with code 0.
-- If the prompt message is empty, prints an error to stderr and exits with code 2.
-- Reads input via the specified dialog backend and writes the result to stdout.
+	local result
+	local title="${TITLE:-Input}"
 
-## Environment Variables
+	case "$DIALOG" in
+		whiptail)
+			result=$(whiptail --title "$title" --inputbox "$message" 10 60 "$default_value" 3>&1 1>&2 2>&3) || return $?
+			echo "$result"
+			return 0
+			;;
+		dialog)
+			result=$(dialog --title "$title" --inputbox "$message" 10 60 "$default_value" 3>&1 1>&2 2>&3) || return $?
+			echo "$result"
+			return 0
+			;;
+		read)
+			echo "$message"
+			if [ -n "$default_value" ]; then
+				read -p "[$default_value]: " -e -i "$default_value" result < /dev/tty
+			else
+				read -p ": " result < /dev/tty
+			fi
+			echo "$result"
+			return 0
+			;;
+		"") # DIALOG not set
+			echo "Error: DIALOG variable not set" >&2
+			return 3
+			;;
+		*) # Unknown backend
+			echo "Error: Unknown dialog backend: $DIALOG" >&2
+			return 4
+			;;
+	esac
+}
 
-- `DIALOG`
-  - Backend to use for displaying the prompt.
-  - Supported values:
-    - `whiptail`
-    - `dialog`
-    - `read`
-- `TITLE`
-  - Title displayed in the dialog window (defaults to `"Input"`).
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	DIALOG="whiptail"
+	TITLE="$DIALOG Test"
+	result=$(input_box <<< "Enter your name (whiptail):")
+	echo "You entered: $result"
 
-## Examples
+	DIALOG="dialog"
+	TITLE="$DIALOG Test"
+	result=$(input_box "Enter your email (dialog):" "user@example.com")
+	echo "You entered: $result"
 
-```bash
-# Run built-in tests (whiptail, dialog, read)
-bash src/framework/input_box.sh
-
-# Display help
-echo "help" | bash src/framework/input_box.sh
-
-# Read with default value via 'read' backend
-DIALOG="read" TITLE="Test" bash -c 'source src/framework/input_box.sh; input_box "Enter port:" "8080"'
-
-# Read from piped prompt
-DIALOG="read" bash -c 'source src/framework/input_box.sh; echo "Enter name:" | input_box'
-```
-
-## Exit Codes
-
-- `0` – Input read successfully or help displayed.  
-- `2` – Missing prompt message.  
-- `3` – `DIALOG` variable not set.  
-- `4` – Unknown dialog backend specified.  
-
-## Wrapper in staging directory
-
-```bash
+	DIALOG="read"
+	TITLE="$DIALOG Test"
+	result=$(input_box "Enter a number (read):" "42")
+	echo "You entered: $result"
+fi
+</newLines>
+<newLines>
 #!/bin/bash
 set -euo pipefail
 
-# input_box - Armbian Config V3 wrapper
+# input_box - Armbian Config V3 module
 # This module has been moved to src/framework/input_box.sh
+
+# Source the actual implementation
 source "$(dirname "${BASH_SOURCE[0]}")/../src/framework/input_box.sh"
-```
