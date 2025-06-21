@@ -3,23 +3,6 @@
 This guide describes the module development and assembly process for **configng-v2**,  
 the intended upgrade to [armbian/configng](https://github.com/armbian/configng).  
 
-## Definitions
-
-**User-Facing Module**  
-A script or command intended for direct use by the end-user (via CLI or TUI). Handles user input, displays help, and coordinates module actions.
-
-**Module Backend Logic**  
-The functions and code within each module that perform actual system operations or configuration changes. Invoked by user-facing modules or the main framework.
-
-**Framework Infrastructure**  
-The core logic that loads, parses, and dispatches modules. This includes scaffolding, option parsing, and coordination between modules, but is not directly user-facing.
-
-**Module Scaffold**  
-The baseline template and directory structure used to create new modules. (See: [`tools/00_setup_module.sh`](tools/00_setup_module.sh))
-
----
-
-Use these terms as defined above throughout this document and in all project discussions.
 ---
 
 ## 1. Philosophy: Bash-Native Modularity
@@ -32,6 +15,7 @@ Use these terms as defined above throughout this document and in all project dis
 - **Independence is key:**  
 	- Each module should be testable, callable, and understandable on its own.
 	- Interdependencies must be minimal and always explicit.
+
 
 ---
 
@@ -107,7 +91,7 @@ The workflow enforces modular clarity, testability, and maintainability.**
 
 ---
 
-## 5. Module Best Practices
+## 4. Module Best Practices
 
 - **Keep configs flat:**  
 	No nesting, no complex lists—just key=value or simple [section] headers if absolutely needed.
@@ -121,7 +105,7 @@ The workflow enforces modular clarity, testability, and maintainability.**
 
 ---
 
-## 6. FAQ & Rationale
+## 5. FAQ & Rationale
 
 **Q: Must every module be a function library?**  
 A: Bash doesn’t have “real” functions like other programming languages. In Bash, so-called functions are just named blocks of code.
@@ -134,7 +118,7 @@ A: Independence makes modules more robust, easier to test, and more flexible for
 
 ---
 
-## 7. Path Forward
+## 6. Path Forward
 
 - **Keep the workflow strict:**  
 	Staging, promote, consolidate, production-test, package—no shortcuts.
@@ -146,5 +130,24 @@ A: Independence makes modules more robust, easier to test, and more flexible for
 	Every change to workflow or philosophy should be documented and, when possible, enforced through CI.
 
 ---
+
+## Definitions
+
+**User-Facing Module**  
+A script or command intended for direct use by the end-user (via CLI or TUI). Handles user input, displays help, and coordinates module actions.
+
+**Module Backend Logic**  
+The functions and code within each module that perform actual system operations or configuration changes. Invoked by user-facing modules or the main framework.
+
+**Framework Infrastructure**  
+The core logic that loads, parses, and dispatches modules. This includes scaffolding, option parsing, and coordination between modules, but is not directly user-facing.
+
+**Module Scaffold**  
+The baseline template and directory structure used to create new modules. (See: [`tools/00_setup_module.sh`](tools/00_setup_module.sh))
+
+Please use these terms as defined above in project discussions.
+---
+
+
 
 *Stick to these principles for a maintainable, robust, and Bash-appropriate modular system.*
