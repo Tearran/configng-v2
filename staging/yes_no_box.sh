@@ -1,70 +1,71 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# Print usage/help for this function.
-function _about_yes_no_box() {
+_about_yes_no_box() {
 	cat <<EOF
-Usage: yes_no_box <message> <callback_function>
-	<message>           Message to show in the Yes/No dialog.
-	<callback_function> Function to call with result ("No" if cancelled).
-	help                Show this message.
+Usage: yes_no_box ["message"]
+Prompt the user for a Yes/No answer using whiptail, dialog, or shell.
 
-Example:
-	yes_no_box "Are you sure?" _process_yes_no_box
+Examples:
+	echo "Proceed with install?" | yes_no_box
+	yes_no_box <<< "Continue with upgrade?"
+	yes_no_box "Are you sure you want to reboot?"
+
+Pass "help" or "-h" as the message to show this help.
 EOF
 }
 
-# Example callback function.
-function _process_yes_no_box() {
-	local input="${1:-}"
-	if [[ "$input" == "No" ]]; then
-		echo "User canceled. Exiting."
-		exit 1
-	else
-		echo "User confirmed."
-		# Place your custom logic here.
-	fi
-}
-
-# Main yes/no dialog function.
-function yes_no_box() {
-	local message="${1:-}"
-	local callback="${2:-}"
-
-	if [[ "$message" == "help" || "$message" == "-h" ]]; then
+yes_no_box() {
+	local message="${1:-$(cat)}"
+	if [ "$message" = "help" ] || [ "$message" = "-h" ]; then
 		_about_yes_no_box
 		return 0
 	fi
-
-	if [[ -z "$message" || -z "$callback" ]]; then
-		echo "Error: Missing arguments." >&2
-		_about_yes_no_box
-		return 1
-	fi
-
-	# Optionally restrict callbacks here, or trust caller
-	if declare -F "$callback" > /dev/null; then
-		: # OK
-	else
-		echo "Error: Callback function '$callback' not found." >&2
+	if [ -z "$message" ]; then
+		echo "Error: Missing message argument" >&2
 		return 2
 	fi
 
-	local dialog="${DIALOG:-whiptail}"
-
-	if "$dialog" --yesno "$message" 10 80 3>&1 1>&2 2>&3; then
-		"$callback"
-	else
-		"$callback" "No"
-	fi
+	case "$DIALOG" in
+		whiptail)
+			whiptail --title "$TITLE" --yesno "$message" 10 60
+			return $?
+			;;
+		dialog)
+			dialog --title "$TITLE" --yesno "$message" 10 60
+			return $?
+			;;
+		read)
+			echo "$message"
+			read -p "[y/N]: " reply < /dev/tty
+			if [ "${reply,,}" != "y" ]; then
+				echo "Canceled."
+				return 1
+			fi
+			return 0
+			;;
+		"") # DIALOG not set
+			echo "Error: DIALOG variable not set" >&2
+			return 3
+			;;
+		*)
+			echo "Error: Unknown dialog backend: $DIALOG" >&2
+			return 4
+			;;
+	esac
 }
 
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	DEBUG=${DEBUG:-true}
-	DIALOG=${DIALOG:-whiptail}
-	source ./src/initialize/debug.sh
-	debug "debug initialized"
-	yes_no_box "$@"  _process_yes_no_box
 
-	debug "test complete"
-	debug total
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	DIALOG="whiptail"
+	TITLE="$DIALOG"
+	yes_no_box <<< "Showing $DIALOG box"
+
+	DIALOG="dialog"
+	TITLE="$DIALOG"
+	yes_no_box "Showing a $DIALOG box"
+
+	DIALOG="read"
+	TITLE="$DIALOG"
+	yes_no_box <<< "Showing $DIALOG promt"
 fi
