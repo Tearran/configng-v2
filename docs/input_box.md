@@ -1,3 +1,4 @@
+# src/framework/input_box.sh
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -25,7 +26,6 @@ input_box() {
 		_about_input_box
 		return 0
 	fi
-
 	if [ -z "$message" ]; then
 		echo "Error: Missing prompt message" >&2
 		return 2
@@ -82,3 +82,13 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	result=$(input_box "Enter a number (read):" "42")
 	echo "You entered: $result"
 fi
+
+# staging/input_box.sh
+#!/bin/bash
+set -euo pipefail
+
+# input_box - Armbian Config V3 module
+# This module has been moved to src/framework/input_box.sh
+
+# Source the actual implementation
+source "$(dirname "${BASH_SOURCE[0]}")/../src/framework/input_box.sh"
