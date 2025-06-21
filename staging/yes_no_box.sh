@@ -67,5 +67,5 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	DIALOG="read"
 	TITLE="$DIALOG"
-	yes_no_box <<< "Showing $DIALOG promt"
+	yes_no_box <<< "Showing $DIALOG prompt"
 fi
