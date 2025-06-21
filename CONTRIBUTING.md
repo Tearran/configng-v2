@@ -3,6 +3,23 @@
 This guide describes the module development and assembly process for **configng-v2**,  
 the intended upgrade to [armbian/configng](https://github.com/armbian/configng).  
 
+## Definitions
+
+**User-Facing Module**  
+A script or command intended for direct use by the end-user (via CLI or TUI). Handles user input, displays help, and coordinates module actions.
+
+**Module Backend Logic**  
+The functions and code within each module that perform actual system operations or configuration changes. Invoked by user-facing modules or the main framework.
+
+**Framework Infrastructure**  
+The core logic that loads, parses, and dispatches modules. This includes scaffolding, option parsing, and coordination between modules, but is not directly user-facing.
+
+**Module Scaffold**  
+The baseline template and directory structure used to create new modules. (See: [`tools/00_setup_module.sh`](tools/00_setup_module.sh))
+
+---
+
+Use these terms as defined above throughout this document and in all project discussions.
 ---
 
 ## 1. Philosophy: Bash-Native Modularity
