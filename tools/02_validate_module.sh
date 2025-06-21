@@ -58,7 +58,7 @@ _check_sh() {
 }
 
 _check_conf() {
-	REQUIRED_CONF_FIELDS=(feature helpers description)
+	local REQUIRED_CONF_FIELDS=(feature helpers description)
 	file="$1"
 	local missing=0
 	local missing_fields=()
