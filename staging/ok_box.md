@@ -17,7 +17,6 @@ Source the file or define `ok_box` in your script.
 Call with a message as an argument, via stdin, or a here-string.
 
 ```bash
-ok_box "Operation completed successfully."
 echo "Hello from stdin" | ok_box
 ok_box <<< "Message from here-string"
 ```
