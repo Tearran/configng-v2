@@ -2,7 +2,7 @@
   <a href="#overview">
     <img src="https://raw.githubusercontent.com/armbian/configng/main/share/icons/hicolor/scalable/configng-tux.svg" width="128" alt="Armbian Config Logo" />
   </a><br>
-  <strong>configng-v2: Next Generation Armbian Configuration<br>(@Tearran/configng-v2)</strong><br>
+  <strong>configng-v2: Next Generation Armbian Configuration<br></strong>
   <br>
 </p>
 
