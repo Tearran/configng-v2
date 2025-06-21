@@ -13,42 +13,34 @@ EOF
 }
 
 function ok_box() {
-	local message="${1:-}"
+	# Read the input from the pipe
+	input=$(cat)
+	TITLE="testing"
 
-	if [[ "$message" == "help" || "$message" == "-h" ]]; then
-		_about_ok_box
-		return 0
-	fi
-
-	if [[ -z "$message" ]]; then
-		echo "Error: Missing message." >&2
-		_about_ok_box
-		return 1
-	fi
-
-	local dialog="${DIALOG:-whiptail}"
-
-	case "$dialog" in
-		dialog)
-			dialog --title "${TITLE:-Info}" --msgbox "$message" 10 80 >/dev/tty 2>&1
-			;;
-		whiptail)
-			whiptail --title "${TITLE:-Info}" --msgbox "$message" 10 80 3>&1 1>&2 2>&3
-			;;
-		read)
-			echo "$message"
-			;;
-		*)
-			echo "$message"
-			return 1
-			;;
+	case "${DIALOG:-}" in
+	whiptail)
+		whiptail --title "$TITLE" --msgbox "$input" 0 0
+		;;
+	dialog)
+		dialog --title "$TITLE" --msgbox "$input" 0 0
+		;;
+	read)
+		echo -e "$input"
+		read -p "Press [Enter] to continue..." < /dev/tty
+		;;
+	*)
+		echo -e "$input"
+		;;
 	esac
 }
 
-
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	echo "ok_box - Armbian Config V3 test"
-	echo "# TODO: implement module logic"
-	exit 1
-fi
+	DIALOG="whiptail"
+	ok_box <<< "Showing a whiptail box"
 
+	DIALOG="dialog"
+	echo "Showing a dialog box" | ok_box
+
+	DIALOG="read"
+	echo "Showing read" | ok_box
+fi
