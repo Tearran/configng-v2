@@ -57,7 +57,7 @@ _check_sh() {
 	echo "OK: $file"
 }
 
-_check_conf() {
+_check_conf_old() {
 	local REQUIRED_CONF_FIELDS=(feature helpers description)
 	file="$1"
 	local missing=0
@@ -79,6 +79,136 @@ _check_conf() {
 		return 0
 	else
 		echo "WARN: $file missing required fields: ${missing_fields[*]}"
+		return 1
+	fi
+}
+
+
+_check_conf_stable() {
+	local REQUIRED_CONF_FIELDS=(feature helpers description parent group contributor port)
+	file="$1"
+	local failed=0
+	local failed_fields=()
+	if [ ! -f "$file" ]; then
+		echo "MISSING: $file"
+		return 1
+	fi
+
+	for field in "${REQUIRED_CONF_FIELDS[@]}"; do
+		# Must be present
+		if ! grep -qE "^$field=" "$file"; then
+			failed=1
+			failed_fields+=("\n $field (missing)")
+			continue
+		fi
+		# Must not be empty or whitespace
+		value="$(grep -E "^$field=" "$file" | cut -d= -f2- | xargs)"
+		if [ -z "$value" ]; then
+			failed=1
+			failed_fields+=("\n $field (empty)")
+			continue
+		fi
+		# helpers field must contain at least one _about_...
+		if [ "$field" = "helpers" ]; then
+			if ! echo "$value" | grep -q '_about_'; then
+				failed=1
+				failed_fields+=(" $field (no helper listed; must have at least one _about_)")
+			fi
+		fi
+	done
+
+	if [ "$failed" -eq 0 ]; then
+		echo "OK: $file"
+		return 0
+	else
+		echo -e "FAIL: $file missing or invalid fields:\n${failed_fields[*]}"
+		return 1
+	fi
+}
+
+_check_conf() {
+	local REQUIRED_CONF_FIELDS=(feature helpers description parent group contributor maintainer port)
+	local file="$1"
+	local failed=0
+	local failed_fields=()
+
+	if [ ! -f "$file" ]; then
+		echo "MISSING: $file"
+		return 1
+	fi
+
+	# Extract 'feature' for helper validation
+	local feature
+	feature="$(grep -E "^feature=" "$file" | cut -d= -f2- | xargs)"
+
+	for field in "${REQUIRED_CONF_FIELDS[@]}"; do
+		# Must be present
+		if ! grep -qE "^$field=" "$file"; then
+			failed=1
+			failed_fields+=(" $field (missing)")
+			continue
+		fi
+
+		local value
+		value="$(grep -E "^$field=" "$file" | cut -d= -f2- | xargs)"
+
+		# Must not be empty or whitespace
+		if [ -z "$value" ]; then
+			if [ "$field" = "helpers" ]; then
+				failed_fields+=(" helpers (no helper listed; must have at least _about_$feature)")
+			else
+				failed_fields+=(" $field (empty)")
+			fi
+			failed=1
+			continue
+		fi
+
+		case "$field" in
+			helpers)
+				# Must contain _about_$feature
+				if [ -n "$feature" ] && ! echo "$value" | grep -qw "_about_$feature"; then
+					failed=1
+					failed_fields+=(" helpers (must include _about_$feature)")
+				fi
+				;;
+			parent|group)
+				# Must be lowercase, no spaces
+				if [[ "$value" =~ [A-Z\ ] ]]; then
+					failed=1
+					failed_fields+=(" $field (should be lowercase, no spaces)")
+				fi
+				;;
+			contributor)
+				# Must be a GitHub @username
+				if [[ ! "$value" =~ ^@[a-zA-Z0-9_-]+$ ]]; then
+					failed=1
+					failed_fields+=(" contributor (should be valid github username, like @tearran)")
+				fi
+				;;
+			maintainer)
+				# Must be true or false
+				if [[ "$value" != "true" && "$value" != "false" ]]; then
+					failed=1
+					failed_fields+=(" maintainer (must be 'true' or 'false')")
+				fi
+				;;
+			options)
+				# Warn (not fail) if blank
+				if [ -z "$value" ]; then
+					echo "WARN: options field is blank; should describe supported options or 'none'"
+				fi
+				;;
+		esac
+	done
+
+	if [ "$failed" -eq 0 ]; then
+		echo "OK: $file"
+		return 0
+	else
+		echo "FAIL: $file missing or invalid fields:"
+		for f in "${failed_fields[@]}"; do
+			echo "  -$f"
+		done
 		return 1
 	fi
 }
