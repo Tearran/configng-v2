@@ -1,7 +1,7 @@
 # Development Guide: configng-v2 (Armbian Config Next Generation)
 
 This guide describes the module development and assembly process for **configng-v2**,  
-the intended upgrade to [armbian/configng](https://github.com/armbian/configng).  
+the intended upgrade to [armbian/configng](https://github.com/armbian/configng).
 
 ---
 
@@ -16,7 +16,6 @@ the intended upgrade to [armbian/configng](https://github.com/armbian/configng).
 	- Each module should be testable, callable, and understandable on its own.
 	- Interdependencies must be minimal and always explicit.
 
-
 ---
 
 ## 2. Directory & File Structure
@@ -25,7 +24,7 @@ the intended upgrade to [armbian/configng](https://github.com/armbian/configng).
 - `src/` — Production-ready source files (promoted from staging).
 - `lib/` — Consolidated, production-assembled Bash libraries (flattened from `src/`).
 - `tools/` — Scripts for scaffolding, promotion, consolidation, packaging, and workflow automation.
-	- Module scaffold: [`tools/00_setup_module.sh`](https://github.com/Tearran/configng-v2/blob/main/tools/00_setup_module.sh)
+	- Module scaffold: [`tools/00_setup_module.sh`](./tools/00_setup_module.sh)
 
 Each module consists of:
 - `modulename.sh` — The Bash implementation.
@@ -43,7 +42,7 @@ Each module follows a strict flow from creation to packaging:
 Create a new module scaffold:
 
 ```sh
-./tools/staging_setup_scaffold.sh <modulename>
+./tools/00_setup_module.sh <modulename>
 ```
 
 This generates:
@@ -59,9 +58,9 @@ This generates:
 
 ### Step 3: Verify & Test
 
-- GitHub Actions runs `shellcheck`, formatting checks, and required field validation.
-- Run `tools/staging_01_check_required.sh` to verify required files are present.
+- Run `./tools/02_verify_pull_request.sh` to check your files in `staging/` for formatting, required fields, and basic issues.
 - Manually verify module behavior in `staging/` for correctness and compatibility.
+- GitHub Actions runs `shellcheck`, formatting checks, and required field validation on pull requests.
 
 ### Step 4: Promote
 
@@ -114,7 +113,7 @@ A: Bash doesn’t have “real” functions like other programming languages. In
 A: Independence makes modules more robust, easier to test, and more flexible for CLI, TUI, or automation.
 
 **Q: Are Bash functions meant for functional programming?**  
-**A:** No. They're meant for code structure and reuse—not abstraction or composition.
+A: No. They're meant for code structure and reuse—not abstraction or composition.
 
 ---
 
@@ -143,11 +142,21 @@ The functions and code within each module that perform actual system operations 
 The core logic that loads, parses, and dispatches modules. This includes scaffolding, option parsing, and coordination between modules, but is not directly user-facing.
 
 **Module Scaffold**  
-The baseline template and directory structure used to create new modules. (See: [`tools/00_setup_module.sh`](tools/00_setup_module.sh))
+The baseline template and directory structure used to create new modules. (See: [`tools/00_setup_module.sh`](./tools/00_setup_module.sh))
 
-Please use these terms as defined above in project discussions.
 ---
 
+## TL;DR
 
+- Step 1: `./tools/00_setup_module.sh <modulename>`
+- Step 2: `./tools/02_verify_pull_request.sh`
+- Step 3: Make a pull request
+- Step 4: Fix failing Checks if needed
+- Step 5: Request review
+
+
+---
+
+Please use these terms as defined above in project discussions.
 
 *Stick to these principles for a maintainable, robust, and Bash-appropriate modular system.*
