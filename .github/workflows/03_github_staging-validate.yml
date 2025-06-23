@@ -1,4 +1,4 @@
-name: 03 Staging Gate test
+name: 03 Staging Gate
 
 on:
   pull_request:
