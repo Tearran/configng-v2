@@ -116,7 +116,6 @@ _check_conf() {
 				;;
 			options)
 				if [ -z "$value" ]; then
-					echo "FAIL: options field is blank; should describe supported options or 'none'"
 					failed=1
 					failed_fields+=(" options (blank; should describe supported options or 'none')")
 				fi
