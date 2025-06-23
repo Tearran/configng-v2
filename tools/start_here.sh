@@ -55,8 +55,8 @@ _make_module() {
 [${MODULE}]
 feature=${MODULE}
 description=
-extend_desc=false
-documents=false
+extend_desc=
+documents=true
 options=
 parent=
 group=
@@ -66,7 +66,7 @@ arch=arm64 armhf x86-64
 require_os=Armbian Debian Ubuntu
 require_kernel=5.15+
 port=false
-helpers=   # Will list _*_${MODULE}() helpers when available
+helpers=
 EOF
 		echo "Created: $conf"
 		created=$((created+1))
@@ -116,9 +116,33 @@ EOF
 		skipped=$((skipped+1))
 	else
 		cat > "$md" <<EOF
-# ${MODULE} - Armbian Config V3 extra documents
+# ${MODULE} - Configng V2 extra documents
 
-## TODO: EXTRA Documents about the feature.
+\`\`\`
+${MODULE} <command>
+\`\`\`
+
+## Commands
+
+| Command    | Description              |
+|------------|--------------------------|
+|            |                          |
+
+## Usage
+
+\`\`\`bash
+${MODULE} <command>
+\`\`\`
+
+## Behavior
+
+- Describe what the module does here.
+
+## Notes
+
+- List requirements or integration notes.
+- Intended for use as a configng-v2 module or standalone.
+- Output is simple and command-oriented.
 
 EOF
 		echo "Created: $md"
