@@ -43,22 +43,22 @@ network_manager() {
 
 _about_network_manager() {
 	cat <<-EOF
-	Usage: network_manager [status|switch|set <renderer>|help]
+Usage: network_manager [status|switch|set <renderer>|help]
 
-	Manage and inspect the current Netplan network renderer.
+Manage and inspect the current Netplan network renderer.
 
-	Commands:
-	  status           Show current renderer, installed, and running status.
-	  switch           Toggle renderer between 'networkd' and 'NetworkManager'.
-	  set <renderer>   Set renderer to 'networkd' or 'NetworkManager'.
-	  help             Show this help message.
+Commands:
+	status           Show current renderer, installed, and running status.
+	switch           Toggle renderer between 'networkd' and 'NetworkManager'.
+	set <renderer>   Set renderer to 'networkd' or 'NetworkManager'.
+	help             Show this help message.
 
-	Examples:
-	  sudo bash ./src/modules/network_manager.bash status
-	  sudo bash ./src/modules/network_manager.bash switch
-	  sudo bash ./src/modules/network_manager.bash set NetworkManager
+Examples:
+	sudo bash ./src/modules/network_manager.bash status
+	sudo bash ./src/modules/network_manager.bash switch
+	sudo bash ./src/modules/network_manager.bash set NetworkManager
 
-	(relative path: src/modules/network_manager.bash)
+(relative path: src/modules/network_manager.bash)
 	EOF
 }
 
