@@ -54,4 +54,3 @@ Options:
 
 - Requires Bash 4+.
 - For module authors: Use `debug` to trace/profiling steps in Bash modules.
-- See `module_webmin.sh` for reference integration style.
