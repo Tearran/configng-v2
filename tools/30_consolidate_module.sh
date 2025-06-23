@@ -97,7 +97,10 @@ emit_section() {
 	mapref["unique_id"]="$unique_id"
 
 	for key in "${!mapref[@]}"; do
-		array_entries["$arr"]+=$'\n'"${arr}[${section},${key}]=\"${mapref[$key]}\""
+		# Safely quote the value for Bash using printf %q
+		local quoted_val
+		quoted_val=$(printf '%q' "${mapref[$key]}")
+		array_entries["$arr"]+=$'\n'"${arr}[${section},${key}]=$quoted_val"
 	done
 }
 
