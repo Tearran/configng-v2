@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # cockpit - mini module
-# Relative path: src/cockpit/cockpit
+# Relative path: src/software/system/cockpit.sh
 
 _about_cockpit() {
 	cat <<-EOF
