@@ -48,17 +48,14 @@ Usage: network_manager [status|switch|set <renderer>|help]
 Manage and inspect the current Netplan network renderer.
 
 Commands:
-	status           Show current renderer, installed, and running status.
-	switch           Toggle renderer between 'networkd' and 'NetworkManager'.
-	set <renderer>   Set renderer to 'networkd' or 'NetworkManager'.
-	help             Show this help message.
+	NetworkManager	Set renderer to 'NetworkManager'.
+	networkd	Set renderer to 'networkd'.
+	help	        Show this help message.
 
 Examples:
-	sudo bash ./src/modules/network_manager.bash status
-	sudo bash ./src/modules/network_manager.bash switch
-	sudo bash ./src/modules/network_manager.bash set NetworkManager
+	sudo bash ./src/modules/network_manager.bash networkd
+	sudo bash ./src/modules/network_manager.bash NetworkManager
 
-(relative path: src/modules/network_manager.bash)
 	EOF
 }
 
