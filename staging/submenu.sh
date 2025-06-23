@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # submenu - Menu dispatcher/helper for config-v3 modules

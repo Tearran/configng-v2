@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# input_box - Armbian Config V3 module
-# Prompts user for input using whiptail/dialog/read.
-# Reads prompt from $1 argument, or from stdin if not provided.
-# Result is printed to stdout.
-
 _about_input_box() {
 	cat <<EOF
 Usage: input_box ["prompt"]
