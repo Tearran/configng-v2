@@ -14,7 +14,7 @@ Check results:
 Checks performed:
 	- <modulename>.md   (must have more than a top-level header)
 	- <modulename>.sh   (must contain Help info in _about_<modulename>() function)
-	- <modulename>.conf (must have required non-comment fields: feature, helpers, description)
+	- <modulename>.conf (must have required non-comment fields.)
 	- Checks for duplicate-named files in src/** and docs/** (outside of ./staging)
 
 Examples:
