@@ -1,11 +1,10 @@
-name: Staging Gate
+name: Staging Gate test
 
 on:
   pull_request:
     paths:
       - 'staging/**'
       - 'tools/**'
-
 
 jobs:
   gate:
@@ -21,5 +20,25 @@ jobs:
           fi
 
       - name: Staging compatibility check
+        run: bash tools/02_validate_module.sh
+
+      - name: Run all tools and report pass/fail
         run: |
-          bash tools/02_validate_module.sh
+          status=0
+          for tool in tools/[0-9][0-9]_*.sh; do
+            # Skip 02_validate_module.sh (already run)
+            if [[ "$(basename "$tool")" == "02_validate_module.sh" ]]; then
+              continue
+            fi
+            echo "=== Running: $tool ==="
+            bash "$tool"
+            result=$?
+            if [[ $result -eq 0 ]]; then
+              echo "::notice ::PASS: $tool"
+            else
+              echo "::error ::FAIL: $tool (exit code $result)"
+              status=1
+            fi
+            echo
+          done
+          exit $status
