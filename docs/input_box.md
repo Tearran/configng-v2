@@ -81,8 +81,3 @@ DIALOG=read bash tools/input_box.sh "Shell input:"
 ```
 
 ---
-
-## See Also
-
-- [`ok_box`](ok_box.md): For displaying confirmation dialogs and results.
-- [Module style guide](../tools/00_setup_module.sh)
