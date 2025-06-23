@@ -182,15 +182,9 @@ validate_module() {
 			fi
 		;;
 		*)
-			modname="$cmd"
-			_check_conf "./staging/$modname.conf" || status=1
-			_check_md "./staging/$modname.md" || status=1
-			_check_sh "./staging/$modname.sh" || status=1
-			_check_duplicate_anywhere "$modname" || status=1
-			if [[ "$status" -ne 0 ]]; then
-				echo "One or more validation checks failed for module: $cmd" >&2
-				exit 1
-			fi
+			echo "Unknown command" >&2
+			exit 1
+
 		;;
 	esac
 }
