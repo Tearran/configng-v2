@@ -72,6 +72,91 @@ _check_conf() {
 	for field in "${REQUIRED_CONF_FIELDS[@]}"; do
 		if ! grep -qE "^$field=" "$file"; then
 			failed=1
+			failed_fields+=("$field (missing)")
+			continue
+		fi
+
+		local value
+		value="$(grep -E "^$field=" "$file" | cut -d= -f2- | xargs)"
+
+		case "$field" in
+			helpers)
+				if [ -n "$feature" ] && ! echo "$value" | grep -qw "_about_$feature"; then
+					failed=1
+					failed_fields+=("helpers must have at least _about_$feature)")
+				fi
+				;;
+			options)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("options (blank; should describe supported options or 'none')")
+				fi
+				;;
+			parent|group)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("$field (empty)")
+				elif [[ "$value" =~ [A-Z\ ] ]]; then
+					failed=1
+					failed_fields+=("$field (should be lowercase, no spaces)")
+				fi
+				;;
+			contributor)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("contributor (empty)")
+				elif [[ ! "$value" =~ ^@[a-zA-Z0-9_-]+$ ]]; then
+					failed=1
+					failed_fields+=("contributor (should be valid github username, like @tearran)")
+				fi
+				;;
+			maintainer)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("maintainer (empty)")
+				elif [[ "$value" != "true" && "$value" != "false" ]]; then
+					failed=1
+					failed_fields+=("maintainer (must be 'true' or 'false')")
+				fi
+				;;
+			feature|description|port)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("$field (empty)")
+				fi
+				;;
+		esac
+	done
+
+	if [ "$failed" -eq 0 ]; then
+		echo "OK: $file"
+		return 0
+	else
+		echo "FAIL: $file missing or invalid fields:"
+		for f in "${failed_fields[@]}"; do
+			echo "  - $f"
+		done
+		return 1
+	fi
+}
+
+_check_conf_refatoring() {
+	local REQUIRED_CONF_FIELDS=(feature options helpers description parent group contributor maintainer port)
+	local file="$1"
+	local failed=0
+	local failed_fields=()
+
+	if [ ! -f "$file" ]; then
+		echo "MISSING: $file"
+		return 1
+	fi
+
+	local feature
+	feature="$(grep -E "^feature=" "$file" | cut -d= -f2- | xargs)"
+
+	for field in "${REQUIRED_CONF_FIELDS[@]}"; do
+		if ! grep -qE "^$field=" "$file"; then
+			failed=1
 			failed_fields+=(" $field (missing)")
 			continue
 		fi
