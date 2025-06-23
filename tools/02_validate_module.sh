@@ -83,7 +83,7 @@ _check_conf() {
 			helpers)
 				if [ -n "$feature" ] && ! echo "$value" | grep -qw "_about_$feature"; then
 					failed=1
-					failed_fields+=("helpers must have at least _about_$feature)")
+					failed_fields+=("helpers must have at least (_about_$feature)")
 				fi
 				;;
 			options)
