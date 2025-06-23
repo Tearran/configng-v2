@@ -14,7 +14,7 @@ Check results:
 Checks performed:
 	- <modulename>.md   (must have more than a top-level header)
 	- <modulename>.sh   (must contain Help info in _about_<modulename>() function)
-	- <modulename>.conf (must have required non-comment fields: feature, helpers, description)
+	- <modulename>.conf (must have required non-comment fields.)
 	- Checks for duplicate-named files in src/** and docs/** (outside of ./staging)
 
 Examples:
@@ -143,8 +143,6 @@ _check_duplicate_anywhere() {
 		for ext in .sh .md .conf; do
 			# Find all matches, ignoring ./staging
 			while IFS= read -r file; do
-				# Skip if nothing found or file is in ./staging
-				[[ -z "$file" ]] && continue
 				[[ "$file" == ./staging/* ]] && continue
 				# FAIL if file exists outside staging
 				if [ -f "$file" ]; then
