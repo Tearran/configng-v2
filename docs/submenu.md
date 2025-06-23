@@ -1,33 +1,30 @@
-# Submenu Helper Script
+# submenu
 
-This script provides an interactive menu for Bash functions that support a `help` command.
-
----
-
-## Usage
-
-```sh
+```
 submenu <function_name> [args...]
 ```
 
-- Shows a menu of actions based on `<function_name> help` output (format: `action - Description`).
-- User selects an action; that action is called as `<function_name> <action>`.
+## Options
 
-Menu interface is chosen with the `DIALOG` environment variable (`dialog`, `whiptail`, or default terminal prompt).
+| Option                 | Description                       |
+|------------------------|-----------------------------------|
+| `help`, `-h`, `--help` | Show usage and help message       |
 
----
+## Usage
 
-## Requirements
+```bash
+submenu <function_name>
+submenu --help
+```
 
-- Bash 4.x+
-- Optional: `dialog` or `whiptail` for GUI menus
+## Behavior
 
+- Shows a menu of actions based on `<function_name> help` output (`action - Description` format)
+- User selects an action; runs `<function_name> <action>`
+- Uses `$DIALOG` for menu (`dialog`, `whiptail`, or terminal prompt)
 
----
+## Notes
 
-## Exit Codes
-
-- `0` Success
-- `1` Canceled or error
-
----
+- Requires Bash 4+
+- UI menus need `dialog` or `whiptail`
+- Exits 0 on success, 1 if canceled or error
