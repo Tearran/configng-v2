@@ -9,13 +9,13 @@ usage: $0 <modulename>|all|help
 Check results:
 	OK      - File exists and passes checks
 	MISSING - File is missing
-	WARN    - File exists but is incomplete
+	FAIL    - File exists but is incomplete
 
 Checks performed:
 	- <modulename>.md   (must have more than a top-level header)
 	- <modulename>.sh   (must contain Help info in _about_<modulename>() function)
-	- <modulename>.conf (must have required non-comment fields: feature, helpers, description)
-	- Checks for duplicate-named files in src/** (warns if present)
+	- <modulename>.conf (must have required non-comment fields.)
+	- Checks for duplicate-named files in src/** and docs/** (outside of ./staging)
 
 Examples:
 	$0 ok_box
@@ -31,12 +31,11 @@ _check_md() {
 		return 1
 	fi
 	if ! grep -q "^# " "$file"; then
-		echo "WARN: $file missing top-level header"
+		echo "FAIL: $file missing top-level header"
 		return 1
 	fi
-	# Check for more content than the header (ignore lines with only # ...)
 	if [ "$(grep -c "^# " "$file")" -eq "$(wc -l < "$file")" ]; then
-		echo "WARN: $file has only a top-level header"
+		echo "FAIL: $file has only a top-level header"
 		return 1
 	fi
 	echo "OK: $file"
@@ -49,16 +48,15 @@ _check_sh() {
 		echo "MISSING: $file"
 		return 1
 	fi
-	# Accepts either with or without function, with optional spaces
 	if ! grep -Eq "^(function[[:space:]]+)?_about_${modname}[[:space:]]*\(\)[[:space:]]*\{" "$file"; then
-		echo "WARN: $file missing _about_${modname}()"
+		echo "FAIL: $file missing _about_${modname}()"
 		return 1
 	fi
 	echo "OK: $file"
 }
 
 _check_conf() {
-	local REQUIRED_CONF_FIELDS=(feature helpers description parent group contributor maintainer port)
+	local REQUIRED_CONF_FIELDS=(feature options helpers description parent group contributor maintainer port)
 	local file="$1"
 	local failed=0
 	local failed_fields=()
@@ -68,65 +66,63 @@ _check_conf() {
 		return 1
 	fi
 
-	# Extract 'feature' for helper validation
 	local feature
 	feature="$(grep -E "^feature=" "$file" | cut -d= -f2- | xargs)"
 
 	for field in "${REQUIRED_CONF_FIELDS[@]}"; do
-		# Must be present
 		if ! grep -qE "^$field=" "$file"; then
 			failed=1
-			failed_fields+=(" $field (missing)")
+			failed_fields+=("$field (missing)")
 			continue
 		fi
 
 		local value
 		value="$(grep -E "^$field=" "$file" | cut -d= -f2- | xargs)"
 
-		# Must not be empty or whitespace
-		if [ -z "$value" ]; then
-			if [ "$field" = "helpers" ]; then
-				failed_fields+=(" helpers (no helper listed; must have at least _about_$feature)")
-			else
-				failed_fields+=(" $field (empty)")
-			fi
-			failed=1
-			continue
-		fi
-
 		case "$field" in
 			helpers)
-				# Must contain _about_$feature
 				if [ -n "$feature" ] && ! echo "$value" | grep -qw "_about_$feature"; then
 					failed=1
-					failed_fields+=(" helpers (must include _about_$feature)")
-				fi
-				;;
-			parent|group)
-				# Must be lowercase, no spaces
-				if [[ "$value" =~ [A-Z\ ] ]]; then
-					failed=1
-					failed_fields+=(" $field (should be lowercase, no spaces)")
-				fi
-				;;
-			contributor)
-				# Must be a GitHub @username
-				if [[ ! "$value" =~ ^@[a-zA-Z0-9_-]+$ ]]; then
-					failed=1
-					failed_fields+=(" contributor (should be valid github username, like @tearran)")
-				fi
-				;;
-			maintainer)
-				# Must be true or false
-				if [[ "$value" != "true" && "$value" != "false" ]]; then
-					failed=1
-					failed_fields+=(" maintainer (must be 'true' or 'false')")
+					failed_fields+=("helpers must have at least (_about_$feature)")
 				fi
 				;;
 			options)
-				# Warn (not fail) if blank
 				if [ -z "$value" ]; then
-					echo "WARN: options field is blank; should describe supported options or 'none'"
+					failed=1
+					failed_fields+=("options (blank; should describe supported options or 'none')")
+				fi
+				;;
+			parent|group)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("$field (empty)")
+				elif [[ "$value" =~ [A-Z\ ] ]]; then
+					failed=1
+					failed_fields+=("$field (should be lowercase, no spaces)")
+				fi
+				;;
+			contributor)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("contributor (empty)")
+				elif [[ ! "$value" =~ ^@[a-zA-Z0-9_-]+$ ]]; then
+					failed=1
+					failed_fields+=("contributor (should be valid github username, like @tearran)")
+				fi
+				;;
+			maintainer)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("maintainer (empty)")
+				elif [[ "$value" != "true" && "$value" != "false" ]]; then
+					failed=1
+					failed_fields+=("maintainer (must be 'true' or 'false')")
+				fi
+				;;
+			feature|description|port)
+				if [ -z "$value" ]; then
+					failed=1
+					failed_fields+=("$field (empty)")
 				fi
 				;;
 		esac
@@ -138,25 +134,33 @@ _check_conf() {
 	else
 		echo "FAIL: $file missing or invalid fields:"
 		for f in "${failed_fields[@]}"; do
-			echo "  -$f"
+			echo "  - $f"
 		done
 		return 1
 	fi
 }
 
-_check_dup_src() {
-	file="$1"
-	modname="$(basename "$file")"
-	# Look for same-named files in src/** (excluding ./staging)
-	dups=$(find ./src -type f -name "$modname")
-	if [ -n "$dups" ]; then
-		echo "WARN: $modname also exists in:"
-		echo "$dups"
-		echo "If refactoring or bugfix: remove the old src copy."
-		echo "If not: rename the new module to avoid conflict."
-		return 1
-	fi
-	return 0
+
+# Check for duplicates in src/ and docs/ (excluding ./staging)
+_check_duplicate_anywhere() {
+	local modname="$1"
+	local found=0
+	for dir in ./src ./docs; do
+		for ext in .sh .md .conf; do
+			# Find all matches, ignoring ./staging
+			while IFS= read -r file; do
+				# Skip if nothing found or file is in ./staging
+				[[ -z "$file" ]] && continue
+				[[ "$file" == ./staging/* ]] && continue
+				# FAIL if file exists outside staging
+				if [ -f "$file" ]; then
+					echo "FAIL: Duplicate found in $dir: $file"
+					found=1
+				fi
+			done < <(find "$dir" -type f -name "$modname$ext")
+		done
+	done
+	return $found
 }
 
 validate_module() {
@@ -175,8 +179,7 @@ validate_module() {
 				_check_md "./staging/$modname.md" || failed=1
 				_check_sh "./staging/$modname.sh" || failed=1
 				_check_conf "./staging/$modname.conf" || failed=1
-				_check_dup_src "./staging/$modname.sh" || failed=1
-
+				_check_duplicate_anywhere "$modname" || failed=1
 				echo
 			done
 			if [[ "$failed" -ne 0 ]]; then
@@ -185,15 +188,9 @@ validate_module() {
 			fi
 		;;
 		*)
-			_check_conf "./staging/$cmd.conf" || status=1
-			_check_md "./staging/$cmd.md" || status=1
-			_check_sh "./staging/$cmd.sh" || status=1
-			_check_dup_src "./staging/$cmd.sh" || status=1
+			echo "Unknown command" >&2
+			exit 1
 
-			if [[ "$status" -ne 0 ]]; then
-				echo "One or more validation checks failed for module: $cmd" >&2
-				exit 1
-			fi
 		;;
 	esac
 }
@@ -201,4 +198,3 @@ validate_module() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	validate_module "${1:-all}"
 fi
-
