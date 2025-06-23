@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-# consolidate_module.sh - Consolidates module scripts and emits config arrays for Armbian Config V3
-# Builds ${parent}_helpers[...] and ${parent}_options[...] arrays from .conf files,
-# emitting every key/value, regardless of key order, plus a unique_id for each group/section.
-
 set -euo pipefail
+
 
 SRC_ROOT="./src"
 OUT_FILE="./lib/armbian-config/module_options_arrays.sh"
@@ -97,10 +94,7 @@ emit_section() {
 	mapref["unique_id"]="$unique_id"
 
 	for key in "${!mapref[@]}"; do
-		# Safely quote the value for Bash using printf %q
-		local quoted_val
-		quoted_val=$(printf '%q' "${mapref[$key]}")
-		array_entries["$arr"]+=$'\n'"${arr}[${section},${key}]=$quoted_val"
+		array_entries["$arr"]+=$'\n'"${arr}[${section},${key}]=\"${mapref[$key]}\""
 	done
 }
 

@@ -20,14 +20,14 @@ jobs:
           fi
 
       - name: Staging compatibility check
-        run: bash tools/02_validate_module.sh
+        run: bash tools/10_validate_module.sh
 
       - name: Run all tools and report pass/fail
         run: |
           status=0
           for tool in tools/[0-9][0-9]_*.sh; do
-            # Skip 02_validate_module.sh (already run)
-            if [[ "$(basename "$tool")" == "02_validate_module.sh" ]]; then
+            # Skip 10_validate_module.sh (already run)
+            if [[ "$(basename "$tool")" == "10_validate_module.sh" ]]; then
               continue
             fi
             echo "=== Running: $tool ==="

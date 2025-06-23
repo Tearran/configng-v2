@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 _about_setup_module() {
@@ -6,7 +6,7 @@ _about_setup_module() {
 
 usage: $0 <module_name>
 
-Creates Armbian Config V3 module scaffolding in ./staging/
+Creates Armbian Config V2 module scaffolding in ./staging/
 
 	<module_name>   Name of the new module (required).
 
@@ -50,7 +50,7 @@ _make_module() {
 		skipped=$((skipped+1))
 	else
 		cat > "$conf" <<EOF
-# ${MODULE} - Armbian Config V3 metadata
+# ${MODULE} - Configng V2 metadata
 
 [${MODULE}]
 feature=${MODULE}
@@ -79,14 +79,14 @@ EOF
 		skipped=$((skipped+1))
 	else
 		cat > "$modsh" <<EOF
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-# ${MODULE} - Armbian Config V3 module
+# ${MODULE} - Armbian Config V2 module
 
 ${MODULE}() {
 	# TODO: implement module logic
-	echo "${MODULE} - Armbian Config V3 test"
+	echo "${MODULE} - Armbian Config V2 test"
 	echo "Scaffold test"
 }
 
@@ -96,10 +96,10 @@ _about_${MODULE}() {
 	echo "help - this message"
 }
 
-# ${MODULE} - Armbian Config V3 Test
+# ${MODULE} - Armbian Config V2 Test
 
 if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
-	echo "${MODULE} - Armbian Config V3 test"
+	echo "${MODULE} - Armbian Config V2 test"
 	echo "# TODO: implement module logic"
 	exit 1
 fi

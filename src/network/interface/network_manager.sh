@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # src/modules/network_manager.bash - Minimal Netplan renderer toggle for configng-v2

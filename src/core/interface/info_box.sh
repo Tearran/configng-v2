@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 _about_info_box() {
 	cat <<EOF
