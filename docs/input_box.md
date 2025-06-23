@@ -1,83 +1,32 @@
 # input_box
 
-A flexible Bash module for prompting user input from the command line or TUI (whiptail/dialog), as used in [configng-v2](https://github.com/Tearran/configng-v2).  
-This tool is designed for local, modular use—no exported variables or temp files.
+```
+input_box ["prompt"]
+```
 
----
+## Options
+
+| Option                | Description                                |
+|-----------------------|--------------------------------------------|
+| `help`, `-h`, `--help`| Show usage and help message                |
 
 ## Usage
 
-```sh
-input_box ["prompt"]
+```bash
+input_box "Prompt message"
+echo "Enter value:" | input_box
+input_box <<< "Prompt"
+DIALOG=read input_box "Prompt with shell fallback"
+input_box --help
 ```
-- Prompts the user for a line of input.
-- Supports three backends, selected via the `DIALOG` environment variable:
-  - `whiptail` (default if available)
-  - `dialog`
-  - `read` (plain shell fallback)
-
-### Examples
-
-Prompt with an argument:
-```sh
-input_box "What is your password?"
-```
-
-Prompt with text from stdin:
-```sh
-echo "Enter your name:" | input_box
-```
-or
-```sh
-input_box <<< "Type your username:"
-```
-
-Use the shell fallback:
-```sh
-DIALOG=read input_box "Enter a value:"
-```
-
-Show help:
-```sh
-input_box help
-```
-
----
 
 ## Behavior
 
-- **Prompt order:**  
-  1. If an argument is given, it's used as the prompt.
-  2. If stdin is a pipe, prompt is read from stdin.
-  3. If neither, shows an error and usage.
+- Uses the interface specified by `$DIALOG` (`whiptail`, `dialog`, or `read`).
+- Prompt is taken from the first argument or stdin.
+- Exits 0 on input, non-zero on cancel/error.
 
-- **Backends:**  
-  - `whiptail`/`dialog`:  
-    - Shows a graphical input box (if available), returns result to stdout.
-  - `read`:  
-    - Prints prompt to terminal, reads a line from user.
+## Notes
 
-- **Exit codes:**  
-  - `0` on success (user provided input)
-  - Non-zero if cancelled or error.
-
----
-
-## Implementation Notes
-
-- No environment variable export or temp files.
-- All variables are local to the function.
-- For shell fallback, reads from `/dev/tty` to ensure interactive input.
-
----
-
-## Demo
-
-To try interactively:
-```sh
-DIALOG=whiptail bash tools/input_box.sh
-DIALOG=dialog bash tools/input_box.sh
-DIALOG=read bash tools/input_box.sh "Shell input:"
-```
-
----
+- No exported variables or temp files.
+- Requires `whiptail` or `dialog` for GUI mode, falls back to `read`.
