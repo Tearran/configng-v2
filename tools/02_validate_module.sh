@@ -9,7 +9,7 @@ usage: $0 <modulename>|all|help
 Check results:
 	OK      - File exists and passes checks
 	MISSING - File is missing
-	WARN    - File exists but is incomplete
+	FAIL    - File exists but is incomplete
 
 Checks performed:
 	- <modulename>.md   (must have more than a top-level header)
@@ -31,11 +31,11 @@ _check_md() {
 		return 1
 	fi
 	if ! grep -q "^# " "$file"; then
-		echo "WARN: $file missing top-level header"
+		echo "FAIL: $file missing top-level header"
 		return 1
 	fi
 	if [ "$(grep -c "^# " "$file")" -eq "$(wc -l < "$file")" ]; then
-		echo "WARN: $file has only a top-level header"
+		echo "FAIL: $file has only a top-level header"
 		return 1
 	fi
 	echo "OK: $file"
@@ -49,7 +49,7 @@ _check_sh() {
 		return 1
 	fi
 	if ! grep -Eq "^(function[[:space:]]+)?_about_${modname}[[:space:]]*\(\)[[:space:]]*\{" "$file"; then
-		echo "WARN: $file missing _about_${modname}()"
+		echo "FAIL: $file missing _about_${modname}()"
 		return 1
 	fi
 	echo "OK: $file"
@@ -116,7 +116,7 @@ _check_conf() {
 				;;
 			options)
 				if [ -z "$value" ]; then
-					echo "WARN: options field is blank; should describe supported options or 'none'"
+					echo "FAIL: options field is blank; should describe supported options or 'none'"
 				fi
 				;;
 		esac
@@ -145,7 +145,7 @@ _check_duplicate_anywhere() {
 				# Skip if nothing found or file is in ./staging
 				[[ -z "$file" ]] && continue
 				[[ "$file" == ./staging/* ]] && continue
-				# Only warn if file exists outside staging
+				# FAIL if file exists outside staging
 				if [ -f "$file" ]; then
 					echo "FAIL: Duplicate found in $dir: $file"
 					found=1
