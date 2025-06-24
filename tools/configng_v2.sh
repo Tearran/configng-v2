@@ -43,7 +43,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	case "$cmd" in
 		"--help"|"-h")
 			case "$group" in
-				"main"|"core"|"software"|"system")
+				"main"|"core"|"software"|"system"|"network")
 					"$parent" "$group"
 					debug "$group commands listed"
 				;;
