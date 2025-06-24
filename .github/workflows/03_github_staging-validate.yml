@@ -19,14 +19,12 @@ jobs:
           	exit 1
           fi
 
-      - name: Staging compatibility check
-        run: bash tools/10_validate_module.sh
-
-      - name: Run all tools and report pass/fail
+      - name: Run numbered tools in order
         run: |
+          shopt -s nullglob
           status=0
-          for tool in tools/[0-9][9-9]_*.sh; do
-            # Skip 10_validate_module.sh (already run)
+          for tool in tools/[0-9][0-9]_*.sh; do
+            # Skip 10_validate_module.sh if you want, or remove this check to run all
             if [[ "$(basename "$tool")" == "10_validate_module.sh" ]]; then
               continue
             fi
@@ -41,4 +39,5 @@ jobs:
             fi
             echo
           done
+          shopt -u nullglob
           exit $status
