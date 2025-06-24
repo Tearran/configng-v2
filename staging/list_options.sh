@@ -46,10 +46,6 @@ list_options() {
 			# Example: show core options (define core_options in your arrays file)
 			_parse_list_options module_options
 			;;
-		software)
-			# Example: show software options
-			_parse_list_options software_options
-			;;
 		core)
 			# Example: show core options (define core_options in your arrays file)
 			_parse_list_options core_options
@@ -57,6 +53,14 @@ list_options() {
 		network)
 			# Example: show core options (define core_options in your arrays file)
 			_parse_list_options network_options
+			;;
+		software)
+			# Example: show software options
+			_parse_list_options software_options
+			;;
+		system)
+			# Example: show software options
+			_parse_list_options system_options
 			;;
 		help|--help|-h)
 			# Show available commands/modules
