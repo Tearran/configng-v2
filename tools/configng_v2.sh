@@ -47,7 +47,6 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 					;;
 				*)
 					debug "Unknown group: $group"
-					return 0
 					;;
 			esac
 			;;
