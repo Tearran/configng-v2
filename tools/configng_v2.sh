@@ -11,7 +11,9 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DEBUG="${DEBUG:-1}"
 	DIALOG="${DIALOG:-read}"
 
+	# Clear any existing module_options before declaring as associative array
 	unset module_options
+
 	declare -A core_options
 	declare -A system_options
 	declare -A network_options
@@ -44,10 +46,13 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 				"main"|"core"|"software"|"system")
 					"$parent" "$group"
 					debug "$group commands listed"
-					;;
+				;;
 				*)
+					echo "Usage: $0 [--help|-h] [main|core|software|system]"
+					echo "Available groups: main, core, software, system"
 					debug "Unknown group: $group"
-					;;
+					exit 0
+				;;
 			esac
 			;;
 		*)
