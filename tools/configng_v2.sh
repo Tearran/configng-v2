@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# configng_v2 - Armbian Config V2 Test
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+
+	SCRIPT_DIR="$(dirname "$0")"
+	LIB_DIR="$SCRIPT_DIR/../lib/armbian-config"
+	TOOLS_DIR="$SCRIPT_DIR/../tools"
+	DEBUG=${DEBUG:-1}
+	DIALOG="${DIALOG:-read}"
+
+	unset module_options
+	declare -A core_options
+	declare -A system_options
+	declare -A network_options
+	declare -A software_options
+	declare -A module_options
+
+	source "$LIB_DIR/core.sh" || exit 1
+	debug reset
+	debug "core funtions loaded"
+
+	source "$LIB_DIR/module_options_arrays.sh" || exit 1
+	debug "MataDate loaded"
+
+	_merge_list_options system_options software_options network_options core_options
+	debug "MataDate sorted"
+
+
+	cmd="${1:-main}"
+	debug "Flag option: $cmd"
+	parent="list_options"
+	debug "Command: $parent"
+	group="${2:-main}"
+	debug "Argument: $group"
+
+	case "$cmd" in
+		"--help"|"-h")
+		case "$group" in
+			"main"|"core"|"software"|"system")
+			"$parent" "$group"
+			debug "$group commands listed"
+			;;
+			*)
+			debug "Unknown: $group"
+			return 0
+			;;
+		esac
+		;;
+		*)
+			debug "Unknown: command, $cmd not matched"
+			list_options "$cmd"
+			debug "List $cmd commands"
+		;;
+	esac
+
+fi
+
