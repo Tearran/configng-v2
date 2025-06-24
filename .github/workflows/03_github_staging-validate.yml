@@ -24,10 +24,6 @@ jobs:
           shopt -s nullglob
           status=0
           for tool in tools/[0-9][0-9]_*.sh; do
-            # Skip 10_validate_module.sh if you want, or remove this check to run all
-            if [[ "$(basename "$tool")" == "10_validate_module.sh" ]]; then
-              continue
-            fi
             echo "=== Running: $tool ==="
             bash "$tool"
             result=$?

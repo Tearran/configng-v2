@@ -8,6 +8,7 @@ list_options <command>
 
 | Command    | Description                                |
 |------------|--------------------------------------------|
+| main       | Show help message of user module commands   |
 | core       | List core module options and features       |
 | software   | List software module options and features   |
 | network    | List network module options and features    |

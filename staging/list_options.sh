@@ -42,7 +42,7 @@ _parse_list_options() {
 
 list_options() {
 	case "${1:-}" in
-		""|all)
+		""|main)
 			# Example: show core options (define core_options in your arrays file)
 			_parse_list_options module_options
 			;;
