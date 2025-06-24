@@ -8,7 +8,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	SCRIPT_DIR="$(dirname "$0")"
 	LIB_DIR="$SCRIPT_DIR/../lib/armbian-config"
 	TOOLS_DIR="$SCRIPT_DIR/../tools"
-	DEBUG=${DEBUG:-1}
+	DEBUG="${DEBUG:-1}"
 	DIALOG="${DIALOG:-read}"
 
 	unset module_options
@@ -18,16 +18,18 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	declare -A software_options
 	declare -A module_options
 
+	# Load core functions
 	source "$LIB_DIR/core.sh" || exit 1
 	debug reset
-	debug "core funtions loaded"
+	debug "core functions loaded"
 
+	# Load option arrays
 	source "$LIB_DIR/module_options_arrays.sh" || exit 1
-	debug "MataDate loaded"
+	debug "MetaData loaded"
 
+	# Merge all options for listing
 	_merge_list_options system_options software_options network_options core_options
-	debug "MataDate sorted"
-
+	debug "MetaData sorted"
 
 	cmd="${1:-main}"
 	debug "Flag option: $cmd"
@@ -38,23 +40,22 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	case "$cmd" in
 		"--help"|"-h")
-		case "$group" in
-			"main"|"core"|"software"|"system")
-			"$parent" "$group"
-			debug "$group commands listed"
+			case "$group" in
+				"main"|"core"|"software"|"system")
+					"$parent" "$group"
+					debug "$group commands listed"
+					;;
+				*)
+					debug "Unknown group: $group"
+					return 0
+					;;
+			esac
 			;;
-			*)
-			debug "Unknown: $group"
-			return 0
-			;;
-		esac
-		;;
 		*)
-			debug "Unknown: command, $cmd not matched"
+			debug "Unknown command: $cmd not matched"
 			list_options "$cmd"
 			debug "List $cmd commands"
-		;;
+			;;
 	esac
 
 fi
-
