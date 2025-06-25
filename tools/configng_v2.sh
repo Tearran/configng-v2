@@ -19,12 +19,6 @@ source "$LIB_DIR/network.sh" || exit 1
 debug reset
 debug "OK: sourced core functions"
 
-# Source list_options module explicitly — this defines list_options + list_module_options
-source "$INIT_DIR/list_options.sh" || {
-  echo "Error: could not load list_options from $INIT_DIR"
-  exit 1
-}
-
 # Load metadata arrays
 unset module_options 2>/dev/null || true
 declare -A module_options
@@ -48,12 +42,12 @@ case "$user_cmd" in
 		list_options "$user_opt"
 	;;
 	*)
-		if declare -F "$user_cmd" >/dev/null; then
-			"$user_cmd" "$user_opt" "$user_args"
-		else
-			echo "Error: unknown command '$user_cmd'" >&2
-			list_options help
-			exit 1
-		fi
-    	;;
+	if declare -F "$user_cmd" >/dev/null; then
+		"$user_cmd" "$user_opt" "$user_args"
+	else
+		debug "Error: unknown command '$user_cmd'" >&2
+		list_options help
+		exit 1
+	fi
+	;;
 esac
