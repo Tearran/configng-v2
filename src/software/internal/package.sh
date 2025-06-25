@@ -23,7 +23,8 @@ pkg_install() {
 
 
 pkg_installed() {
-	local status=$(dpkg -s "$1" 2>/dev/null | sed -n "s/Status: //p")
+	local status
+	status=$(dpkg -s "$1" 2>/dev/null | sed -n 's/Status: //p')
 	! [[ -z "$status" || "$status" = *deinstall* || "$status" = *not-installed* ]]
 }
 
