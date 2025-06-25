@@ -1,62 +1,59 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# configng_v2 - Armbian Config V2 Test
+# configng_v2 - Armbian Config V2 Entry Point
 
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+SCRIPT_DIR="$(dirname "$0")"
+LIB_DIR="$SCRIPT_DIR/../lib/armbian-config"
+INIT_DIR="$SCRIPT_DIR/../src/core/initialize"
 
-	# Set script variable keys
-	SCRIPT_DIR="$(dirname "$0")"
-	LIB_DIR="$SCRIPT_DIR/../lib/armbian-config"
-	TOOLS_DIR="$SCRIPT_DIR/../tools"
-	DEBUG="${DEBUG:-}"
-	DIALOG="${DIALOG:-read}"
+DEBUG="${DEBUG:-}"
+DIALOG="${DIALOG:-read}"
 
-	# Load core functions
-	source "$LIB_DIR/core.sh" || exit 1
-	source "$LIB_DIR/software.sh" || exit 1
-	source "$LIB_DIR/network.sh" || exit 1
-	# TODO: migrate a system module
-	# source "$LIB_DIR/system.sh" || exit 1
+# Load core logic
+source "$LIB_DIR/core.sh" || exit 1
+source "$LIB_DIR/software.sh" || exit 1
+source "$LIB_DIR/network.sh" || exit 1
+# source "$LIB_DIR/system.sh" || exit 1
 
-	debug reset
-	debug "OK: sourced core functions"
+debug reset
+debug "OK: sourced core functions"
 
-	# Load and merge option arrays
-	{
-		unset module_options 2>/dev/null || true
-		declare -A module_options
+# Source list_options module explicitly — this defines list_options + list_module_options
+source "$INIT_DIR/list_options.sh" || {
+  echo "Error: could not load list_options from $INIT_DIR"
+  exit 1
+}
 
-		source "$LIB_DIR/module_options_arrays.sh" || exit 1
-		debug "OK: sourced Metadata array"
+# Load metadata arrays
+unset module_options 2>/dev/null || true
+declare -A module_options
 
-		# Group order is important
-		groups=(system software network core main)
-		debug "Ok: metadata groups: ${groups[*]}"
+source "$LIB_DIR/module_options_arrays.sh" || exit 1
+debug "OK: sourced Metadata array"
 
-		# Build argument list for merge
-		option_array_args=()
-		for prefix in "${groups[@]}"; do
-			option_array_args+=("${prefix}_options")
-		done
+# Merge arrays into module_options
+_merge_list_options core_options system_options software_options network_options
 
-		# Merge arrays into module_options (function must use namerefs)
-		_merge_list_options "${option_array_args[@]}"
-		debug "OK: Merged metadata groups: ${option_array_args[*]}"
-	}
+# Parse CLI args
+user_cmd="${1:-list_options}"
+user_opt="${2:-main}"
+user_args="${3:-}"
 
-	# Parse CLI arguments (default to list_options main)
-	# "function" is the first arg, option the second, args the rest
-	user_cmd="${1:-list_options}"
-	user_opt="${2:-main}"
-	user_args="${3:-}"
-
-	# Command wrangler: route to the function if it exists, complain if not
-	if declare -F "$user_cmd" >/dev/null; then
-		"$user_cmd" "$user_opt" "$user_args"
-	else
-		echo "Error: Command or function '$user_cmd' not found." >&2
-		exit 1
-	fi
-
-fi
+case "$user_cmd" in
+	--help|-h)
+		list_options help
+	;;
+	list_options)
+		list_options "$user_opt"
+	;;
+	*)
+		if declare -F "$user_cmd" >/dev/null; then
+			"$user_cmd" "$user_opt" "$user_args"
+		else
+			echo "Error: unknown command '$user_cmd'" >&2
+			list_options help
+			exit 1
+		fi
+    	;;
+esac
