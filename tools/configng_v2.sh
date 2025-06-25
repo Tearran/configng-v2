@@ -5,7 +5,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(dirname "$0")"
 LIB_DIR="$SCRIPT_DIR/../lib/armbian-config"
-INIT_DIR="$SCRIPT_DIR/../src/core/initialize"
+
 
 DEBUG="${DEBUG:-}"
 DIALOG="${DIALOG:-read}"
