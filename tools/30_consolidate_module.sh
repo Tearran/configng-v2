@@ -68,7 +68,8 @@ _consolidate_src() {
 emit_section() {
 	local section="$1"
 	declare -n mapref="$2"
-	local parent group arr group_key id_num unique_id key
+	local parent group arr parent_key id_num unique_id key
+
 	parent="${mapref[parent]:-}"
 	group="${mapref[group]:-}"
 
@@ -86,10 +87,10 @@ emit_section() {
 		arr="${parent}_options"
 	fi
 
-	group_key=$(echo "$group" | tr '[:lower:]' '[:upper:]' | cut -c1-3)
-	group_counts["$group_key"]=$(( ${group_counts["$group_key"]:-0} + 1 ))
-	id_num=$(printf "%03d" "${group_counts["$group_key"]}")
-	unique_id="${group_key}${id_num}"
+	parent_key=$(echo "$parent" | tr '[:lower:]' '[:upper:]' | cut -c1-3)
+	group_counts["$parent_key"]=$(( ${group_counts["$parent_key"]:-0} + 1 ))
+	id_num=$(printf "%03d" "${group_counts["$parent_key"]}")
+	unique_id="${parent_key}${id_num}"
 
 	mapref["unique_id"]="$unique_id"
 
@@ -97,6 +98,7 @@ emit_section() {
 		array_entries["$arr"]+=$'\n'"${arr}[${section},${key}]=\"${mapref[$key]}\""
 	done
 }
+
 
 _process_confs() {
 	local meta section key value
