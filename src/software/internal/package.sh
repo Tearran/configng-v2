@@ -29,7 +29,8 @@ pkg_installed() {
 
 
 pkg_remove() {
-	_pkg_have_stdin && debconf-apt-progress -- apt-get -y autopurge "$@" || apt-get -y autopurge "$@"
+	_pkg_have_stdin && debconf-apt-progress -- apt-get -y remove --purge --auto-remove "$@" \
+		|| apt-get -y remove --purge --auto-remove "$@"
 }
 
 
