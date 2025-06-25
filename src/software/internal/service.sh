@@ -36,7 +36,8 @@ srv_enabled() {
 	systemctl is-enabled "$@";
 }
 
-srv_mask() { systemctl mask "$@";
+srv_mask() {
+	systemctl mask "$@";
 }
 
 
