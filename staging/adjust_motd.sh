@@ -31,7 +31,7 @@ adjust_motd() {
 	}
 
 	# read status
- 	motd_status() {
+	motd_status() {
 		source /etc/default/armbian-motd
 		if [[ $MOTD_DISABLE == *$1* ]]; then
 			echo "OFF"
