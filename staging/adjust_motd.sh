@@ -58,7 +58,7 @@ _about_adjust_motd() {
 	cat <<EOF
 adjust_motd - Adjust Armbian's message of the day (MOTD)
 
-Usage: 
+Usage:
 	adjust_motd [clear|header|sysinfo|tips|commands]
 
 	clear     - Clear the screen on login
