@@ -4,25 +4,17 @@ set -euo pipefail
 # adjust_motd - Armbian Config V2 module
 
 # Show motd description for a given item
-motd_desc() {
+adjust_motd() {
 	case "$1" in
-		clear)
-			echo "Clear screen on login"
+		clear|header|sysinfo|tips|commands)
+			_adjust_motd "$@"
 			;;
-		header)
-			echo "Show header with logo"
-			;;
-		sysinfo)
-			echo "Display system information"
-			;;
-		tips)
-			echo "Show Armbian team tips"
-			;;
-		commands)
-			echo "Show recommended commands"
+		help)
+			_about_adjust_motd
 			;;
 		*)
-			echo "No description"
+			echo "Unknown"
+			_about_adjust_motd
 			;;
 	esac
 }
@@ -37,7 +29,7 @@ motd_status() {
 	fi
 }
 
-adjust_motd() {
+_adjust_motd() {
 	LIST=()
 	for v in $(grep THIS_SCRIPT= /etc/update-motd.d/* | cut -d"=" -f2 | sed 's/"//g'); do
 		LIST+=("$v" "$(motd_desc "$v")" "$(motd_status "$v")")
@@ -86,9 +78,6 @@ EOF
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
-	if [[ "${1:-}" == "--help" || "${1:-}" == "help" ]]; then
-		_about_adjust_motd
-		return 0
-	fi
-
+	toggle="${1:-help}"
+	adjust_motd "$toggle"
 fi
