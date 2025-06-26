@@ -58,17 +58,14 @@ _about_adjust_motd() {
 	cat <<EOF
 adjust_motd - Adjust Armbian's message of the day (MOTD)
 
-Usage:
+Usage: 
 	adjust_motd [clear|header|sysinfo|tips|commands]
 
-Description:
-	This module lets you toggle parts of the welcome screen shown at login.
-	You can enable or disable these MOTD elements:
-	  clear     - Clear the screen on login
-	  header    - Show the header with the Armbian logo
-	  sysinfo   - Display basic system information
-	  tips      - Show Armbian team tips
-	  commands  - Show recommended commands
+	clear     - Clear the screen on login
+	header    - Show the header with the Armbian logo
+	sysinfo   - Display basic system information
+	tips      - Show Armbian team tips
+	commands  - Show recommended commands
 
 Examples:
 	adjust_motd clear         # Toggle "clear screen on login"
@@ -95,4 +92,3 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	fi
 
 fi
-
