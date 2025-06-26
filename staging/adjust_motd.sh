@@ -4,6 +4,8 @@ set -euo pipefail
 # adjust_motd - Armbian Config V2 module
 
 motd_desc() {
+# Show motd description for a given item
+motd_desc() {
 	case "$1" in
 		clear)
 			echo "Clear screen on login"
@@ -18,6 +20,13 @@ motd_desc() {
 			echo "Show Armbian team tips"
 			;;
 		commands)
+			echo "Show recommended commands"
+			;;
+		*)
+			echo "No description"
+			;;
+	esac
+}
 			echo "Show recommended commands"
 			;;
 		*)
@@ -83,7 +92,8 @@ EOF
 
 # adjust_motd - Armbian Config V2 Test
 
+# adjust_motd - Armbian Config V2 Test
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	toggle="${1:-help}"
-	adjust_motd "$toggle"
+	adjust_motd
 fi
