@@ -38,7 +38,7 @@ _show_adjust_motd() {
 }
 
 # Show a preview of the actual MOTD output
-_show_actual_motd() {
+_reload_adjust_motd() {
 	echo "------ MOTD preview ------"
 	for f in /etc/update-motd.d/*; do
 		[ -x "$f" ] && bash "$f"
@@ -91,7 +91,7 @@ adjust_motd() {
 		set)
 			_set_adjust_motd "${2:-}" "${3:-}"
 			;;
-		reload)  _show_actual_motd;;
+		reload)  _reload_adjust_motd;;
 		help|*)  _about_adjust_motd;;
 	esac
 }
