@@ -39,11 +39,9 @@ _show_adjust_motd() {
 
 # Show a preview of the actual MOTD output
 _reload_adjust_motd() {
-	echo "------ MOTD preview ------"
-	for f in /etc/update-motd.d/*; do
-		[ -x "$f" ] && bash "$f"
-	done
-	echo "--------------------------"
+
+	run-parts --lsbsysinit /etc/update-motd.d
+
 }
 
 # Set item ON or OFF
@@ -51,20 +49,35 @@ _set_adjust_motd() {
 	local item="${1:-}"
 	local state="${2:-}"
 	if [[ -z "$item" || -z "$state" ]]; then
-		echo "Usage: adjust_motd set <item> <ON|OFF>"
+		echo "Usage: adjust_motd set <item> <ON|OFF>" >&2
 		return 1
 	fi
+	# Normalize state to uppercase for comparison
 	state="${state^^}"
+
+	# Validate state: must be exactly ON or OFF (case-insensitive)
+	if [[ "$state" != "ON" && "$state" != "OFF" ]]; then
+		echo "Error: State must be ON or OFF (case-insensitive). You entered: '$2'" >&2
+		return 2
+	fi
+
 	source /etc/default/armbian-motd
 	local disables="${MOTD_DISABLE:-}"
-	# Remove all instances (with word boundaries)
-	disables="$(echo "$disables" | sed "s/\b$item\b//g" | tr -s ' ')"
+
+	# Remove exact matches of $item as a word (handles start/end/multiple spaces)
+	disables="$(echo "$disables" | sed -E "s/(^|[[:space:]])$item($|[[:space:]])/ /g" | xargs)"
+
 	if [[ "$state" == "OFF" ]]; then
-		disables="$(echo "$disables $item" | tr -s ' ')"
+		# Only add if not already present
+		if ! grep -qw "$item" <<<"$disables"; then
+			disables="$disables $item"
+			disables="$(echo "$disables" | xargs)"
+		fi
 	fi
-	# Clean up disables (remove extra spaces)
-	disables="$(echo "$disables" | sed 's/ *$//')"
+
+	# Update the config file
 	sed -i "s/^MOTD_DISABLE=.*/MOTD_DISABLE=\"$disables\"/g" /etc/default/armbian-motd
+	echo "Set $item to $state."
 }
 
 _about_adjust_motd() {
