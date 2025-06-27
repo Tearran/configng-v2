@@ -10,6 +10,7 @@
 
 ## Table of Contents
 
+- [Scope](#scope)
 - [Overview](#overview)
 - [Key Features](#key-features)
 - [How it Works: TUI & Backend Logic](#how-it-works-tui--backend-logic)
@@ -18,8 +19,18 @@
 - [Current State](#current-state)
 - [Roadmap](#roadmap)
 - [Contribution Guidelines](#contribution-guidelines)
-- [Scope](#scope)
 - [See Also](#see-also)
+
+
+
+---
+## Scope
+
+- **Image-space Only:**  
+  configng-v2 is for configuring running Armbian systems.  
+  Build-time changes belong in [armbian/build](https://github.com/armbian/build).
+- **Feature Requests & Bugs:**  
+  Please limit requests to runtime features and bugs.
 
 ---
 
@@ -129,18 +140,10 @@ See [`tools/README.md`](tools/README.md) for more details.
 > **Tip for Contributors:**  
 > You’re welcome to fill out or edit the developer docs as you go. Reviewers and maintainers will have the final say to ensure accuracy and clarity. Your best effort is always appreciated—even imperfect docs help move things forward!
 
+For individual workflow, scripts in [tools/](tools/), and [`tools/README.md`](tools/README.md) for contributing workflow.
 For contributing details, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-## Scope
 
-- **Image-space Only:**  
-  configng-v2 is for configuring running Armbian systems.  
-  Build-time changes belong in [armbian/build](https://github.com/armbian/build).
-- **Feature Requests & Bugs:**  
-  Please limit requests to runtime features and bugs.
 
----
-
-For further details, see individual workflow, scripts in [tools/](tools/), and [`tools/README.md`](tools/README.md) for contributing workflow.
