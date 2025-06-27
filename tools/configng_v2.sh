@@ -3,51 +3,71 @@ set -euo pipefail
 
 # configng_v2 - Armbian Config V2 Entry Point
 
-SCRIPT_DIR="$(dirname "$0")"
-LIB_DIR="$SCRIPT_DIR/../lib/armbian-config"
+# Get absolute path to the directory containing this script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Set project root as the parent directory of SCRIPT_DIR
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-DEBUG="${DEBUG:-}"
-DIALOG="${DIALOG:-read}"
+# Set library directory relative to project root
+LIB_DIR="$ROOT_DIR/lib/armbian-config"
 
 # Load core logic
 source "$LIB_DIR/core.sh" || exit 1
+
+# If the staging directory exists, consolidate mini modules and source staged scripts
+if [[ -d "$ROOT_DIR/staging" ]]; then
+	"$ROOT_DIR/tools/30_consolidate_module.sh"
+	for file in "$ROOT_DIR"/staging/*.sh; do
+		# Only source if a matching file exists (avoid globbing if no .sh files)
+		[[ -f "$file" ]] && source "$file"
+
+	done
+fi
+
+trace reset
+trace "OK: sourced core modules"
+
 source "$LIB_DIR/software.sh" || exit 1
+
+trace "OK: sourced software modules"
+
 source "$LIB_DIR/network.sh" || exit 1
-# source "$LIB_DIR/system.sh" || exit 1
+trace "OK: sourced network module"
 
-debug reset
-debug "OK: sourced core functions"
+# TODO: source "$LIB_DIR/system.sh" || exit 1
 
-# Load metadata arrays
+
+trace "Load metadata arrays"
 unset module_options 2>/dev/null || true
 declare -A module_options
 
 source "$LIB_DIR/module_options_arrays.sh" || exit 1
-debug "OK: sourced Metadata array"
+trace "OK: sourced Metadata array"
 
 # Merge arrays into module_options
-_merge_list_options core_options system_options software_options network_options
+_merge_list_options system_options software_options network_options
+
+trace "OK: merged Metadata array"
 
 # Parse CLI args
-user_cmd="${1:-list_options}"
-user_opt="${2:-main}"
+user_cmd="${1:-}"
+user_opt="${2:-}"
 user_args="${3:-}"
 
 case "$user_cmd" in
 	--help|-h)
 		list_options help
-	;;
+		trace "OK: list_options help"
+		;;
 	list_options)
 		list_options "$user_opt"
-	;;
-	*)
-	if declare -F "$user_cmd" >/dev/null; then
-		"$user_cmd" "$user_opt" "$user_args"
-	else
-		debug "Error: unknown command '$user_cmd'" >&2
-		list_options help
-		exit 1
-	fi
-	;;
+		trace "OK: list_options $user_opt"
+		;;
+	core|system|software|network|help)
+		list_options "$user_cmd"
+		trace "OK: list_options $user_cmd"
+		;;
 esac
+
+trace total

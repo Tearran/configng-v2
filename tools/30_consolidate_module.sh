@@ -122,6 +122,27 @@ _process_confs() {
 	done < <(find "$SRC_ROOT" -type f -name '*.conf')
 }
 
+
+
+_process_confs() {
+	while IFS= read -r meta; do
+		[[ -e "$meta" ]] || continue
+		section=""
+		declare -A section_kv=()
+		while IFS='=' read -r key value || [[ -n "$key" ]]; do
+			if [[ "$key" =~ ^\[(.*)\]$ ]]; then
+				emit_section "$section" section_kv
+				section="${BASH_REMATCH[1]}"
+				section_kv=()
+				continue
+			fi
+			[[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
+			section_kv["$key"]="$value"
+		done < "$meta"
+		emit_section "$section" section_kv
+	done < <(find "${SRC_DIRS[@]}" -type f -name '*.conf')
+}
+
 _write_arrays() {
 	mkdir -p "$(dirname "$OUT_FILE")"
 	{
