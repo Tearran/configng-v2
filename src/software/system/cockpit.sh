@@ -20,11 +20,7 @@ _about_cockpit() {
 }
 
 cockpit() {
-	# Check for root privileges
-	if [[ $EUID -ne 0 ]]; then
-		echo "Error: Please run as root (use sudo or log in as root)" >&2
-		return 1
-	fi
+
 
 	case "${1:-}" in
 		install)
@@ -75,21 +71,18 @@ cockpit() {
 	esac
 }
 
+
 # DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	# If running in CI, run the cockpit function with any arguments
-	if [[ -n "${1:-}" ]]; then
-		# CI automation
-		cockpit "$@"
-	else
-		# DEMO submenu integration
-		DEBUG=${DEBUG:-1}
-		source src/core/initialize/debug.sh
-		debug reset
-		DIALOG=${DIALOG:-read}
-		source ./src/core/interface/submenu.sh
-		debug "showing a \$DIALOG based menu"
-		debug "try: DIALOG=whiptail command"
-		submenu cockpit
-	fi
+	# DEMO submenu integration
+	[[ EUID == "0" ]] || { echo "Run as root or with sudo"; exit 1; }
+			# --- Capture and assert help output ---
+	help_output="$(cockpit help)"              # Capture
+	echo "$help_output" | grep -q "Usage: cockpit" || {  # Assert
+		echo "fail: Help output does not contain expected usage string"
+		exit 1
+	}
+	# --- end assertion ---
+
+	echo "$help_output"
 fi
