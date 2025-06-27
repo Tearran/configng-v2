@@ -83,6 +83,6 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 		exit 1
 	}
 	# --- end assertion ---
-	
+
 	echo "$help_output"
 fi
