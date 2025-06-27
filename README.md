@@ -40,7 +40,54 @@ It is the intended successor to [armbian/configng](https://github.com/armbian/co
 - Modules and helpers are being migrated from [armbian/configng](https://github.com/armbian/configng) and refactored for clarity and testability.
 
 ---
+## TUI & Backend Separation in configng-v2
 
+This project uses a clear separation between **TUI helpers** (front-end scripts for user interaction) and **backend logic** (actual config changes and system actions).
+
+### Why?
+
+- Keeps user interfaces clean and simple.
+- Makes backend logic easy to test, update, and extend.
+- Lets you swap or improve UI bits (like using `whiptail` or `dialog`) without touching the core logic.
+
+---
+
+### How It Works
+
+#### 1. TUI Helpers
+
+These scripts handle all user input and output. They use utilities like `whiptail`, `dialog`, or plain shell prompts.
+
+#### 2. Backend Logic
+
+Backend scripts (“modules”) do the actual work: updating configs, toggling features, writing files, etc. T
+
+**Example**:
+- adjust_motd.sh : Functions to enable/disable MOTD items, show previews, etc.
+
+---
+
+## Example Flow
+
+1. **TUI presents options:**  
+   `whiptail` checklist lets the user pick MOTD items.
+2. **TUI parses input:**  
+   Collects which items to enable/disable.
+3. **TUI calls backend:**  
+   For each item, calls `set_motd_item <item> <ON|OFF>`.
+4. **Backend updates system:**  
+   No UI—the backend only changes configs.
+5. **TUI shows result:**  
+   `info_box <<< "All changes applied!"`
+
+
+## See Also
+
+- info_box.sh
+- yes_no_box.sh
+- adjust_motd.sh
+
+---
 ## Roadmap
 
 - **Migrate and Refine:**  
