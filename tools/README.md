@@ -1,37 +1,67 @@
-## Tools Workflow
+# Contribution Guide: configng-v2 Modules
 
-The `tools/` directory contains scripts to help develop, test, and manage mini modules and modules. These scripts are designed to be used both manually and with GitHub Actions.
+This guide covers the **practical workflow** for contributing modules to configng-v2.  
 
-```
-tools/
-├── 10_validate_module.sh        # Checks a mini module for correctness and style
-├── 20_promote_module.sh         # Moves a tested mini module into the next stage or parent module
-├── 30_consolidate_module.sh     # Combines/promotes multiple mini modules into a parent module
-├── configng_v2.sh               # Main entry script for the tools suite
-└── start_here.sh                # Use this to scaffold (create) a new mini module
-```
+---
 
-### Typical Workflow
+## Directory Structure
 
-1. **Create a new mini module:**  
-   Run `tools/start_here.sh your_new_module` to scaffold a starter script, configuration file, and template documentation.
+- `staging/` — Work-in-progress modules (development area).
+- `src/` — Production-ready modules (after promotion).
+- `lib/` — Assembled Bash libraries (for the final framework).
+- `tools/` — Scripts for scaffolding, checking, and automating the workflow.
 
-2. **Validate the mini module:**  
-   Use `tools/10_validate_module.sh` to check the new mini module for errors or style issues.
+---
 
-3. **Promote the module:**  
-   If validation passes, run `tools/20_promote_module.sh` to move the mini module into staging or to its parent module.
+## Module Contribution Workflow
 
-4. **Consolidate modules (as needed):**  
-   Use `tools/30_consolidate_module.sh` to combine or finalize related mini modules into a complete module.
+1. **Scaffold a Module**
+   ```sh
+   ./tools/start_here.sh <modulename>
+   ```
+   - Creates `staging/<modulename>.sh`, `.conf`, and `.md`.
 
-5. **Automated checks:**  
-   GitHub Actions will automatically run these scripts (in order) on pull requests that touch `tools/` or `staging/`.
+2. **Develop**
+   - Write module logic in `.sh` (use **tabs** for indentation).
+   - Fill out `.conf` (flat key=value).
+   - Document in `.md`.
 
-### Notes
+3. **Verify & Test**
+   - Run:
+     ```sh
+     ./tools/10_validate_module.sh
+     ```
+   - Check for formatting and required fields.
+   - Manually test module in `staging/`.
 
-- Scripts are numbered to ensure they run in the right order.
-- All scripts use tab indentation and follow the same Bash coding style.
-- You can run any script manually for local development, or let the CI handle them on PRs.
+4. **Promote (for maintainers)**
+   - Move ready modules from `staging/` to `src/` as defined in `.conf`.
 
-For more details, check the comments in each script or run it with `--help`.
+5. **Consolidate (for maintainers)**
+   - Flatten `src/` modules into `lib/` as needed for releases.
+
+---
+
+## Best Practices
+
+- **Tabs for indentation** in Bash code.
+- **Keep configs flat:** Only key=value pairs in `.conf`.
+- **Each module must be:**
+  - Runnable as a script (CLI/test).
+  - Sourceable by the framework (TUI/automation).
+- **Minimal dependencies:** Document any required module dependencies.
+- **Clear help output:** Each module must support `--help`.
+
+---
+
+## Quick Reference
+
+- Scaffold: `./tools/start_here.sh foo`
+- Verify:   `./tools/10_validate_module.sh`
+- Tabs only for Bash scripts.
+- Keep `.conf` files flat and simple.
+- Submit a pull request after local checks pass.
+
+---
+
+For more details, see the main [README.md](../README.md) or ask in project discussions.

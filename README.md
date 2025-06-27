@@ -6,126 +6,141 @@
   <br>
 </p>
 
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [How it Works: TUI & Backend Logic](#how-it-works-tui--backend-logic)
+- [Example Flow](#example-flow)
+- [Tools & Module Development](#tools--module-development)
+- [Current State](#current-state)
+- [Roadmap](#roadmap)
+- [Contribution Guidelines](#contribution-guidelines)
+- [Scope](#scope)
+- [See Also](#see-also)
+
+---
+
 ## Overview
 
-**configng-v2** is a modular Bash framework for configuring Armbian-based systems.  
-It is the intended successor to [armbian/configng](https://github.com/armbian/configng), designed for maintainability, flexibility, and robust CLI/TUI usage.
+**configng-v2** is a modular Bash framework for configuring Armbian-based systems.
 
-> **Reference:**  
-> The recommended module scaffold is [tools/00_setup_module.sh](tools/00_setup_module.sh).
+This project is the result of everything we’ve learned from earlier Armbian configuration tools—especially **armbian/config** (the original) and **armbian/configng** ("next-gen"). Now, configng-v2 ("next-gen v2") aims to provide a clearer, less confusing workflow for users and developers alike. The focus is on making things transparent and approachable, so development isn’t blocked by hidden steps or confusing structures.
+
+Some sensitive details—like how to handle keys or secrets—are intentionally left out for safety. If you need to manage your own keys, that’s up to you; we don’t document every detail for those cases.
+
+configng-v2 is designed for maintainability, flexibility, and robust CLI (Command-Line Interface) and TUI (Text-based User Interface) usage.
 
 ---
 
 ## Key Features
 
-- **Modular Architecture:**  
-  Each configuration area (network, system, services, etc.) is handled by a standalone module. Modules follow a unified CLI interface and can be invoked independently or by the main dispatcher.
-- **Helper Scripts:**  
-  Reusable logic is factored into helpers (`_helper_*.sh`) to maximize code reuse and maintainability.
+- **Modular Structure:**  
+  Each configuration task (e.g., network, system, or service) is a “mini module”—a focused Bash script. Mini modules are grouped into parent modules, and all follow a unified command-line interface.
+- **Easy Module Creation:**  
+  Use [`tools/start_here.sh`](tools/start_here.sh) to scaffold new mini modules with starter scripts, configs, and docs.
 - **Consistent Option Parsing:**  
-  All modules use the pattern: `modulename.sh [option] [arguments]`, and provide a help message with usage instructions.
-- **Runtime (Image-space) Focus:**  
-  All actions are performed on the running system only.  
-  No code in configng-v2 customizes system images at build time; for that, use [Armbian's build scripts](https://github.com/armbian/build).
+  All modules use:  
+  `modulename.sh [option] [arguments]`  
+  Each provides `--help` output.
+- **Runtime-Only:**  
+  All actions happen on the running system. No build-time image changes (use [armbian/build](https://github.com/armbian/build) for that).
 - **Tab-Indented Bash:**  
-  Code style is consistent and function-first—tabs for indentation, clear function blocks, minimal global logic.
+  All code uses tabs for indentation and clear function-first structure.
+
+---
+
+## How it Works: TUI & Backend Logic
+
+configng-v2 splits the user interface (TUI) from backend logic for clarity and maintainability.
+
+- **TUI scripts** handle user input/output with tools like `whiptail`, `dialog`, or shell prompts.
+- **Backend scripts (modules/mini modules)** do the actual work: updating configs, toggling features, writing files, etc.
+
+This makes it easy to improve the UI or backend separately.
+
+---
+## Example Flow
+
+> **Note:** This is a general overview—actual flow details may change as development continues.
+
+1. **TUI shows options:**  
+   The user selects items using a graphical checklist (e.g., `whiptail`).
+2. **TUI collects input:**  
+   The chosen options are gathered.
+3. **TUI calls backend:**  
+   For each item, the backend script is called (e.g., `set_motd_item <item> <ON|OFF>`).
+4. **Backend updates system:**  
+   Configuration changes are made—no UI at this stage.
+5. **TUI shows result:**  
+   A summary or info box is displayed.
+
+## Tools & Module Development
+
+- The `tools/` directory holds scripts for developing, checking, and managing modules and mini modules.
+- Scripts are numbered (`10_`, `20_`, etc.) to run in a set order, with gaps left so new steps can be added later.
+- Use `tools/start_here.sh` to scaffold a new mini module.
+- All scripts use tab indentation and have a `--help` option.
+
+See [`tools/README.md`](tools/README.md) for more details.
 
 ---
 
 ## Current State
 
-- Core dispatcher and scaffolding are established ([tools/00_setup_module.sh](tools/00_setup_module.sh)).
-- Sample modules (e.g., `module_webmin.sh`) demonstrate the new structure and conventions.
+- Core dispatcher and scaffolding are established.
+- Example modules (like `module_webmin.sh`) show the new structure.
 - CLI and TUI interfaces are under active development.
-- Modules and helpers are being migrated from [armbian/configng](https://github.com/armbian/configng) and refactored for clarity and testability.
-
----
-## TUI & Backend Separation in configng-v2
-
-This project uses a clear separation between **TUI helpers** (front-end scripts for user interaction) and **backend logic** (actual config changes and system actions).
-
-### Why?
-
-- Keeps user interfaces clean and simple.
-- Makes backend logic easy to test, update, and extend.
-- Lets you swap or improve UI bits (like using `whiptail` or `dialog`) without touching the core logic.
+- Modules and helpers are being migrated and refactored from [armbian/configng](https://github.com/armbian/configng).
 
 ---
 
-### How It Works
-
-#### 1. TUI Helpers
-
-These scripts handle all user input and output. They use utilities like `whiptail`, `dialog`, or plain shell prompts.
-
-#### 2. Backend Logic
-
-Backend scripts (“modules”) do the actual work: updating configs, toggling features, writing files, etc. T
-
-**Example**:
-- adjust_motd.sh : Functions to enable/disable MOTD items, show previews, etc.
-
----
-
-## Example Flow
-
-1. **TUI presents options:**  
-   `whiptail` checklist lets the user pick MOTD items.
-2. **TUI parses input:**  
-   Collects which items to enable/disable.
-3. **TUI calls backend:**  
-   For each item, calls `set_motd_item <item> <ON|OFF>`.
-4. **Backend updates system:**  
-   No UI—the backend only changes configs.
-5. **TUI shows result:**  
-   `info_box <<< "All changes applied!"`
-
-
-## See Also
-
-- info_box.sh
-- yes_no_box.sh
-- adjust_motd.sh
-
----
 ## Roadmap
 
 - **Migrate and Refine:**  
-  Gradually migrate legacy modules, update option parsing, and add new features as needed.
+  Continue updating modules and improving option parsing.
 - **Testing:**  
-  Integrate automated and manual tests for all modules and helpers to ensure reliability.
+  Integrate automated/manual tests for reliability.
 - **UI Separation:**  
-  Clean separation of backend logic and CLI/TUI UI to support scripting, automation, and alternative frontends.
+  Maintain clear split between backend logic and CLI/TUI UI.
 - **Documentation:**  
-  Each module provides self-contained help output (see example below), and project documentation is updated as interfaces evolve.
+  Each module provides self-contained help output; project docs are updated as things evolve.
 
 ---
 
 ## Contribution Guidelines
 
 - **Coding Style:**  
-  Bash and sh scripts use tab indentation, not spaces.  
-  Modules and helpers are minimal, function-oriented, and easy to read.
+  Use tab indentation in Bash/sh scripts.  
+  Keep modules and mini modules clear and function-oriented.
 - **Naming:**  
   Modules: `<feature>.sh`  
-  Helpers: `_<helper>_<feature>.sh`
-- **Module Scaffold Reference:**  
-  Use [tools/00_setup_module.sh](tools/00_setup_module.sh) as the template for new modules.
+  Mini modules: descriptive names; grouped by parent module if needed.
+- **Module Scaffold:**  
+  Start new modules with [`tools/start_here.sh`](tools/start_here.sh) to see a template:
+  ```bash
+  tools/start_here.sh foo
+  ```
 - **Help Output:**  
-  Each module must provide accurate, clear help output using the pattern above.
+  Each module must provide clear, accurate help output.
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more information on contributing, workflow, and best practices.
+> **Tip for Contributors:**  
+> You’re welcome to fill out or edit the developer docs as you go. Reviewers and maintainers will have the final say to ensure accuracy and clarity. Your best effort is always appreciated—even imperfect docs help move things forward!
+
+For contributing details, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
 ## Scope
 
 - **Image-space Only:**  
-  configng-v2 is for configuring a running Armbian system.  
-  Build-time changes belong in [armbian/build](https://github.com/armbian/build) or similar tools.
+  configng-v2 is for configuring running Armbian systems.  
+  Build-time changes belong in [armbian/build](https://github.com/armbian/build).
 - **Feature Requests & Bugs:**  
-  Limit requests to runtime (image-space) features and bugs.
+  Please limit requests to runtime features and bugs.
 
 ---
 
-For further details, see individual modules, helpers, and [CONTRIBUTING.md](CONTRIBUTING.md).
+For further details, see individual modules, scripts in [tools/](tools/), and [`tools/README.md`](tools/README.md) for contributing workflow.
