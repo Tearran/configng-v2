@@ -143,4 +143,4 @@ For contributing details, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-For further details, see individual modules, scripts in [tools/](tools/), and [`tools/README.md`](tools/README.md) for contributing workflow.
+For further details, see individual workflow, scripts in [tools/](tools/), and [`tools/README.md`](tools/README.md) for contributing workflow.
