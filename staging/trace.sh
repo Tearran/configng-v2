@@ -48,8 +48,8 @@ EOF
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	trace=${trace:-true}
-
+	TRACE="true"
+	trace reset
 	trace "trace initialized"
 
 	# --- Capture and assert help output ---

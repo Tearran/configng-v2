@@ -36,7 +36,7 @@ source "$LIB_DIR/network.sh" || exit 1
 trace "OK: sourced network module"
 
 # TODO: source "$LIB_DIR/system.sh" || exit 1
-
+# trace "OK: sourced system module
 
 trace "Load metadata arrays"
 unset module_options 2>/dev/null || true
@@ -68,6 +68,12 @@ case "$user_cmd" in
 		list_options "$user_cmd"
 		trace "OK: list_options $user_cmd"
 		;;
+	*)
+		echo "Unknown command: $user_cmd" >&2
+		list_options help
+		trace "WARN: unknown command $user_cmd"
+		exit 1
+	;;
 esac
 
 trace total

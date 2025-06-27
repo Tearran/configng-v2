@@ -74,7 +74,15 @@ cockpit() {
 
 # DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-		# DEMO submenu integration
-	cockpit help
-
+	# DEMO submenu integration
+	[[ EUID == "0" ]] || { echo "Run as root or with sudo"; exit 1; }
+			# --- Capture and assert help output ---
+	help_output="$(cockpit help)"              # Capture
+	echo "$help_output" | grep -q "Usage: cockpit" || {  # Assert
+		echo "fail: Help output does not contain expected usage string"
+		exit 1
+	}
+	# --- end assertion ---
+	
+	echo "$help_output"
 fi
