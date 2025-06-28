@@ -25,6 +25,9 @@ if [[ -d "$ROOT_DIR/staging" ]]; then
 	done
 fi
 
+
+# See Trace for info should these be more verbose?
+#
 trace reset
 trace "OK: sourced core modules"
 
@@ -70,11 +73,12 @@ case "$user_cmd" in
 		;;
 	menu)
 		shift 1
-		ouput=$(submenu "$1")
-		info_box <<< "$ouput"
+		output=$(submenu "${1:-help}")
+		info_box <<< "$output"
 		;;
 	*)
-		echo "nope"
+		trace "Error: unknown command '$user_cmd'"
+		exit 1
 	;;
 esac
 
