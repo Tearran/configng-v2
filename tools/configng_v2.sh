@@ -70,11 +70,13 @@ case "$user_cmd" in
 		;;
 	menu)
 		shift 1
-		submenu "$@"
+		ouput=$(submenu "$1")
+		info_box <<< "$ouput"
 		;;
 	*)
-		"$@"
+		echo "nope"
 	;;
 esac
 
 trace total
+
