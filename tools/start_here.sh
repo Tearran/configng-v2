@@ -21,35 +21,9 @@ Example:
 EOF
 }
 
-_make_module() {
-	local STAGING_DIR="${STAGING_DIR:-./staging}"
-	local MODULE="${1:-}"
-
-	# Validate module name
-	if [[ -z "$MODULE" ]]; then
-		echo "No argument provided"
-		_about_setup_module
-	fi
-	if ! [[ "$MODULE" =~ ^[a-zA-Z0-9_]+$ ]]; then
-		echo "Invalid module name: $MODULE"
-		exit 1
-	fi
-
-	# Ensure ./staging exists
-	if [[ ! -d "$STAGING_DIR" ]]; then
-		mkdir -p "$STAGING_DIR"
-	fi
-
-	local created=0
-	local skipped=0
-
-	# .conf
-	local conf="${STAGING_DIR}/${MODULE}.conf"
-	if [[ -f "$conf" ]]; then
-		echo "Skip: $conf already exists"
-		skipped=$((skipped+1))
-	else
-		cat > "$conf" <<EOF
+_template_conf() {
+	local MODULE="$1"
+	cat <<EOF
 # ${MODULE} - Configng V2 metadata
 
 [${MODULE}]
@@ -68,21 +42,15 @@ require_kernel=5.15+
 port=false
 helpers=
 EOF
-		echo "Created: $conf"
-		created=$((created+1))
-	fi
+}
 
-	# .sh
-	local modsh="${STAGING_DIR}/${MODULE}.sh"
-	if [[ -f "$modsh" ]]; then
-		echo "Skip: $modsh already exists"
-		skipped=$((skipped+1))
-	else
-		cat > "$modsh" <<EOF
+_template_sh() {
+	local MODULE="$1"
+	cat <<EOH
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ${MODULE} - Armbian Config V2 module
+# ./${MODULE}.sh - Armbian Config V2 module
 
 ${MODULE}() {
 	# TODO: implement module logic
@@ -91,12 +59,35 @@ ${MODULE}() {
 }
 
 _about_${MODULE}() {
-	# TODO: implement standard help message
-	echo "use: ${MODULE} - ..."
-	echo "help - this message"
+	cat <<EOF
+Usage: ${MODULE} <command> [options]
+
+Commands:
+	test        - Run a basic test of the ${MODULE} module
+	foo         - Example 'foo' operation (replace with real command)
+	bar         - Example 'bar' operation (replace with real command)
+	help        - Show this help message
+
+Examples:
+	# Run the test operation
+	${MODULE} test
+
+	# Perform the foo operation with an argument
+	${MODULE} foo arg1
+
+	# Show help
+	${MODULE} help
+
+Notes:
+	- Replace 'foo' and 'bar' with real commands for your module.
+	- All commands should accept '--help', '-h', or 'help' for details, if implemented.
+	- Intended for use with the config-v2 menu and scripting.
+	- Keep this help message up to date if commands change.
+
+EOF
 }
 
-# ${MODULE} - Armbian Config V2 Test
+# ./${MODULE}.sh - Armbian Config V2 test entrypoint
 
 if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
 	echo "${MODULE} - Armbian Config V2 test"
@@ -104,18 +95,12 @@ if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
 	exit 1
 fi
 
-EOF
-		echo "Created: $modsh"
-		created=$((created+1))
-	fi
+EOH
+}
 
-	# .md
-	local md="${STAGING_DIR}/${MODULE}.md"
-	if [[ -f "$md" ]]; then
-		echo "Skip: $md already exists"
-		skipped=$((skipped+1))
-	else
-		cat > "$md" <<EOF
+_template_md() {
+	local MODULE="$1"
+	cat <<EOF
 # ${MODULE} - Configng V2 extra documents
 
 \`\`\`
@@ -145,6 +130,60 @@ ${MODULE} <command>
 - Output is simple and command-oriented.
 
 EOF
+}
+
+_make_module() {
+	local STAGING_DIR="${STAGING_DIR:-./staging}"
+	local MODULE="${1:-}"
+
+	# Validate module name
+	if [[ -z "$MODULE" ]]; then
+		echo "No argument provided"
+		_about_setup_module
+		return 1
+	fi
+	if ! [[ "$MODULE" =~ ^[a-zA-Z0-9_]+$ ]]; then
+		echo "Invalid module name: $MODULE"
+		exit 1
+	fi
+
+	# Ensure ./staging exists
+	if [[ ! -d "$STAGING_DIR" ]]; then
+		mkdir -p "$STAGING_DIR"
+	fi
+
+	local created=0
+	local skipped=0
+
+	# .conf
+	local conf="${STAGING_DIR}/${MODULE}.conf"
+	if [[ -f "$conf" ]]; then
+		echo "Skip: $conf already exists"
+		skipped=$((skipped+1))
+	else
+		_template_conf "$MODULE" > "$conf"
+		echo "Created: $conf"
+		created=$((created+1))
+	fi
+
+	# .sh
+	local modsh="${STAGING_DIR}/${MODULE}.sh"
+	if [[ -f "$modsh" ]]; then
+		echo "Skip: $modsh already exists"
+		skipped=$((skipped+1))
+	else
+		_template_sh "$MODULE" > "$modsh"
+		echo "Created: $modsh"
+		created=$((created+1))
+	fi
+
+	# .md
+	local md="${STAGING_DIR}/${MODULE}.md"
+	if [[ -f "$md" ]]; then
+		echo "Skip: $md already exists"
+		skipped=$((skipped+1))
+	else
+		_template_md "$MODULE" > "$md"
 		echo "Created: $md"
 		created=$((created+1))
 	fi
@@ -153,7 +192,6 @@ EOF
 	echo "Created: $created, Skipped: $skipped"
 }
 
-
 setup_module() {
 	local arg="${1:-help}"
 	case "$arg" in
@@ -161,6 +199,7 @@ setup_module() {
 			_about_setup_module
 			;;
 		*)
+
 			_make_module "$arg"
 			;;
 	esac

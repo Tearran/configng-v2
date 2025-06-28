@@ -26,6 +26,32 @@ _about_submenu() {
 	EOF
 }
 
+
+_about_submenu() {
+	cat <<EOF
+Usage: submenu <command>
+
+Commands:
+	<function_name>	- Show the interactive submenu for a module.
+	help        - Show this help message
+
+Examples:
+	# Run the test operation
+	submenu cockpit
+
+	# Show help
+	submenu help
+
+Notes:
+	- Replace 'foo' and 'bar' with real commands for your module.
+	- All commands should accept '--help', '-h', or 'help' for details, if implemented.
+	- Intended for use with the config-v2 menu and scripting.
+	- Keep this help message up to date if commands change.
+
+EOF
+}
+
+
 _submenu() {
 	local function_name="${1:-}"
 	shift || true

@@ -73,10 +73,7 @@ case "$user_cmd" in
 		submenu "$@"
 		;;
 	*)
-		echo "Unknown command: $user_cmd" >&2
-		list_options help
-		trace "WARN: unknown command $user_cmd"
-		exit 1
+		"$@"
 	;;
 esac
 

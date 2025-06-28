@@ -42,7 +42,7 @@ network_manager() {
 }
 
 _about_network_manager() {
-	cat <<-EOF
+	cat <<EOF
 Usage: network_manager [status|switch|set <renderer>|help]
 Commands:
 	NetworkManager	- Set renderer to 'NetworkManager'.
@@ -53,12 +53,8 @@ Examples:
 	sudo bash ./src/modules/network_manager.bash networkd
 	sudo bash ./src/modules/network_manager.bash NetworkManager
 
-	EOF
+EOF
 
-
-	cat <<-EOF
-
-	EOF
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
