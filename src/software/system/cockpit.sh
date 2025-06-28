@@ -75,7 +75,6 @@ cockpit() {
 # DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# DEMO submenu integration
-	[[ EUID == "0" ]] || { echo "Run as root or with sudo"; exit 1; }
 			# --- Capture and assert help output ---
 	help_output="$(cockpit help)"              # Capture
 	echo "$help_output" | grep -q "Usage: cockpit" || {  # Assert

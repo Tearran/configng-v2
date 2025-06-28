@@ -73,7 +73,10 @@ input_box() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DIALOG="${DIALOG:-whiptail}"
 	TITLE="$DIALOG"
-
-	input_box "Enter some text for $DIALOG:"
+	# Source ok_box.sh unless already in it
+	if [[ "$(basename "${BASH_SOURCE[0]}")" != "ok_box.sh" ]]; then
+		source ./src/core/interface/ok_box.sh
+	fi
+	ok_box <<< "$(input_box "Enter something:")"
 
 fi

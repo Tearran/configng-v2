@@ -68,6 +68,10 @@ case "$user_cmd" in
 		list_options "$user_cmd"
 		trace "OK: list_options $user_cmd"
 		;;
+	menu)
+		shift 1
+		submenu "$@"
+		;;
 	*)
 		echo "Unknown command: $user_cmd" >&2
 		list_options help

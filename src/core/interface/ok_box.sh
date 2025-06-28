@@ -13,8 +13,18 @@ EOF
 
 function ok_box() {
 	# Read the input from the pipe
-	input=$(cat)
+	local input="${1:-$(cat)}"
 	TITLE="${TITLE:-}"
+
+
+	if [ "$input" = "help" ] || [ "$input" = "-h" ]; then
+		_about_ok_box
+		return 0
+	fi
+	if [ -z "$input" ]; then
+		echo "Error: Missing message argument" >&2
+		return 2
+	fi
 
 	case "$DIALOG" in
 	whiptail)
@@ -36,13 +46,6 @@ function ok_box() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DIALOG="whiptail"
 	TITLE="${TITLE:-$DIALOG}"
-	ok_box <<< "Showing $DIALOG box"
+	ok_box "$@"
 
-	DIALOG="dialog"
-	TITLE="$DIALOG"
-	echo "Showing a $DIALOG box" | ok_box
-
-	DIALOG="read"
-	TITLE="$DIALOG"
-	ok_box <<< "Showing $DIALOG promt"
 fi
