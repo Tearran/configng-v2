@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# package.sh
+# src path src/software/internal/package.sh
 
 # internal function
 _pkg_have_stdin() { [[ -t 0 ]]; }
@@ -66,21 +66,31 @@ package() {
 
 _about_package() {
 	cat <<EOF
-
 Usage: package <command> [package_name(s)]
 
 Commands:
 	update             - Update APT package lists
-	upgrade            - Upgrade installed packages
-	full-upgrade       - Full system upgrade (may remove obsolete packages)
+	upgrade            - Upgrade all installed packages
+	full-upgrade       - Perform a full system upgrade (may remove obsolete packages)
 	install <pkgs>     - Install one or more packages
 	remove <pkgs>      - Remove and autopurge one or more packages
 	configure <pkgs>   - Configure unpacked but unconfigured packages
 	installed <pkg>    - Test if a package is installed (returns 0 if present)
+	help               - Show this help message
 
 Examples:
+	# Install nano
 	package install nano
+
+	# Check if nano is installed and print a message
 	package installed nano && echo "nano is installed"
+
+Notes:
+	- All commands use apt and require root privileges.
+	- 'installed' returns success (0) if the package is present, nonzero otherwise.
+	- Use quotes for multiple package names: package install "pkg1 pkg2"
+	- This module is intended for use with the config-v2 menu and scripts.
+	- Keep this help message up to date if any commands change.
 
 EOF
 }
