@@ -7,7 +7,7 @@ This guide covers the **practical workflow** for contributing modules to confign
 ## Directory Structure
 
 - `staging/` — Work-in-progress modules (development area).
-- `src/` — Production-ready modules (after promotion).
+- `src/` — Develomnet modules (after promotion).
 - `lib/` — Assembled Bash libraries (for the final framework).
 - `tools/` — Scripts for scaffolding, checking, and automating the workflow.
 
