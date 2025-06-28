@@ -13,7 +13,12 @@ EOF
 
 function ok_box() {
 	# Read the input from the pipe
-	local input="${1:-$(cat)}"
+	local input
+	if [[ -n "${1:-}" ]]; then
+		input="$1"
+	elif [ -p /dev/stdin ]; then
+		input="$(cat)"
+	fi
 	TITLE="${TITLE:-}"
 
 

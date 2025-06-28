@@ -35,8 +35,8 @@ trace "OK: sourced software modules"
 source "$LIB_DIR/network.sh" || exit 1
 trace "OK: sourced network module"
 
-# TODO: source "$LIB_DIR/system.sh" || exit 1
-# trace "OK: sourced system module
+source "$LIB_DIR/system.sh" || exit 1
+trace "OK: sourced system module"
 
 trace "Load metadata arrays"
 unset module_options 2>/dev/null || true
