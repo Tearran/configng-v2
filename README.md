@@ -39,7 +39,7 @@ configng-v2 aims to be:
 1. **Scaffold:**  
    `./tools/start_here.sh mymodule`
 2. **Develop:**  
-   Write logic in `.sh`, fill out `.conf` (flat key=value), and document in `.md`—all in `staging/`
+   Write logic in `.sh`, fill out `.conf` (flat key=value) —all in `staging/`
 3. **Validate:**  
    `./tools/10_validate_module.sh` (checks format, required fields)
 4. **Promote:**  
