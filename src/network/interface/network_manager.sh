@@ -75,5 +75,5 @@ EOF
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	source lib/armbian-config/core.sh
-	submenu network_manager
+	network_manager "$@"
 fi

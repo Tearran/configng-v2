@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ./setup_module.sh - Scaffold generator for Configng V2 modules
+
 _about_setup_module() {
 	cat << EOF
 
-usage: $0 <module_name>
+Usage: $0 <module_name>
 
 Creates Armbian Config V2 module scaffolding in ./staging/
 
@@ -13,7 +15,7 @@ Creates Armbian Config V2 module scaffolding in ./staging/
 Outputs:
 	- <module_name>.conf    Module metadata template
 	- <module_name>.sh      Module Bash template
-	- <module_name>.md      Documentation stub
+	- <module_name>.md      Documentation stub (deprecated)
 
 Example:
 	$0 mymodule
@@ -177,19 +179,23 @@ _make_module() {
 		created=$((created+1))
 	fi
 
-	# .md
-	local md="${STAGING_DIR}/${MODULE}.md"
-	if [[ -f "$md" ]]; then
-		echo "Skip: $md already exists"
-		skipped=$((skipped+1))
-	else
-		_template_md "$MODULE" > "$md"
-		echo "Created: $md"
-		created=$((created+1))
-	fi
+	# .md is deprecated; call deprecating_md manually if needed.
 
 	echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
 	echo "Created: $created, Skipped: $skipped"
+}
+
+deprecating_md() {
+	# Deprecated: use only for legacy compatibility.
+	local STAGING_DIR="${STAGING_DIR:-./staging}"
+	local MODULE="${1:-}"
+	local md="${STAGING_DIR}/${MODULE}.md"
+	if [[ -f "$md" ]]; then
+		echo "Skip: $md already exists"
+	else
+		_template_md "$MODULE" > "$md"
+		echo "Created: $md"
+	fi
 }
 
 setup_module() {
@@ -199,7 +205,6 @@ setup_module() {
 			_about_setup_module
 			;;
 		*)
-
 			_make_module "$arg"
 			;;
 	esac

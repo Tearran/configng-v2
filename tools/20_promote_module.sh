@@ -1,46 +1,43 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Promote modules from ./staging to their src/ destinations
 promote_module() {
-
-	DOC_ROOT="${DOC_ROOT:-./docs}"
-
-	# Move *.sh (not docs_*.sh) with a matching .conf file to src/$parent/$group/
+	# Move .sh (not docs_*.sh) with a matching .conf to src/$parent/$group/
 	for sh_file in ./staging/*.sh; do
-		[ -f "$sh_file" ] || continue
-		base_name=$(basename "$sh_file" .sh)
+		[[ -f "$sh_file" ]] || continue
+		base_name="$(basename "$sh_file" .sh)"
 		conf_file="./staging/${base_name}.conf"
-		if [ -f "$conf_file" ]; then
-			parent=$(grep '^parent=' "$conf_file" | head -n1 | cut -d= -f2- | xargs)
-			group=$(grep '^group=' "$conf_file" | head -n1 | cut -d= -f2- | xargs)
-			if [ -n "$parent" ]; then
-				# If group is set, nest under group subfolder
-				if [ -n "$group" ]; then
-					dest_dir="./src/$parent/$group"
-				else
-					dest_dir="./src/$parent"
-				fi
-				mkdir -p "$dest_dir"
-				echo "Moving $sh_file and $conf_file to $dest_dir/"
-				mv "$sh_file" "$dest_dir/"
-				mv "$conf_file" "$dest_dir/"
-			else
+		if [[ -f "$conf_file" ]]; then
+			parent="$(grep '^parent=' "$conf_file" | head -n1 | cut -d= -f2- | xargs)"
+			group="$(grep '^group=' "$conf_file" | head -n1 | cut -d= -f2- | xargs)"
+
+			# Validate presence of parent
+			if [[ -z "$parent" ]]; then
 				echo "No parent= in $conf_file, skipping $sh_file"
+				continue
 			fi
+
+			# Compose destination directory and create it
+			if [[ -n "$group" ]]; then
+				dest_dir="./src/$parent/$group"
+			else
+				dest_dir="./src/$parent"
+			fi
+			mkdir -p "$dest_dir"
+
+			# Move files
+			echo "Moving $sh_file and $conf_file to $dest_dir/"
+			mv "$sh_file" "$dest_dir/"
+			mv "$conf_file" "$dest_dir/"
+		else
+			echo "WARNING: No .conf file for $sh_file, cannot promote."
 		fi
 	done
 
-	# Move *.md scripts from staging to docs/
-	for docs_file in ./staging/*.md; do
-		[ -f "$docs_file" ] || continue
-		mkdir -p "$DOC_ROOT"
-		echo "Moving $docs_file to $DOC_ROOT/"
-		mv "$docs_file" "$DOC_ROOT/"
-	done
-
-	# Check if ./staging is empty now
-	if [ -d "./staging" ]; then
-		if [ -z "$(ls -A ./staging)" ]; then
+	# Remove ./staging if empty
+	if [[ -d "./staging" ]]; then
+		if [[ -z "$(ls -A ./staging)" ]]; then
 			echo "Removing empty ./staging directory."
 			rmdir ./staging
 		else
