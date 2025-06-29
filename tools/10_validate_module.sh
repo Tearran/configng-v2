@@ -148,7 +148,7 @@ _check_duplicate_anywhere() {
 	return $found
 }
 
-validate_module() {
+Deprecating_validate_module() {
 	local cmd="${1:-all}"
 	local status=0
 	case "$cmd" in
@@ -159,6 +159,43 @@ validate_module() {
 		all|"")
 			local failed=0
 			for shfile in ./staging/*.sh; do
+				modname="$(basename "$shfile" .sh)"
+				echo "==> Checking module: $modname"
+				_check_sh "./staging/$modname.sh" || failed=1
+				_check_conf "./staging/$modname.conf" || failed=1
+				_check_duplicate_anywhere "$modname" || failed=1
+				echo
+			done
+			if [[ "$failed" -ne 0 ]]; then
+				echo "One or more modules failed validation" >&2
+				exit 1
+			fi
+		;;
+		*)
+			echo "Unknown command" >&2
+			exit 1
+
+		;;
+	esac
+}
+
+validate_module() {
+	local cmd="${1:-all}"
+	local status=0
+	case "$cmd" in
+		help|--help|-h)
+			_about_validate_module
+			exit 0
+		;;
+		all|"")
+			shopt -s nullglob   # <--- Add this!
+			local failed=0
+			local shfiles=(./staging/*.sh)
+			if [ ${#shfiles[@]} -eq 0 ]; then
+				echo "No modules found in ./staging/"
+				exit 1
+			fi
+			for shfile in "${shfiles[@]}"; do
 				modname="$(basename "$shfile" .sh)"
 				echo "==> Checking module: $modname"
 				_check_sh "./staging/$modname.sh" || failed=1
