@@ -104,18 +104,19 @@ _about_service() {
 Usage: service <command> [service_name]
 
 Commands:
-	active         - Test if the service is active (running)
-	daemon-reload  - Reload systemd manager configuration
-	disable        - Disable the service (prevent start at boot)
-	enable         - Enable the service (start at boot)
-	enabled        - Test if the service is enabled
-	mask           - Mask the service (prevent all starts)
-	reload         - Reload the service (if supported)
-	restart        - Restart the service
-	start          - Start the service
-	status         - Show status for the service
-	stop           - Stop the service
-	unmask         - Unmask the service
+	active <service>         - Test if the service is active (running)
+	daemon-reload            - Reload systemd manager configuration
+	disable <service>        - Disable the service (prevent start at boot)
+	enable <service>         - Enable the service (start at boot)
+	enabled <service>        - Test if the service is enabled
+	mask <service>           - Mask the service (prevent all starts)
+	reload <service>         - Reload the service (if supported)
+	restart <service>        - Restart the service
+	start <service>          - Start the service
+	status <service>         - Show status for the service
+	stop <service>           - Stop the service
+	unmask <service>         - Unmask the service
+	help                     - Show this help message
 
 Examples:
 	# Start the ssh service
@@ -138,7 +139,6 @@ EOF
 # service - Armbian Config V2 Test
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	echo "service - Armbian Config V2 test"
-	_about_service
-	exit 1
+	source lib/armbian-config/core.sh
+	submenu service
 fi

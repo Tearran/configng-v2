@@ -63,22 +63,33 @@ list_options() {
 
 # Help text for list_options usage
 _about_list_options() {
-# Do not strip formatting with cat <<-EOF
-cat << EOF
-list_options - Show available option groups and their usage
+	cat <<EOF
+Usage: list_options [group]
 
-Usage:
-	list_options [main|core|software|network|system|help]
+commands:
+	main      - All modules (default)
+	core      - Core helpers and interface tools
+	system    - System utilities and login helpers
+	software  - Software install and management modules
+	network   - Network management modules
+	help      - Show this help message
 
 Examples:
+	# List all available modules
+	list_options
+
+	# List core option modules
 	list_options core
-	list_options software
+
+	# Show help
 	list_options help
 
-This command lists available features and options for config-ng modules,
-such as core or software. It displays a summary with example usage for each option group.
-
-Use "help", "--help", or "-h" to display this help message.
+Notes:
+	- Use 'help', '--help', or '-h' to display this message.
+	- Output is generated live from module metadata arrays.
+	- For more details, see each module's _about_ function or README.
+	- Intended for use with config-ng menu and scripting.
+	- Keep this help message up to date if group names or commands change.
 EOF
 }
 

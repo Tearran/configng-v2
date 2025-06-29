@@ -98,7 +98,8 @@ EOF
 # modules/package.sh - Armbian Config V2 test
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	echo "package - Armbian Config V2 test"
-	_about_package
+	source lib/armbian-config/core.sh
+	submenu package
+	#_about_package
 	exit 1
 fi
