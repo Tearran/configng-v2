@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# src/modules/network_manager.bash - Minimal Netplan renderer toggle for configng-v2
+# src/network/interface/network_manager.sh
 
 network_manager() {
 	NETPLAN_FILE=$(find /etc/netplan -name '*.yaml' | head -n 1)
@@ -53,13 +53,13 @@ Commands:
 
 Examples:
 	# Set the renderer to 'networkd'
-	sudo bash ./src/modules/network_manager.bash networkd
+	network_manager networkd
 
 	# Set the renderer to 'NetworkManager'
-	sudo bash ./src/modules/network_manager.bash NetworkManager
+	network_manager NetworkManager
 
 	# Show current renderer status
-	sudo bash ./src/modules/network_manager.bash status
+	network_manager status
 
 Notes:
 	- Only 'NetworkManager' and 'networkd' are supported renderers for this module.
@@ -73,5 +73,7 @@ EOF
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	network_manager "$@"
+
+	source lib/armbian-config/core.sh
+	submenu network_manager
 fi

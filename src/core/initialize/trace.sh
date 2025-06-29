@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# trace - Armbian Config V3 module
+# src/core/initialize/trace.sh
 
 trace() {
 	local cmd="${1:-}" msg="${2:-}"
@@ -35,15 +35,31 @@ trace() {
 
 _about_trace() {
 	cat <<EOF
+Usage: trace <option> | <"message string">
 
-Usage: trace <option> || <"message string">
 Options:
 	help               Show this help message
-	"message string"   Show trace message (trace non-zero)
-	reset              (Re)set starting point
-	total              Show total time and reset
+	"message string"   Show trace message (if TRACE is set)
+	reset              (Re)set starting point for timing
+	total              Show total time since reset, then reset
 
-	When providing a "message string", elapsed time since last trace call is shown if trace is set.
+Examples:
+	# Start a new timing session
+	trace reset
+
+	# Print elapsed time with a message
+	trace "Step 1 complete"
+
+	# Show total elapsed time and reset
+	trace total
+
+Notes:
+	- When TRACE is set (e.g., TRACE="true"), trace outputs timing info.
+	- Elapsed time is shown since last trace call.
+	- Intended for use in config-ng modules and scripting.
+	- Keep this help message in sync with available options.
+
+For more info, see this file or related README in ./lib/.
 EOF
 }
 
@@ -53,8 +69,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trace "trace initialized"
 
 	# --- Capture and assert help output ---
-	help_output="$(trace help)"              # Capture
-	echo "$help_output" | grep -q "Usage: trace" || {  # Assert
+	help_output="$(trace help)"
+	echo "$help_output" | grep -q "Usage: trace" || {
 		echo "fail: Help output does not contain expected usage string"
 		trace "test complete"
 		exit 1

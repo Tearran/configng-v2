@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# src path src/software/internal/package.sh
+# src/software/internal/package.sh
 
 # internal function
 _pkg_have_stdin() { [[ -t 0 ]]; }
@@ -98,7 +98,8 @@ EOF
 # modules/package.sh - Armbian Config V2 test
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	echo "package - Armbian Config V2 test"
-	_about_package
-	exit 1
+
+	source lib/armbian-config/core.sh
+	submenu package
+
 fi

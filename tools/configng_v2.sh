@@ -15,8 +15,16 @@ LIB_DIR="$ROOT_DIR/lib/armbian-config"
 # Load core logic
 source "$LIB_DIR/core.sh" || exit 1
 
+# See Trace for info should these be more verbose?
+#
+trace reset
+trace "OK: sourced core modules"
+
+### START source staging ###
 # If the staging directory exists, consolidate mini modules and source staged scripts
 if [[ -d "$ROOT_DIR/staging" ]]; then
+	TRACE=true
+	trace "OK: Staging"
 	"$ROOT_DIR/tools/30_consolidate_module.sh"
 	for file in "$ROOT_DIR"/staging/*.sh; do
 		# Only source if a matching file exists (avoid globbing if no .sh files)
@@ -25,11 +33,9 @@ if [[ -d "$ROOT_DIR/staging" ]]; then
 	done
 fi
 
+### END source staging/ ###
 
-# See Trace for info should these be more verbose?
-#
-trace reset
-trace "OK: sourced core modules"
+
 
 source "$LIB_DIR/software.sh" || exit 1
 
@@ -41,7 +47,6 @@ trace "OK: sourced network module"
 source "$LIB_DIR/system.sh" || exit 1
 trace "OK: sourced system module"
 
-trace "Load metadata arrays"
 unset module_options 2>/dev/null || true
 declare -A module_options
 
@@ -59,27 +64,23 @@ user_opt="${2:-}"
 user_args="${3:-}"
 
 case "$user_cmd" in
-	--help|-h)
-		list_options help
-		trace "OK: list_options help"
+	"--help"|"-h")
+		if [[ -n "$user_opt" ]]; then
+			list_options ${user_opt:-main}
+			trace "OK: list_options help"
+		else
+			list_options help
+		fi
+
 		;;
-	list_options)
-		list_options "$user_opt"
-		trace "OK: list_options $user_opt"
-		;;
-	core|system|software|network|help)
-		list_options "$user_cmd"
-		trace "OK: list_options $user_cmd"
-		;;
-	menu)
-		shift 1
-		output=$(submenu "${1:-help}")
-		info_box <<< "$output"
+	"--menu"|"-m"|"")
+		DIALOG="${DIALOG:-whiptail}"
+		info_box <<< "$(submenu "${2:-list_options}")"
+
 		;;
 	*)
-		trace "Error: unknown command '$user_cmd'"
-		exit 1
-	;;
+		"$@" || exit 1
+		;;
 esac
 
 trace total

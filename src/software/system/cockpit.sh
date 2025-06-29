@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# cockpit - mini module
-# Relative path: src/software/system/cockpit.sh
+
+# src/software/system/cockpit.sh
 
 _about_cockpit() {
 	cat <<EOF
@@ -92,7 +92,7 @@ cockpit() {
 # DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# DEMO submenu integration
-			# --- Capture and assert help output ---
+	# --- Capture and assert help output ---
 	help_output="$(cockpit help)"              # Capture
 	echo "$help_output" | grep -q "Usage: cockpit" || {  # Assert
 		echo "fail: Help output does not contain expected usage string"
