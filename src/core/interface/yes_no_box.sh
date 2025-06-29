@@ -59,13 +59,5 @@ yes_no_box() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DIALOG="whiptail"
 	TITLE="$DIALOG"
-	yes_no_box <<< "Showing $DIALOG box"
-
-	DIALOG="dialog"
-	TITLE="$DIALOG"
-	yes_no_box "Showing a $DIALOG box"
-
-	DIALOG="read"
-	TITLE="$DIALOG"
-	yes_no_box <<< "Showing $DIALOG prompt"
+	yes_no_box "$@"
 fi

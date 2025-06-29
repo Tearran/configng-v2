@@ -59,13 +59,7 @@ info_box() {
 
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	DEBUG=${DEBUG:-true}
-	source ./src/initialize/debug.sh
-	debug "debug initialized"
+
 	info_box "$@"
-	# ttest debug
-	debug "$help_output"
-	debug "test complete"
-	debug total
 
 fi

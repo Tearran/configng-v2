@@ -42,21 +42,34 @@ network_manager() {
 }
 
 _about_network_manager() {
-	cat <<-EOF
-Usage: network_manager [status|switch|set <renderer>|help]
-
-Manage and inspect the current Netplan network renderer.
+	cat <<EOF
+Usage: network_manager <command>
 
 Commands:
-	NetworkManager	Set renderer to 'NetworkManager'.
-	networkd	Set renderer to 'networkd'.
-	help	        Show this help message.
+	NetworkManager    - Set Netplan renderer to 'NetworkManager'
+	networkd          - Set Netplan renderer to 'networkd'
+	status            - Show current Netplan YAML and renderer
+	help              - Show this help message
 
 Examples:
+	# Set the renderer to 'networkd'
 	sudo bash ./src/modules/network_manager.bash networkd
+
+	# Set the renderer to 'NetworkManager'
 	sudo bash ./src/modules/network_manager.bash NetworkManager
 
-	EOF
+	# Show current renderer status
+	sudo bash ./src/modules/network_manager.bash status
+
+Notes:
+	- Only 'NetworkManager' and 'networkd' are supported renderers for this module.
+	- Requires root privileges to modify /etc/netplan/*.yaml.
+	- The renderer is changed by editing the first .yaml file found in /etc/netplan.
+	- The Netplan CLI (netplan) will be used to apply changes if available.
+	- If Netplan CLI is not found, you may need to apply changes manually.
+	- Keep this help message up to date if commands change.
+
+EOF
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

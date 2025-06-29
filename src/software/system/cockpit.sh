@@ -5,18 +5,35 @@ set -euo pipefail
 # Relative path: src/software/system/cockpit.sh
 
 _about_cockpit() {
-	cat <<-EOF
-	Usage: cockpit <command>
-	Commands:
-		install    - Install Cockpit
-		remove     - Remove Cockpit
-		start      - Start Cockpit (socket + service)
-		stop       - Stop Cockpit (socket + service)
-		status     - Show Cockpit install/running status
-		enable     - Enable Cockpit at boot
-		disable    - Disable Cockpit at boot
-		help       - Show this help message
-	EOF
+	cat <<EOF
+Usage: cockpit <command> [options]
+
+Commands:
+	install    - Install Cockpit
+	remove     - Remove Cockpit
+	start      - Start Cockpit (socket + service)
+	stop       - Stop Cockpit (socket + service)
+	status     - Show Cockpit install/running status
+	enable     - Enable Cockpit at boot
+	disable    - Disable Cockpit at boot
+	help       - Show this help message
+Examples:
+	# Check cockpits operation status
+	cockpit status
+
+	# Use the submenu to display a tui
+	submenu cockpit
+
+	# Show help
+	cockpit help
+
+Notes:
+
+	- All commands should accept '--help', '-h', or 'help' for details, if implemented.
+	- Intended for use with the config-v2 menu and scripting.
+	- Keep this help message up to date if commands change.
+
+EOF
 }
 
 cockpit() {
@@ -75,7 +92,6 @@ cockpit() {
 # DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# DEMO submenu integration
-	[[ EUID == "0" ]] || { echo "Run as root or with sudo"; exit 1; }
 			# --- Capture and assert help output ---
 	help_output="$(cockpit help)"              # Capture
 	echo "$help_output" | grep -q "Usage: cockpit" || {  # Assert

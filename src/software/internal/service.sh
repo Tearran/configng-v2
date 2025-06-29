@@ -3,7 +3,7 @@ set -euo pipefail
 
 # service - Armbian Config V2 module
 
-# service.sh
+# src path: src/software/internal/service.sh
 
 _srv_system_running() {
 	[[ $(systemctl is-system-running) =~ ^(running|degraded)$ ]];
@@ -100,31 +100,39 @@ service() {
 }
 
 _about_service() {
-	# Standard help message (run `service help`)
 	cat <<EOF
-
 Usage: service <command> [service_name]
 
 Commands:
 	active         - Test if the service is active (running)
 	daemon-reload  - Reload systemd manager configuration
-	disable        - Disable service (prevent start at boot)
-	enable         - Enable service (start at boot)
+	disable        - Disable the service (prevent start at boot)
+	enable         - Enable the service (start at boot)
 	enabled        - Test if the service is enabled
-	mask           - Mask service (prevent all starts)
-	reload         - Reload service (if supported)
-	restart        - Restart service
-	start          - Start service
-	status         - Show status for service
-	stop           - Stop service
-	unmask         - Unmask service
+	mask           - Mask the service (prevent all starts)
+	reload         - Reload the service (if supported)
+	restart        - Restart the service
+	start          - Start the service
+	status         - Show status for the service
+	stop           - Stop the service
+	unmask         - Unmask the service
 
 Examples:
+	# Start the ssh service
 	service start ssh
+
+	# Check if ssh is enabled and print a message
 	service enabled ssh && echo "ssh enabled"
 
-EOF
+Notes:
+	- All commands should be run as root or with appropriate permissions.
+	- 'active', 'enabled', and similar commands return 0 for true, nonzero for false.
+	- Commands that alter services (start, stop, enable, etc.) will not execute inside containers if systemd is not running.
+	- This module is intended for use with the config-v2 menu and scripts.
+	- See systemctl(1) for additional options and details.
+	- Keep this help message up to date if commands change.
 
+EOF
 }
 
 # service - Armbian Config V2 Test
