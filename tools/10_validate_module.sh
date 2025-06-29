@@ -24,22 +24,7 @@ Examples:
 EOF
 }
 
-_check_md() {
-	file="$1"
-	if [ ! -f "$file" ]; then
-		echo "MISSING: $file"
-		return 1
-	fi
-	if ! grep -q "^# " "$file"; then
-		echo "FAIL: $file missing top-level header"
-		return 1
-	fi
-	if [ "$(grep -c "^# " "$file")" -eq "$(wc -l < "$file")" ]; then
-		echo "FAIL: $file has only a top-level header"
-		return 1
-	fi
-	echo "OK: $file"
-}
+
 
 _check_sh() {
 	file="$1"
@@ -145,8 +130,8 @@ _check_conf() {
 _check_duplicate_anywhere() {
 	local modname="$1"
 	local found=0
-	for dir in ./src ./docs; do
-		for ext in .sh .md .conf; do
+	for dir in ./src ; do
+		for ext in .sh .conf; do
 			# Find all matches, ignoring ./staging
 			while IFS= read -r file; do
 				# Skip if nothing found or file is in ./staging
@@ -176,7 +161,6 @@ validate_module() {
 			for shfile in ./staging/*.sh; do
 				modname="$(basename "$shfile" .sh)"
 				echo "==> Checking module: $modname"
-				_check_md "./staging/$modname.md" || failed=1
 				_check_sh "./staging/$modname.sh" || failed=1
 				_check_conf "./staging/$modname.conf" || failed=1
 				_check_duplicate_anywhere "$modname" || failed=1

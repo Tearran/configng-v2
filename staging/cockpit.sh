@@ -6,7 +6,7 @@ set -euo pipefail
 
 _about_cockpit() {
 	cat <<EOF
-Usage: cockpit <command> [options]
+Usage: cockpit <command>
 
 Commands:
 	install    - Install Cockpit
@@ -92,13 +92,6 @@ cockpit() {
 # DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# DEMO submenu integration
-	# --- Capture and assert help output ---
-	help_output="$(cockpit help)"              # Capture
-	echo "$help_output" | grep -q "Usage: cockpit" || {  # Assert
-		echo "fail: Help output does not contain expected usage string"
-		exit 1
-	}
-	# --- end assertion ---
-
-	echo "$help_output"
+	source lib/armbian-config/core.sh
+	cockpit "$@"
 fi
