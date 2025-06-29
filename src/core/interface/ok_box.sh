@@ -13,12 +13,7 @@ EOF
 
 function ok_box() {
 	# Read the input from the pipe
-	local input
-	if [[ -n "${1:-}" ]]; then
-		input="$1"
-	elif [ -p /dev/stdin ]; then
-		input="$(cat)"
-	fi
+	local input="${1:-$(cat)}"
 	TITLE="${TITLE:-}"
 
 
@@ -51,6 +46,6 @@ function ok_box() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DIALOG="whiptail"
 	TITLE="${TITLE:-$DIALOG}"
-	ok_box "$@"
+	echo "$@" | ok_box
 
 fi
