@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# src/core/initialize/list_options.sh
+
 # Merge multiple associative arrays into global module_options
 _merge_list_options() {
 	for array_name in "$@"; do

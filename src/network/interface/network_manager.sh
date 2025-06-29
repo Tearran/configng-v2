@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# src/modules/network_manager.bash - Minimal Netplan renderer toggle for configng-v2
+# src/network/interface/network_manager.sh
 
 network_manager() {
 	NETPLAN_FILE=$(find /etc/netplan -name '*.yaml' | head -n 1)

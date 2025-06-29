@@ -75,7 +75,8 @@ case "$user_cmd" in
 		;;
 	"--menu"|"-m"|"")
 		DIALOG="${DIALOG:-whiptail}"
-		info_box <<< $( submenu "${2:-list_options}" )
+		info_box <<< "$(submenu "${2:-list_options}")"
+
 		;;
 	*)
 		"$@" || exit 1

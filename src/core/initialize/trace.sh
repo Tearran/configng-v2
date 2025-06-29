@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# trace - Armbian Config V3 module
-# Provides lightweight timing and trace messages for config-ng modules.
+# src/core/initialize/trace.sh
 
 trace() {
 	local cmd="${1:-}" msg="${2:-}"

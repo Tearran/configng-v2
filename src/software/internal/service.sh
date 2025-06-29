@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# service - Armbian Config V2 module
-
-# src path: src/software/internal/service.sh
+# src/software/internal/service.sh
 
 _srv_system_running() {
 	[[ $(systemctl is-system-running) =~ ^(running|degraded)$ ]];
@@ -139,6 +137,8 @@ EOF
 # service - Armbian Config V2 Test
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+
 	source lib/armbian-config/core.sh
 	submenu service
+
 fi
