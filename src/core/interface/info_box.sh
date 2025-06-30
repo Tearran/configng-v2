@@ -58,8 +58,13 @@ info_box() {
 }
 
 
+
+# ======= BEGIN: unit test =======
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	info_box "$@"
 
 fi
+
+# ======= END: unit test =======

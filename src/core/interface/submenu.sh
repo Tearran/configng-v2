@@ -2,7 +2,6 @@
 set -euo pipefail
 
 # submenu - Menu dispatcher/helper for config-v3 modules
-
 submenu() {
 	local cmd="${1:-help}"
 	shift || true
@@ -134,6 +133,8 @@ _submenu() {
 	"$function_name" "$choice"
 }
 
+# ======= BEGIN: unit test =======
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DEBUG=${DEBUG:-1}
 
@@ -141,3 +142,4 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	submenu "$@"
 fi
 
+# ======= END: unit test =======

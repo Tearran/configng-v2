@@ -88,10 +88,12 @@ cockpit() {
 	esac
 }
 
+# ======= BEGIN: unit test =======
 
-# DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# DEMO submenu integration
 	source lib/armbian-config/core.sh
 	cockpit "$@"
 fi
+
+# ======= END: unit test =======

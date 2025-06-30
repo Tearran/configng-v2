@@ -95,7 +95,7 @@ Notes:
 EOF
 }
 
-# modules/package.sh - Armbian Config V2 test
+# ======= BEGIN: unit test =======
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
@@ -103,3 +103,5 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	submenu package
 
 fi
+
+# ======= END: unit test =======

@@ -43,9 +43,13 @@ function ok_box() {
 	esac
 }
 
+# ======= BEGIN: unit test =======
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DIALOG="whiptail"
 	TITLE="${TITLE:-$DIALOG}"
 	echo "$@" | ok_box
 
 fi
+
+# ======= END: unit test =======

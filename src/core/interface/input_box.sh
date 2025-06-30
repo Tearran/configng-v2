@@ -80,3 +80,13 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	ok_box <<< "$(input_box "Enter something:")"
 
 fi
+# ======= BEGIN: unit test =======
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	DIALOG="whiptail"
+	TITLE="${TITLE:-$DIALOG}"
+	echo "$@" | ok_box
+
+fi
+
+# ======= END: unit test =======
