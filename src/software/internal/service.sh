@@ -134,7 +134,7 @@ Notes:
 EOF
 }
 
-# service - Armbian Config V2 Test
+# ======= BEGIN: unit test =======
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
@@ -142,3 +142,5 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	submenu service
 
 fi
+
+# ======= END: unit test =======

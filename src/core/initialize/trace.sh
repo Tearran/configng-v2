@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# src/core/initialize/trace.sh
 
 trace() {
 	local cmd="${1:-}" msg="${2:-}"
@@ -63,6 +62,12 @@ For more info, see this file or related README in ./lib/.
 EOF
 }
 
+
+
+
+# ======= BEGIN: unit test =======
+# Main execution block, runs if script is executed directly
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	TRACE="true"
 	trace reset
@@ -81,3 +86,5 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trace "test complete"
 	trace total
 fi
+
+# ======= END: unit test =======

@@ -127,6 +127,12 @@ adjust_motd() {
 	esac
 }
 
+# ======= BEGIN: unit test =======
+# demo tesing or unit
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+
 	adjust_motd "$@"
 fi
+
+# ======= END: unit test =======

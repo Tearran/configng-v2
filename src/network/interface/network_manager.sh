@@ -72,8 +72,17 @@ Notes:
 EOF
 }
 
+# ======= BEGIN: unit test =======
+
+test(){
+	network_manager "${@:-help}"
+}
+
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
-	source lib/armbian-config/core.sh
-	network_manager "$@"
+	test "${@:-}"
+
 fi
+
+# ======= END: unit test =======

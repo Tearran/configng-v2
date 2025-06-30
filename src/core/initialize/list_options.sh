@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# src/core/initialize/list_options.sh
-
 # Merge multiple associative arrays into global module_options
 _merge_list_options() {
 	for array_name in "$@"; do
@@ -95,6 +93,11 @@ Notes:
 EOF
 }
 
+
+
+
+# ======= BEGIN: unit test =======
+
 # Main execution block, runs if script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	SCRIPT_DIR="$(dirname "$0")"
@@ -117,3 +120,5 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# Call list_options with CLI argument or default to "main"
 	list_options "$@"
 fi
+
+# ======= END: unit test =======
