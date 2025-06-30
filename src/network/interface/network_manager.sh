@@ -74,9 +74,14 @@ EOF
 
 # ======= BEGIN: unit test =======
 
+test(){
+	network_manager "${@:-help}"
+}
+
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
-	info_box "$@"
+	test "${@:-}"
 
 fi
 
