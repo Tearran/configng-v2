@@ -75,8 +75,28 @@ EOF
 # ======= BEGIN: unit test =======
 
 test(){
-	network_manager "${@:-help}"
+	source lib/armbian-config/module_options_arrays.sh
+	source lib/armbian-config/core.sh
+ 	source lib/armbian-config/network.sh
+
+	case "$1" in
+		help)
+			_about_network_manager
+			;;
+		assert|test)
+			help_output="$(_about_network_manager)"              # Capture
+			echo "$help_output" | grep -q "Usage: network_manager" || {  # Assert
+			echo "Help output does not contain expected usage string"
+			exit 1
+			}
+
+			;;
+		*)
+			submenu network_manager
+			;;
+	esac
 }
+
 
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

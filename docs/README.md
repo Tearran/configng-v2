@@ -8,6 +8,7 @@
 - [network_manager](./network_manager.md) — Minimal Netplan renderer switcher for configng-v2. Set or check the current Netplan renderer (NetworkManager or networkd) for all interfaces.
 - [ok_box](./ok_box.md) — Displays a message to the user using the configured dialog tool.
 - [package](./package.md) — Helpers for bulk packages operations (install, remove, upgrade, etc.)
+- [samba](./samba.md) — Samba setup and service settings.
 - [service](./service.md) — Systemd service management helpers (start stop enable etc.)
 - [submenu](./submenu.md) — Displays an interactive submenu for module functions based on their help output.
 - [trace](./trace.md) — Lightweight timing and trace message for Armbian Config V3 modules.
