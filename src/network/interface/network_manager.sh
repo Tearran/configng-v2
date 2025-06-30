@@ -77,7 +77,7 @@ EOF
 test(){
 	source lib/armbian-config/module_options_arrays.sh
 	source lib/armbian-config/core.sh
- 	source lib/armbian-config/network.sh
+	source lib/armbian-config/network.sh
 
 	case "$1" in
 		help)
