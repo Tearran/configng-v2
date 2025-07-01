@@ -17,16 +17,6 @@ submenu() {
 }
 
 _about_submenu() {
-	cat <<-EOF
-	Usage: submenu <command-or-module> [args...]
-	Commands:
-		help	- Show this help.
-	<function_name>	- Show the interactive submenu for a module.
-	EOF
-}
-
-
-_about_submenu() {
 	cat <<EOF
 Usage: submenu <command>
 
@@ -61,7 +51,8 @@ _submenu() {
 	fi
 
 	local help_message
-	help_message=$("$function_name" help 2>/dev/null || true)
+	help_message=$("$function_name" help "$parent_key" 2>/dev/null || true)
+	#help_message=$("$function_name" help 2>/dev/null || true)
 	if [[ -z "$help_message" ]]; then
 		echo "No help message from: $function_name"
 		return 1

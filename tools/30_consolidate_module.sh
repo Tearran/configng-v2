@@ -151,32 +151,8 @@ emit_section() {
 	done
 }
 
-
 _process_confs() {
-	local meta section key value
-	while IFS= read -r meta; do
-		[[ -e "$meta" ]] || continue
-		section=""
-		declare -A section_kv=()
-
-		while IFS='=' read -r key value || [[ -n "$key" ]]; do
-			if [[ "$key" =~ ^\[(.*)\]$ ]]; then
-				emit_section "$section" section_kv
-				section="${BASH_REMATCH[1]}"
-				section_kv=()
-				continue
-			fi
-			[[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
-			section_kv["$key"]="$value"
-		done < "$meta"
-
-		emit_section "$section" section_kv
-	done < <(find "$SRC_ROOT" -type f -name '*.conf')
-}
-
-
-
-_process_confs() {
+	echo "=====================1"
 	while IFS= read -r meta; do
 		[[ -e "$meta" ]] || continue
 		section=""
