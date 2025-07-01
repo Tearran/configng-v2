@@ -58,6 +58,26 @@ _merge_list_options system_options software_options network_options
 
 trace "OK: merged Metadata array"
 
+# Print all modules under a parent group for any options array
+# List unique subgroups under a parent group (excluding 'internal')
+list_subgroups() {
+	local -n opts="$1"
+	local parent="$2"
+	declare -A seen=()
+	for key in "${!opts[@]}"; do
+		if [[ $key =~ ^([^,]+),parent$ ]] && [[ "${opts[$key]}" == "$parent" ]]; then
+			local module="${BASH_REMATCH[1]}"
+			local subgroup="${opts[$module,group]:-}"
+			[[ -n "$subgroup" && "$subgroup" != "internal" ]] && seen["$subgroup"]=1
+		fi
+	done
+	# Print all unique subgroups
+	for subgroup in "${!seen[@]}"; do
+		echo "$subgroup"
+	done
+}
+
+
 # Parse CLI args
 user_cmd="${1:-}"
 user_opt="${2:-}"
@@ -75,7 +95,8 @@ case "$user_cmd" in
 		;;
 	"--menu"|"-m"|"")
 		DIALOG="${DIALOG:-whiptail}"
-		info_box <<< "$(submenu "${2:-list_options}")"
+		#info_box <<< "$(submenu "${2:-list_options}")"
+		list_group_modules software_options software
 
 		;;
 	*)
