@@ -323,16 +323,6 @@ submenu() {
 }
 
 _about_submenu() {
-	cat <<-EOF
-	Usage: submenu <command-or-module> [args...]
-	Commands:
-		help	- Show this help.
-	<function_name>	- Show the interactive submenu for a module.
-	EOF
-}
-
-
-_about_submenu() {
 	cat <<EOF
 Usage: submenu <command>
 
