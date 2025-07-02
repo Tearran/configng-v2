@@ -65,58 +65,6 @@ _consolidate_src() {
 	echo "All library files have been assembled in $LIB_ROOT/"
 }
 
-depercating_consolidate_src() {
-	mkdir -p "$LIB_ROOT"
-	declare -A pipefail_written
-	find "$SRC_ROOT" -type f -name '*.sh' | while read -r f; do
-		rel="${f#$SRC_ROOT/}"
-		namespace="${rel%%/*}"
-		OUT="$LIB_ROOT/$namespace.sh"
-		fname=$(basename "$f")
-		skip=false
-		for ignore in "${IGNORE_FILES[@]}"; do
-			if [[ "${fname,,}" == "${ignore,,}" ]]; then
-				skip=true
-				break
-			fi
-		done
-		[[ "$skip" == true ]] && continue
-
-		# Only create/truncate once per OUT (per run)
-		if [[ ! -e "$OUT.in_progress" ]]; then
-			: > "$OUT"
-			touch "$OUT.in_progress"
-		fi
-
-		echo -e "\n####### $f #######" >> "$OUT"
-		awk -v pf="${pipefail_written[$OUT]:-0}" '
-		BEGIN { inheader=1; inblock=0 }
-		/^#!.*bash/ { next }
-		inheader && /^set -euo pipefail/ {
-			if (pf == 0) {
-				print
-				pf = 1
-			}
-			inheader=0
-			next
-		}
-		inheader && NF==0 { next }
-		inheader { next }
-		/^set -euo pipefail/ { next }
-		/^if \[\[ "\$\{BASH_SOURCE\[0\]\}" == "\$\{0\}" \]\]; then/ { inblock=1; next }
-		inblock && /^\s*fi\s*$/ { inblock=0; next }
-		inblock { next }
-		{ print }
-		' "$f" >> "$OUT"
-		# Mark that pipefail is written for this output file
-		pipefail_written[$OUT]=1
-		echo -e "\n" >> "$OUT"
-	done
-
-	rm -f "$LIB_ROOT"/*.in_progress
-	echo "All library files have been assembled in $LIB_ROOT/"
-}
-
 emit_section() {
 	local section="$1"
 	declare -n mapref="$2"
@@ -152,7 +100,7 @@ emit_section() {
 }
 
 _process_confs() {
-	echo "=====================1"
+	echo "====================="
 	while IFS= read -r meta; do
 		[[ -e "$meta" ]] || continue
 		section=""
@@ -174,7 +122,13 @@ _process_confs() {
 _write_arrays() {
 	mkdir -p "$(dirname "$OUT_FILE")"
 	{
-		echo -e "######## Auto-generated. Do not edit. ########\n"
+		cat <<EOF 
+#################################################################
+# WARNING: AUTO-GENERATED FILE - EDITS WILL BE OVERWRITTEN
+# To make changes, edit the source .conf files in src/ directory
+# Generator located tools/30_consolidate_module.sh
+#################################################################
+EOF
 		for arr in $(printf "%s\n" "${!array_entries[@]}" | sort); do
 			echo -e "######## start $arr ########\n#"
 			echo "declare -A $arr"
@@ -215,7 +169,7 @@ test() {
 	consolidate_module "${1:-all}"
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && test
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && test "$@"
 
 
 # ======= END: unit test =======

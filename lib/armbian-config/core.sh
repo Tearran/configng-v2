@@ -1,175 +1,6 @@
 
-####### ./src/core/initialize/list_options.sh #######
-set -euo pipefail
-
-# Merge multiple associative arrays into global module_options
-_merge_list_options() {
-	for array_name in "$@"; do
-		local -n src="$array_name"
-		for key in "${!src[@]}"; do
-			module_options["$key"]="${src[$key]}"
-		done
-	done
-}
-
-# List options from a given associative array with neat formatting
-list_module_options() {
-	local -n arr="$1"
-
-	local prog_name
-	prog_name="$(basename "$0")"
-
-	echo -e "Usage: ${prog_name} [options]\n"
-
-	local modules=()
-	for key in "${!arr[@]}"; do
-		if [[ $key =~ ^([^,]+),feature$ ]]; then
-			modules+=("${BASH_REMATCH[1]}")
-		fi
-	done
-
-	IFS=$'\n' sorted=($(sort <<<"${modules[*]}"))
-	unset IFS
-
-	for mod in "${sorted[@]}"; do
-		local uid="${arr[$mod,unique_id]:-NOID}"
-		local desc="${arr[$mod,description]:-No description}"
-		local feature="${arr[$mod,feature]:-command}"
-		local options="${arr[$mod,options]:-}"
-
-		echo -e "${uid} - ${desc}\n\t${feature} ${options}\n"
-	done
-}
-
-# Dispatch listing based on group name, defaulting to main group
-list_options() {
-	case "${1:-main}" in
-		main|"")
-			list_module_options module_options
-		;;
-		core|software|network|system)
-			list_module_options "${1}_options"
-		;;
-		help|--help|-h)
-			_about_list_options
-		;;
-		*)
-			echo "Unrecognized option group: $1"
-			echo
-			_about_list_options
-			exit 1
-		;;
-	esac
-}
-
-# Help text for list_options usage
-_about_list_options() {
-	cat <<EOF
-Usage: list_options [group]
-
-commands:
-	main      - All modules (default)
-	core      - Core helpers and interface tools
-	system    - System utilities and login helpers
-	software  - Software install and management modules
-	network   - Network management modules
-	help      - Show this help message
-
-Examples:
-	# List all available modules
-	list_options
-
-	# List core option modules
-	list_options core
-
-	# Show help
-	list_options help
-
-Notes:
-	- Use 'help', '--help', or '-h' to display this message.
-	- Output is generated live from module metadata arrays.
-	- For more details, see each module's _about_ function or README.
-	- Intended for use with config-ng menu and scripting.
-	- Keep this help message up to date if group names or commands change.
-EOF
-}
-
-
-
-
-
-
-
-####### ./src/core/initialize/trace.sh #######
-
-
-trace() {
-	local cmd="${1:-}" msg="${2:-}"
-	case "$cmd" in
-		help)
-			_about_trace
-			;;
-		reset)
-			_trace_start=$(date +%s)
-			_trace_time=$_trace_start
-			;;
-		total)
-			if [[ -n "${TRACE:-}" ]]; then
-				_trace_time=${_trace_start:-$(date +%s)}
-				trace "TOTAL time elapsed"
-			fi
-			trace reset
-			;;
-		*)
-			if [[ -n "${TRACE:-}" ]]; then
-				local now elapsed
-				now=$(date +%s)
-				: "${_trace_time:=$now}"  # Initialize if unset
-				elapsed=$((now - _trace_time))
-				printf "%-30s %4d sec\n" "$cmd" "$elapsed"
-				_trace_time=$now
-			fi
-			;;
-	esac
-}
-
-_about_trace() {
-	cat <<EOF
-Usage: trace <option> | <"message string">
-
-Options:
-	help               Show this help message
-	"message string"   Show trace message (if TRACE is set)
-	reset              (Re)set starting point for timing
-	total              Show total time since reset, then reset
-
-Examples:
-	# Start a new timing session
-	trace reset
-
-	# Print elapsed time with a message
-	trace "Step 1 complete"
-
-	# Show total elapsed time and reset
-	trace total
-
-Notes:
-	- When TRACE is set (e.g., TRACE="true"), trace outputs timing info.
-	- Elapsed time is shown since last trace call.
-	- Intended for use in config-ng modules and scripting.
-	- Keep this help message in sync with available options.
-
-For more info, see this file or related README in ./lib/.
-EOF
-}
-
-
-
-
-
-
-
 ####### ./src/core/interface/input_box.sh #######
+set -euo pipefail
 
 _about_input_box() {
 	cat <<EOF
@@ -305,6 +136,53 @@ info_box() {
 
 
 
+####### ./src/core/interface/ok_box.sh #######
+
+_about_ok_box() {
+	cat <<EOF
+Usage: ok_box ["message"]
+Examples:
+	echo "Hello from stdin" | ok_box
+	ok_box <<< "Message from here-string"
+EOF
+
+}
+
+function ok_box() {
+	# Read the input from the pipe
+	local input="${1:-$(cat)}"
+	TITLE="${TITLE:-}"
+
+
+	if [ "$input" = "help" ] || [ "$input" = "-h" ]; then
+		_about_ok_box
+		return 0
+	fi
+	if [ -z "$input" ]; then
+		echo "Error: Missing message argument" >&2
+		return 2
+	fi
+
+	case "$DIALOG" in
+	whiptail)
+		whiptail --title "$TITLE" --msgbox "$input" 0 0
+		;;
+	dialog)
+		dialog --title "$TITLE" --msgbox "$input" 0 0
+		;;
+	read)
+		echo -e "$input"
+		read -p "Press [Enter] to continue..." < /dev/tty
+		;;
+	*)
+		echo -e "$input"
+		;;
+	esac
+}
+
+
+
+
 ####### ./src/core/interface/submenu.sh #######
 
 # submenu - Menu dispatcher/helper for config-v3 modules
@@ -357,7 +235,8 @@ _submenu() {
 	fi
 
 	local help_message
-	help_message=$("$function_name" help 2>/dev/null || true)
+	help_message=$("$function_name" help "$parent_key" 2>/dev/null || true)
+	#help_message=$("$function_name" help 2>/dev/null || true)
 	if [[ -z "$help_message" ]]; then
 		echo "No help message from: $function_name"
 		return 1
@@ -488,53 +367,6 @@ yes_no_box() {
 	esac
 }
 
-
-
-
-
-####### ./src/core/interface/ok_box.sh #######
-
-_about_ok_box() {
-	cat <<EOF
-Usage: ok_box ["message"]
-Examples:
-	echo "Hello from stdin" | ok_box
-	ok_box <<< "Message from here-string"
-EOF
-
-}
-
-function ok_box() {
-	# Read the input from the pipe
-	local input="${1:-$(cat)}"
-	TITLE="${TITLE:-}"
-
-
-	if [ "$input" = "help" ] || [ "$input" = "-h" ]; then
-		_about_ok_box
-		return 0
-	fi
-	if [ -z "$input" ]; then
-		echo "Error: Missing message argument" >&2
-		return 2
-	fi
-
-	case "$DIALOG" in
-	whiptail)
-		whiptail --title "$TITLE" --msgbox "$input" 0 0
-		;;
-	dialog)
-		dialog --title "$TITLE" --msgbox "$input" 0 0
-		;;
-	read)
-		echo -e "$input"
-		read -p "Press [Enter] to continue..." < /dev/tty
-		;;
-	*)
-		echo -e "$input"
-		;;
-	esac
-}
 
 
 
@@ -772,6 +604,175 @@ Notes:
 
 EOF
 }
+
+
+
+
+####### ./src/core/initialize/list_options.sh #######
+
+# Merge multiple associative arrays into global module_options
+_merge_list_options() {
+	for array_name in "$@"; do
+		local -n src="$array_name"
+		for key in "${!src[@]}"; do
+			module_options["$key"]="${src[$key]}"
+		done
+	done
+}
+
+# List options from a given associative array with neat formatting
+list_module_options() {
+	local -n arr="$1"
+
+	local prog_name
+	prog_name="$(basename "$0")"
+
+	echo -e "Usage: ${prog_name} [options]\n"
+
+	local modules=()
+	for key in "${!arr[@]}"; do
+		if [[ $key =~ ^([^,]+),feature$ ]]; then
+			modules+=("${BASH_REMATCH[1]}")
+		fi
+	done
+
+	IFS=$'\n' sorted=($(sort <<<"${modules[*]}"))
+	unset IFS
+
+	for mod in "${sorted[@]}"; do
+		local uid="${arr[$mod,unique_id]:-NOID}"
+		local desc="${arr[$mod,description]:-No description}"
+		local feature="${arr[$mod,feature]:-command}"
+		local options="${arr[$mod,options]:-}"
+
+		echo -e "${uid} - ${desc}\n\t${feature} ${options}\n"
+	done
+}
+
+# Dispatch listing based on group name, defaulting to main group
+list_options() {
+	case "${1:-main}" in
+		main|"")
+			list_module_options module_options
+		;;
+		core|software|network|system)
+			list_module_options "${1}_options"
+		;;
+		help|--help|-h)
+			_about_list_options
+		;;
+		*)
+			echo "Unrecognized option group: $1"
+			echo
+			_about_list_options
+			exit 1
+		;;
+	esac
+}
+
+# Help text for list_options usage
+_about_list_options() {
+	cat <<EOF
+Usage: list_options [group]
+
+commands:
+	main      - All modules (default)
+	core      - Core helpers and interface tools
+	system    - System utilities and login helpers
+	software  - Software install and management modules
+	network   - Network management modules
+	help      - Show this help message
+
+Examples:
+	# List all available modules
+	list_options
+
+	# List core option modules
+	list_options core
+
+	# Show help
+	list_options help
+
+Notes:
+	- Use 'help', '--help', or '-h' to display this message.
+	- Output is generated live from module metadata arrays.
+	- For more details, see each module's _about_ function or README.
+	- Intended for use with config-ng menu and scripting.
+	- Keep this help message up to date if group names or commands change.
+EOF
+}
+
+
+
+
+
+
+
+####### ./src/core/initialize/trace.sh #######
+
+
+trace() {
+	local cmd="${1:-}" msg="${2:-}"
+	case "$cmd" in
+		help)
+			_about_trace
+			;;
+		reset)
+			_trace_start=$(date +%s)
+			_trace_time=$_trace_start
+			;;
+		total)
+			if [[ -n "${TRACE:-}" ]]; then
+				_trace_time=${_trace_start:-$(date +%s)}
+				trace "TOTAL time elapsed"
+			fi
+			trace reset
+			;;
+		*)
+			if [[ -n "${TRACE:-}" ]]; then
+				local now elapsed
+				now=$(date +%s)
+				: "${_trace_time:=$now}"  # Initialize if unset
+				elapsed=$((now - _trace_time))
+				printf "%-30s %4d sec\n" "$cmd" "$elapsed"
+				_trace_time=$now
+			fi
+			;;
+	esac
+}
+
+_about_trace() {
+	cat <<EOF
+Usage: trace <option> | <"message string">
+
+Options:
+	help               Show this help message
+	"message string"   Show trace message (if TRACE is set)
+	reset              (Re)set starting point for timing
+	total              Show total time since reset, then reset
+
+Examples:
+	# Start a new timing session
+	trace reset
+
+	# Print elapsed time with a message
+	trace "Step 1 complete"
+
+	# Show total elapsed time and reset
+	trace total
+
+Notes:
+	- When TRACE is set (e.g., TRACE="true"), trace outputs timing info.
+	- Elapsed time is shown since last trace call.
+	- Intended for use in config-ng modules and scripting.
+	- Keep this help message in sync with available options.
+
+For more info, see this file or related README in ./lib/.
+EOF
+}
+
+
+
 
 
 
