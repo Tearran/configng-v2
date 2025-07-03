@@ -122,7 +122,7 @@ _process_confs() {
 _write_arrays() {
 	mkdir -p "$(dirname "$OUT_FILE")"
 	{
-		cat <<EOF 
+		cat <<EOF
 #################################################################
 # WARNING: AUTO-GENERATED FILE - EDITS WILL BE OVERWRITTEN
 # To make changes, edit the source .conf files in src/ directory
