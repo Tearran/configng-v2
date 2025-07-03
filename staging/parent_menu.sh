@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
 
 menu() {
 	case "${1:-help}" in
@@ -73,4 +75,3 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DIALOG=${DIALOG:-whiptail}
 	submenu menu
 fi
-
