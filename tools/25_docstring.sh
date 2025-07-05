@@ -2,17 +2,6 @@
 
 DOC_ROOT="./docs"
 
-generate_docs_index() {
-	echo "# Module Documentation" > "$DOC_ROOT/README.md"
-	echo >> "$DOC_ROOT/README.md"
-	for md in "$DOC_ROOT"/*.md; do
-		[[ "$md" == "$DOC_ROOT/README.md" ]] && continue
-		mod_name="$(basename "$md" .md)"
-		# Grab the first non-empty, non-header line as summary
-		summary="$(awk 'NR>1 && NF && $0 !~ /^#/' "$md" | head -n1)"
-		echo "- [${mod_name}](./${mod_name}.md)${summary:+ — $summary}" >> "$DOC_ROOT/README.md"
-	done
-}
 
 find_modules() {
 	find ./src -type f -name "*.sh" | sort
