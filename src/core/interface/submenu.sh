@@ -136,7 +136,6 @@ _submenu() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DEBUG=${DEBUG:-1}
-
 	DIALOG=${DIALOG:-read}
 	submenu "$@"
 fi

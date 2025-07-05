@@ -15,14 +15,14 @@ LIB_DIR="$ROOT_DIR/lib/armbian-config"
 # Load core logic
 source "$LIB_DIR/core.sh" || exit 1
 
-# See Trace for info should these be more verbose?
-#
+# set TRACE=true for rolling info
 trace reset
 trace "OK: sourced core modules"
 
 ### START source staging ###
 # If the staging directory exists, consolidate mini modules and source staged scripts
 if [[ -d "$ROOT_DIR/staging" ]]; then
+	# Set trace true for staging development
 	TRACE=true
 	trace "OK: Staging"
 	"$ROOT_DIR/tools/30_consolidate_module.sh"
@@ -34,8 +34,6 @@ if [[ -d "$ROOT_DIR/staging" ]]; then
 fi
 
 ### END source staging/ ###
-
-
 
 source "$LIB_DIR/software.sh" || exit 1
 
@@ -65,23 +63,27 @@ user_args="${3:-}"
 
 case "$user_cmd" in
 	"--help"|"-h")
-		if [[ -n "$user_opt" ]]; then
-			list_options ${user_opt:-main}
-			trace "OK: list_options help"
-		else
-			list_options help
-		fi
-
+		user_opt="${user_opt:-all}"
+		list_options "$user_opt"
+		trace "OK: list_options $user_opt"
 		;;
 	"--menu"|"-m"|"")
 		DIALOG="${DIALOG:-whiptail}"
-		info_box <<< "$(submenu "${2:-list_options}")"
+		if ! command -v menu_from_options &>/dev/null; then
+			echo "ERR: menu_from_options not found" >&2
+			exit 1
+		fi
 
+		if ! choice=$(menu_from_options <<< "$(submenu "${2:-list_options}")"); then
+			# user cancelled -> clean exit rather than fall-through
+			exit 0
+		fi
+		[[ -n "$choice" ]] && submenu "$choice"
 		;;
 	*)
-		"$@" || exit 1
+		echo "Error: Unknown command"
+		exit 1
 		;;
 esac
 
 trace total
-

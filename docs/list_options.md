@@ -9,12 +9,10 @@ Lists features/options for core, system, network, and software modules. Outputs 
 Usage: list_options [group]
 
 commands:
-	main      - All modules (default)
-	core      - Core helpers and interface tools
 	system    - System utilities and login helpers
 	software  - Software install and management modules
 	network   - Network management modules
-	help      - Show this help message
+	all       - List All user modules (default)
 
 Examples:
 	# List all available modules

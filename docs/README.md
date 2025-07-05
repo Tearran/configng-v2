@@ -5,6 +5,7 @@
 - [info_box](./info_box.md) — Display a rolling info box with dialog/whiptail; reads and shows lines from stdin or a single message.
 - [input_box](./input_box.md) — Prompt the user for input using whiptail, dialog, or shell fallback; reads prompt from argument or stdin and prints result to stdout.
 - [list_options](./list_options.md) — Show available option groups and their usage for configng-v2 modules.
+- [menu_from_options](./menu_from_options.md) — Parse a list_options message and present commands as an interactive menu.
 - [network_manager](./network_manager.md) — Minimal Netplan renderer switcher for configng-v2. Set or check the current Netplan renderer (NetworkManager or networkd) for all interfaces.
 - [ok_box](./ok_box.md) — Displays a message to the user using the configured dialog tool.
 - [package](./package.md) — Helpers for bulk packages operations (install, remove, upgrade, etc.)
