@@ -15,7 +15,7 @@
 
 ## network
 - interface
-    - [network_manager](./network_manager.md) — Minimal Netplan renderer switcher for configng-v2. Set or check the current Netplan renderer (NetworkManager or networkd) for all interfaces.
+    - [net_render](./net_render.md) — Set or check the current Netplan renderer (NetworkManager or networkd) for all interfaces.
 
 ## software
 - internal
