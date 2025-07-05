@@ -22,7 +22,7 @@ trace "OK: sourced core modules"
 ### START source staging ###
 # If the staging directory exists, consolidate mini modules and source staged scripts
 if [[ -d "$ROOT_DIR/staging" ]]; then
-	# set TRACE=true for rolling info
+	# Set trace true for staging development
 	TRACE=true
 	trace "OK: Staging"
 	"$ROOT_DIR/tools/30_consolidate_module.sh"

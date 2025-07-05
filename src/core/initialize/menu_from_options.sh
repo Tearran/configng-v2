@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
 # src/core/menu_from_options.sh
 
 menu_from_options() {
