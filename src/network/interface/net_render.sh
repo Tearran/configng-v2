@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# src/network/interface/network_manager.sh
+# src/network/interface/net_render.sh
 
-network_manager() {
+net_render() {
 	NETPLAN_FILE=$(find /etc/netplan -name '*.yaml' | head -n 1)
 	if [[ ! -f "$NETPLAN_FILE" ]]; then
 		echo "No Netplan config file found in /etc/netplan."
@@ -33,17 +33,17 @@ network_manager() {
 			echo "Current renderer: $CURRENT"
 			;;
 		help|-h|--help)
-			_about_network_manager
+			_about_net_render
 			;;
 		*)
-			_about_network_manager
+			_about_net_render
 			;;
 	esac
 }
 
-_about_network_manager() {
+_about_net_render() {
 	cat <<EOF
-Usage: network_manager <command>
+Usage: net_render <command>
 
 Commands:
 	NetworkManager    - Set Netplan renderer to 'NetworkManager'
@@ -53,13 +53,13 @@ Commands:
 
 Examples:
 	# Set the renderer to 'networkd'
-	network_manager networkd
+	net_render networkd
 
 	# Set the renderer to 'NetworkManager'
-	network_manager NetworkManager
+	net_render NetworkManager
 
 	# Show current renderer status
-	network_manager status
+	net_render status
 
 Notes:
 	- Only 'NetworkManager' and 'networkd' are supported renderers for this module.
@@ -75,5 +75,5 @@ EOF
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	source lib/armbian-config/core.sh
-	network_manager "$@"
+	net_render "$@"
 fi
