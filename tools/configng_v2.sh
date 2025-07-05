@@ -63,23 +63,27 @@ user_args="${3:-}"
 
 case "$user_cmd" in
 	"--help"|"-h")
-		if [[ -n "$user_opt" ]]; then
-			list_options ${user_opt:-main}
-			trace "OK: list_options help"
-		else
-			list_options help
-		fi
-
+		user_opt="${user_opt:-all}"
+		list_options "$user_opt"
+		trace "OK: list_options $user_opt"
 		;;
 	"--menu"|"-m"|"")
 		DIALOG="${DIALOG:-whiptail}"
-		choice=$(menu_from_options <<< "$(submenu "${2:-list_options}")")
+		if ! command -v menu_from_options &>/dev/null; then
+			echo "ERR: menu_from_options not found" >&2
+			exit 1
+		fi
+
+		if ! choice=$(menu_from_options <<< "$(submenu "${2:-list_options}")"); then
+			# user cancelled -> clean exit rather than fall-through
+			exit 0
+		fi
 		[[ -n "$choice" ]] && submenu "$choice"
 		;;
 	*)
+		echo "Error: Unknown command"
 		exit 1
 		;;
 esac
 
 trace total
-

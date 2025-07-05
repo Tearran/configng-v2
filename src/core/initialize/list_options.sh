@@ -44,7 +44,7 @@ list_module_options() {
 
 # Dispatch listing based on group name, defaulting to main group
 list_options() {
-	case "${1:-main}" in
+	case "${1:-all}" in
 		main|all|"")
 			list_module_options module_options
 		;;
