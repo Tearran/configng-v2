@@ -2,87 +2,64 @@
 
 ---
 
-Welcome to **configng-v2**!  
-This project is an open, community-driven take on configuring Armbian-based systems—modular, maintainable, and designed for contributors of all skill levels.
+## Project Pitch
 
-**Note:**  
-This README is a living document. We aim to update it as development continues and as contributions shape the project. It’s a promise to keep things open and clear, not a definitive contract.
+**configng-v2** is the next step for making Armbian system configuration easy, clear, and maintainable—for users, maintainers, and contributors.  
+It’s a modular Bash framework that builds on everything we learned from the original *armbian-config* and *configng*. We’ve stripped away confusing parts and put a focus on transparency, flexibility, and a contributor workflow that actually works.
 
----
+- **For users:**  
+  Every configuration task is a framework module—grouped, focused scripts. All options are visible, easy to use from the CLI, and every module provides a help message.
+- **For contributors:**  
+  The workflow is streamlined:  
+  1. Scaffold a new mini-module with a single command.  
+  2. Develop and test in `staging/`.  
+  3. Validate, document, and promote to production.  
+  4. All scripts use tabs (no mixing), and configs use a flat key=value format.
 
-## What is configng-v2?
+**No hidden runtime logic, no mysterious wrappers.**  
+The code you see is the code that runs—no black boxes.  
+If you want to add or fix something, you can start right away using the tools in `tools/`, with clear validation and self-contained help.
 
-**configng-v2** is a modular Bash framework for runtime configuration of Armbian systems.  
-It’s built on lessons learned from previous tools like [armbian/config](https://github.com/armbian/config) and [armbian/configng](https://github.com/armbian/configng), but is rewritten for clarity, transparency, and contributor workflow.
-
-- **All config tasks are “mini modules”**—small, focused scripts grouped into parent modules.
-- **No build-time image changes**—everything happens on the running system.
-- **Tab-indented Bash only**—for readability and consistency.
-- **Both CLI and TUI support**—scriptable and interactive.
-- **Consistent option parsing**—every module provides `--help`.
-
----
-
-## Why another config tool?
-
-Previous tools grew confusing as features piled on.  
-configng-v2 aims to be:
-
-- **Modular:** Each config task is its own script. Edit or add just what you need.
-- **Transparent:** No hidden wrappers, no black boxes.
-- **Welcoming:** Contributors scaffold, develop, and document with a clear workflow and simple validation.
+**configng-v2** is built to avoid the patchwork and confusion of legacy config tools. It's open, transparent, and ready to grow with the community.  
+If you want to contribute, you’ll find the workflow approachable, the structure predictable, and the docs right where you need them.
 
 ---
 
-## Contributor Workflow (Snapshot)
+## Why configng-v2?
+
+- Clear split between backend logic and UI—improve either without breaking the other
+- Modular structure—focus on just the part you want to change
+- Tab-indented Bash—no exceptions
+- Flat configs—simple key=value; no nested config logic in modules
+- CLI and TUI options—use it how you want, scriptable and interactive
+- Designed for maintainability and easy onboarding
+
+> **Note:**  
+> configng-v2 module configs use a flat key=value format for simplicity.  
+> YAML is used elsewhere in the project where appropriate (for example, for Netplan integration, CI workflows, or packaging), but not as the primary format for configuring modules themselves.
+
+---
+
+## Contributor Workflow Snapshot
 
 1. **Scaffold:**  
-   `./tools/start_here.sh mymodule`
-2. **Develop:**  
-   Write logic in `.sh`, fill out `.conf` (flat key=value) —all in `staging/`
+   `./tools/start_here.sh newmod`
+2. **Develop & Document:**  
+   Edit `.sh`, `.conf`, `.md` in `staging/`
 3. **Validate:**  
-   `./tools/10_validate_module.sh` (checks format, required fields)
+   `./tools/10_validate_module.sh`
 4. **Promote:**  
-   Maintainers move modules to `src/` when ready.
+   Maintainers move working modules to `src/`
 5. **Consolidate:**  
-   Prepare for release by flattening to `lib/`
+   Prepare release by flattening to `lib/`
 
-- **Tabs only** for Bash scripts.
-- **Flat configs** in `.conf`.
-- **Clear help output** required.
+Tabs only, keep it flat, and a help message is required for each module.
 
 ---
 
-## What’s the current state?
-
-- Core dispatcher and scaffolding are working.
-- Example modules show the structure.
-- CLI and TUI are under active development.
-- Modules and helpers are being refactored from [armbian/configng](https://github.com/armbian/configng).
+> We’re not just rewriting old tools—we’re building a system where anyone can jump in, contribute, and trust what’s running on their board.  
+> If you want to help shape the next-gen config tool for Armbian, configng-v2 is open for your ideas, scripts, and docs.
 
 ---
 
-## Roadmap (Subject to Change)
-
-- Keep migrating and refining modules.
-- Improve option parsing and automation.
-- Build out automated/manual testing.
-- Continue separating backend logic and UI.
-- Update docs and help as the project evolves.
-
----
-
-## Contribution Guidelines
-
-- **No gatekeeping:** Anyone can contribute—just follow the style conventions (tabs, flat configs, clear docs).
-- **Start new modules** with `tools/start_here.sh`.
-- **Each module** must provide a clear help output and be both runnable and sourceable.
-- **Ask questions:** Docs and workflow are evolving—your feedback is welcome.
-
-For more, see [`tools/README.md`](tools/README.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
----
-
-> *This README is a living document. If you spot missing info, outdated details, or want to clarify something, please open a PR or issue. Help us keep it useful!*
-
----
+*See `tools/README.md` and `CONTRIBUTING.md` for details. Or just run `tools/start_here.sh` and get started!*
