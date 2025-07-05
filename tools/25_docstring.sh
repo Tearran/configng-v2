@@ -45,6 +45,7 @@ find_image() {
 }
 
 main() {
+	rm -rf "$DOC_ROOT"
 	mkdir -p "$DOC_ROOT"
 	while IFS= read -r sh_file; do
 		modname="$(basename "$sh_file" .sh)"
