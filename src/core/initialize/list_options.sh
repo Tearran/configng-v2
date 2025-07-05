@@ -20,7 +20,7 @@ list_module_options() {
 	local prog_name
 	prog_name="$(basename "$0")"
 
-	echo -e "Usage: ${prog_name} [options]\n"
+	echo -e "Usage: ${prog_name} [options]"
 
 	local modules=()
 	for key in "${!arr[@]}"; do
@@ -37,18 +37,18 @@ list_module_options() {
 		local desc="${arr[$mod,description]:-No description}"
 		local feature="${arr[$mod,feature]:-command}"
 		local options="${arr[$mod,options]:-}"
-
-		echo -e "${uid} - ${desc}\n\t${feature} ${options}\n"
+		echo -e "\t${feature}\t- ${desc}"
+		#echo -e "${uid} - ${desc}\n\t${feature} ${options}\n"
 	done
 }
 
 # Dispatch listing based on group name, defaulting to main group
 list_options() {
 	case "${1:-main}" in
-		main|"")
+		main|all|"")
 			list_module_options module_options
 		;;
-		core|software|network|system)
+		software|network|system|core)
 			list_module_options "${1}_options"
 		;;
 		help|--help|-h)
@@ -69,12 +69,10 @@ _about_list_options() {
 Usage: list_options [group]
 
 commands:
-	main      - All modules (default)
-	core      - Core helpers and interface tools
 	system    - System utilities and login helpers
 	software  - Software install and management modules
 	network   - Network management modules
-	help      - Show this help message
+	all       - List All user modules (default)
 
 Examples:
 	# List all available modules

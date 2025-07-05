@@ -15,14 +15,14 @@ LIB_DIR="$ROOT_DIR/lib/armbian-config"
 # Load core logic
 source "$LIB_DIR/core.sh" || exit 1
 
-# See Trace for info should these be more verbose?
-#
+# set TRACE=true for rolling info
 trace reset
 trace "OK: sourced core modules"
 
 ### START source staging ###
 # If the staging directory exists, consolidate mini modules and source staged scripts
 if [[ -d "$ROOT_DIR/staging" ]]; then
+	# set TRACE=true for rolling info
 	TRACE=true
 	trace "OK: Staging"
 	"$ROOT_DIR/tools/30_consolidate_module.sh"
@@ -34,8 +34,6 @@ if [[ -d "$ROOT_DIR/staging" ]]; then
 fi
 
 ### END source staging/ ###
-
-
 
 source "$LIB_DIR/software.sh" || exit 1
 
@@ -75,11 +73,11 @@ case "$user_cmd" in
 		;;
 	"--menu"|"-m"|"")
 		DIALOG="${DIALOG:-whiptail}"
-		info_box <<< "$(submenu "${2:-list_options}")"
-
+		choice=$(menu_from_options <<< "$(submenu "${2:-list_options}")")
+		[[ -n "$choice" ]] && submenu "$choice"
 		;;
 	*)
-		"$@" || exit 1
+		exit 1
 		;;
 esac
 
