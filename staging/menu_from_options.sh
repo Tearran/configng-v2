@@ -66,26 +66,25 @@ menu_from_options() {
 
 
 _about_menu_from_options() {
-	cat <<-EOF
-	Usage: menu_from_options [HELP_MESSAGE]
-	Parse a usage/help message and present the commands as an interactive menu.
+	cat <<EOF
+Usage: menu_from_options [HELP_MESSAGE]
 	- Accepts a string argument or reads from stdin.
 	- Uses whiptail (preferred), dialog, or plain read (fallback).
 	- Returns the selected command string on success.
 
-	Example:
-		help_msg="Usage: configng_v2.sh [options]
-		  adjust_motd     - Adjust welcome screen (motd)
-		  cockpit         - Web-based admin interface for managing Linux servers.
-		  package         - Helpers for bulk package operations."
-		choice=\$(menu_from_options "\$help_msg")
-		[[ -n "\$choice" ]] && echo "You chose: \$choice"
+Example:
+	help_msg="Usage: configng_v2.sh [options]
+		adjust_motd     - Adjust welcome screen (motd)
+		cockpit         - Web-based admin interface for managing Linux servers.
+		package         - Helpers for bulk package operations."
+	choice=\$(menu_from_options "\$help_msg")
+	[[ -n "\$choice" ]] && echo "You chose: \$choice"
 
-	Notes:
-	- Intended for use in configng-v2 modules and scripts.
-	- Only parses lines matching '<command> - <description>'.
-	- Set DIALOG=dialog to prefer dialog, otherwise whiptail is default.
-	EOF
+Notes:
+- Intended for use in configng-v2 modules and scripts.
+- Only parses lines matching '<command> - <description>'.
+- Set DIALOG=dialog to prefer dialog, otherwise whiptail is default.
+EOF
 }
 
 # test/demo block (safe to remove if not needed)
