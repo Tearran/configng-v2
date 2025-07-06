@@ -47,8 +47,7 @@ If you want to contribute, you’ll find the workflow approachable, the structur
 2. **Develop & Document:**  
    Edit `.sh`, `.conf` in `staging/` optional 250x250 logo image optional 
 3. **Validate:**  
-   `./tools/10_validate_module.sh`
-4. **Promote:**  
+   `./tools/10_validate_module.sh`  
 4. **Promote:**  
    `./tools/20_promote_module.sh`  
 5. **Generate module docs:**  
