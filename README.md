@@ -49,13 +49,14 @@ If you want to contribute, you’ll find the workflow approachable, the structur
 3. **Validate:**  
    `./tools/10_validate_module.sh`
 4. **Promote:**  
-  ` ./tools/20_promote_module.sh`
-5.**Generte module documents
-  `./tools/25_docstring.sh`
-6. **Generte document index
-  `./tools/26_docstring_index.sh`
-8.  **Consolidate:**  repare release by flattening to `lib/`
-  ` tools/30_consolidate_module.sh`
+4. **Promote:**  
+   `./tools/20_promote_module.sh`  
+5. **Generate module docs:**  
+   `./tools/25_docstring.sh`  
+6. **Generate doc index:**  
+   `./tools/26_docstring_index.sh`  
+7. **Consolidate:** Prepare release by flattening to `lib/`  
+   `./tools/30_consolidate_module.sh`
 
 Tabs only, keep it flat, and a help message is required for each module.
 
