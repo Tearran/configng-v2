@@ -2,7 +2,7 @@
 
 ---
 
-## Project Pitch
+## Project
 
 **configng-v2** is the next step for making Armbian system configuration easy, clear, and maintainable—for users, maintainers, and contributors.  
 It’s a modular Bash framework that builds on everything we learned from the original *armbian-config* and *configng*. We’ve stripped away confusing parts and put a focus on transparency, flexibility, and a contributor workflow that actually works.
@@ -45,13 +45,18 @@ If you want to contribute, you’ll find the workflow approachable, the structur
 1. **Scaffold:**  
    `./tools/start_here.sh newmod`
 2. **Develop & Document:**  
-   Edit `.sh`, `.conf`, `.md` in `staging/`
+   Edit `.sh`, `.conf` in `staging/` optional 250x250 logo image optional 
 3. **Validate:**  
    `./tools/10_validate_module.sh`
 4. **Promote:**  
-   Maintainers move working modules to `src/`
-5. **Consolidate:**  
-   Prepare release by flattening to `lib/`
+4. **Promote:**  
+   `./tools/20_promote_module.sh`  
+5. **Generate module docs:**  
+   `./tools/25_docstring.sh`  
+6. **Generate doc index:**  
+   `./tools/26_docstring_index.sh`  
+7. **Consolidate:** Prepare release by flattening to `lib/`  
+   `./tools/30_consolidate_module.sh`
 
 Tabs only, keep it flat, and a help message is required for each module.
 
