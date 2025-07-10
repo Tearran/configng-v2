@@ -1,6 +1,9 @@
 # ok_box
 Displays a message to the user using the configured dialog tool.
 
+## About
+Reads input text (either from standard input or as an argument) and presents it to the user with the selected dialog frontend. Supports dialog, whiptail, or plain read/echo. Handles input flexibly and routes output appropriately depending on the tool.
+
 ## Usage
 ~~~bash
 Usage: ok_box ["message"]

@@ -76,5 +76,5 @@ main() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	main "$@"
-	generate_docs_index
+	#generate_docs_index
 fi
