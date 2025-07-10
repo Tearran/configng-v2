@@ -66,7 +66,7 @@ _template_conf() {
 		# Comma-separated list of functions in this module (all functions except the main feature).
 		# NOTE: You must include the help message function _about_${MODULE}; validation will fail if it is missing.
 		helpers=
-		
+
 		# List each command and its description below.
 		# Example:
 		# show=Display the current configuration
