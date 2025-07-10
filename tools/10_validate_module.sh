@@ -66,7 +66,8 @@ _check_conf() {
 
 		case "$field" in
 			helpers)
-				if [ -n "$feature" ] && ! echo "$value" | grep -qw "_about_$feature"; then
+		# Check for _about_<feature> function in CSV or space-separated helpers list
+				if [ -n "$feature" ] && ! echo "$value" | grep -q "(^|,)_about_$feature(,|$)"; then
 					failed=1
 					failed_fields+=("helpers must have at least (_about_$feature)")
 				fi
