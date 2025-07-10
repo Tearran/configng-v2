@@ -41,7 +41,7 @@ _check_sh() {
 }
 
 _check_conf() {
-	local REQUIRED_CONF_FIELDS=(feature options helpers description parent group contributor maintainer port)
+	local REQUIRED_CONF_FIELDS=(feature options helpers description parent group contributor port)
 	local file="$1"
 	local failed=0
 	local failed_fields=()
