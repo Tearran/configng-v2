@@ -1,0 +1,46 @@
+name: Generate Docs and Open PR
+
+on:
+  push:
+    branches:
+      - main  # or 'master', or your default branch
+
+jobs:
+  gen-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Generate documentation
+        run: |
+          ./scripts/gen_docs.sh  # <-- your doc generation script
+
+      - name: Check if docs changed
+        run: |
+          git add docs/
+          git diff --cached --exit-code || echo "Docs changed"
+        id: docs_changed
+        continue-on-error: true
+
+      - name: Commit and push new docs branch
+        if: steps.docs_changed.outcome == 'failure'
+        run: |
+          branch="auto/docs-update-$(date +%Y%m%d%H%M%S)"
+          git checkout -b "$branch"
+          git commit -am "Auto-generate docs after PR merge"
+          git push origin "$branch"
+          echo "::set-output name=branch::$branch"
+
+      - name: Create PR for docs update
+        if: steps.docs_changed.outcome == 'failure'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ${{ steps.commit-and-push.outputs.branch }}
+          title: "Auto-generated docs update"
+          body: "Docs updated after recent PR merge."
