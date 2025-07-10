@@ -3,7 +3,7 @@ name: Generate Docs and Open PR
 on:
   push:
     branches:
-      - main  # or 'master', or your default branch
+      - main  # or your default branch
 
 jobs:
   gen-docs:
@@ -17,9 +17,24 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Generate documentation
+      - name: Generate documentation (run all numbered tools)
         run: |
-          ./scripts/gen_docs.sh  # <-- your doc generation script
+          shopt -s nullglob
+          status=0
+          for tool in tools/[0-9][0-9]_*.sh; do
+            echo "=== Running: $tool ==="
+            bash "$tool"
+            result=$?
+            if [[ $result -eq 0 ]]; then
+              echo "::notice ::PASS: $tool"
+            else
+              echo "::error ::FAIL: $tool (exit code $result)"
+              status=1
+            fi
+            echo
+          done
+          shopt -u nullglob
+          exit $status
 
       - name: Check if docs changed
         run: |
@@ -35,7 +50,8 @@ jobs:
           git checkout -b "$branch"
           git commit -am "Auto-generate docs after PR merge"
           git push origin "$branch"
-          echo "::set-output name=branch::$branch"
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+        id: commit-and-push
 
       - name: Create PR for docs update
         if: steps.docs_changed.outcome == 'failure'
