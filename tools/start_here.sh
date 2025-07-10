@@ -25,24 +25,54 @@ EOF
 
 _template_conf() {
 	local MODULE="$1"
-	cat <<EOF
-# ${MODULE} - Configng V2 metadata
+	cat <<-EOF
+		# ${MODULE} - Configng V2 metadata
 
-[${MODULE}]
-feature=${MODULE}
-description=
-extend_desc=
-documents=true
-options=
-parent=
-group=
-contributor=
-maintainer=false
-arch=arm64 armhf x86-64
-require_os=Armbian Debian Ubuntu
-require_kernel=5.15+
-port=false
-helpers=
+		[${MODULE}]
+		# Main feature provided by this module (usually the same as the module name).
+		feature=${MODULE}
+
+		# Short, single-line summary describing what this module does.
+		description=
+
+		# Longer description with more details about the module's features or usage.
+		extend_desc=
+
+		# Comma-separated list of commands supported by this module (e.g., help,status,reload).
+		options=
+
+		# Main category this module belongs to. Must be one of: network, system, software, locales.
+		parent=
+
+		# Group or tag for this module. See docs/readme.md (group index) for options.
+		# If none fit, suggest a new group in your pull request.
+		group=
+
+		# Contributor's GitHub username (use @username).
+		contributor=
+
+		# Comma-separated list of supported CPU architectures.
+		arch=
+
+		# Comma-separated list of supported operating systems.
+		require_os=
+
+		# What kernel are you using? (minimum required version, e.g., 5.15+)
+		require_kernel=
+
+		# Comma-separated list of network ports used by this module (e.g., 8080,8443). Use 'false' if not applicable.
+		port=false
+
+		# Comma-separated list of functions in this module (all functions except the main feature).
+		# NOTE: You must include the help message function _about_${MODULE}; validation will fail if it is missing.
+		helpers=
+		
+		# List each command and its description below.
+		# Example:
+		# show=Display the current configuration
+		[options]
+		help=Show help for this module
+
 EOF
 }
 
