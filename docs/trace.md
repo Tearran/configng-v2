@@ -1,8 +1,8 @@
 # trace
-Lightweight timing and trace message for Armbian Config V3 modules.
+Lightweight timing and trace message utility for Configng V2 modules.
 
 ## About
-Provides timing, traceging, and progress utilities for Bash modules. Supports trace timing, and elapsed time reporting for module development and diagnostics.
+Provides timing, tracing, and progress utilities for Bash modules. Supports trace timing and elapsed time reporting for module development and diagnostics.
 
 ## Usage
 ~~~bash

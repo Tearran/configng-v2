@@ -11,5 +11,5 @@
 9. [package](./package.md) — Helpers for bulk packages operations (install, remove, upgrade, etc.)
 10. [service](./service.md) — Systemd service management helpers (start stop enable etc.)
 11. [submenu](./submenu.md) — Displays an interactive submenu for module functions based on their help output.
-12. [trace](./trace.md) — Lightweight timing and trace message for Armbian Config V3 modules.
+12. [trace](./trace.md) — Lightweight timing and trace message utility for Configng V2 modules.
 13. [yes_no_box](./yes_no_box.md) — Portable Bash yes/no prompt function supporting whiptail, dialog, or simple shell read fallback.
