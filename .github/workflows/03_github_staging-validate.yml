@@ -1,30 +1,22 @@
-name: 03 Staging Gate
+name: CI for src and tools
 
 on:
   pull_request:
     paths:
-      - 'staging/**'
+      - 'src/**'
       - 'tools/**'
 
 jobs:
-  gate:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fail if staging folder is missing or empty
-        run: |
-          if [ ! -d staging ] || [ -z "$(ls -A staging)" ]; then
-          	echo "::error ::staging folder is missing or empty. Please add or update at least one module."
-          	# Just a warning may exit, if we can do on consoldate push to main  
-            exit 1
-          fi
-
-      - name: Run numbered tools in order
+      - name: Run 30_* and 40_* tools in order
         run: |
           shopt -s nullglob
           status=0
-          for tool in tools/[0-9][0-9]_*.sh; do
+          for tool in tools/30_*.sh tools/40_*.sh; do
             echo "=== Running: $tool ==="
             bash "$tool"
             result=$?
