@@ -17,7 +17,7 @@ jobs:
           if [ ! -d staging ] || [ -z "$(ls -A staging)" ]; then
           	echo "::error ::staging folder is missing or empty. Please add or update at least one module."
           	# Just a warning may exit, if we can do on consoldate push to main  
-            # exit 1
+            exit 1
           fi
 
       - name: Run numbered tools in order
