@@ -157,6 +157,8 @@ _write_arrays() {
 	echo "Wrote generated options arrays to $OUT_FILE"
 }
 
+
+
 consolidate_module() {
 	local cmd="${1:-all}"
 	case "$cmd" in
