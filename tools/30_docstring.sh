@@ -125,7 +125,7 @@ generate_docs_index() {
 			g="$(get_group "$conf_file")"
 			[[ -n "$g" ]] && group="$g"
 		fi
-		tree["$parent|$group"]+="${tree[$parent|$group]:+$'\n'}${modname}|$md_file"
+		tree["$parent|$group"]+="${tree["$parent|$group"]:+$'\n'}${modname}|$md_file"
 	done < <(find_modules)
 
 	mapfile -t parents < <(for k in "${!tree[@]}"; do echo "${k%%|*}"; done | sort -u)
@@ -140,7 +140,7 @@ generate_docs_index() {
 				md_path="./${md_file}"
 				summary="$(get_summary "$DOC_ROOT/$md_file")"
 				echo "    - [${mod_name}](${md_path})${summary:+ — $summary}" >> "$DOC_ROOT/README.md"
-			done <<< "${tree[$key]}"
+			done <<< "${tree["$key"]}"
 		done
 		echo >> "$DOC_ROOT/README.md"
 	done
