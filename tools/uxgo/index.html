@@ -308,37 +308,37 @@
 			if (!state.cat) {
 				html += '<ul>';
 				for (const cat of Object.keys(data)) {
-					html += `<li><button class="menu-btn" id="menu-btn-${cat.toLowerCase()}" onclick="navTo('${cat}')">${cat}</button></li>`;
+					html += `<li><button class="menu-btn" id="menu-btn-${escapeHTML(cat.toLowerCase())}" onclick="navTo('${escapeHTML(cat)}')">${escapeHTML(cat)}</button></li>`;
 				}
 				html += '</ul>';
 			} else if (state.cat && !state.group) {
 				const groups = Object.keys(data[state.cat]);
-				html += `<h2>Category: ${state.cat}</h2><ul>`;
+				html += `<h2>Category: ${escapeHTML(state.cat)}</h2><ul>`;
 				for (const group of groups) {
-					html += `<li><button class="menu-btn" id="menu-btn-${group.toLowerCase()}" onclick="navTo('${state.cat}','${group}')">${group}</button></li>`;
+					html += `<li><button class="menu-btn" id="menu-btn-${escapeHTML(group.toLowerCase())}" onclick="navTo('${escapeHTML(state.cat)}','${escapeHTML(group)}')">${escapeHTML(group)}</button></li>`;
 				}
 				html += '</ul>';
 			} else if (state.cat && state.group && !state.feature) {
 				const mods = data[state.cat][state.group];
-				html += `<h2>${state.cat} &gt; ${state.group}</h2><ul>`;
+				html += `<h2>${escapeHTML(state.cat)} &gt; ${escapeHTML(state.group)}</h2><ul>`;
 				for (const modKey in mods) {
 					const mod = mods[modKey];
-					html += `<li><button class="feature-btn" onclick="navTo('${state.cat}','${state.group}','${modKey}')"><span class="feature-label">${mod.feature}</span><span class="feature-desc">&nbsp;–&nbsp;${mod.description || ''}</span></button></li>`;
+					html += `<li><button class="feature-btn" onclick="navTo('${escapeHTML(state.cat)}','${escapeHTML(state.group)}','${escapeHTML(modKey)}')"><span class="feature-label">${escapeHTML(mod.feature)}</span><span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(mod.description || '')}</span></button></li>`;
 				}
 				html += '</ul>';
 			} else if (state.cat && state.group && state.feature) {
 				const mod = data[state.cat][state.group][state.feature];
 				html += `<div class="module-card">`;
-				html += `<h2>${mod.feature}</h2>`;
-				if (mod.description) html += `<div class="desc">${mod.description}</div>`;
-				if (mod.extend_desc) html += `<div class="desc"><small>${mod.extend_desc}</small></div>`;
+				html += `<h2>${escapeHTML(mod.feature)}</h2>`;
+				if (mod.description) html += `<div class="desc">${escapeHTML(mod.description)}</div>`;
+				if (mod.extend_desc) html += `<div class="desc"><small>${escapeHTML(mod.extend_desc)}</small></div>`;
 				if (mod.options) {
 					html += `<div class="options-block"><b>Options:</b>`;
 					for (const opt of mod.options.split(',')) {
 						const trimmed = opt.trim();
 						if (!trimmed) continue;
-						html += `<button class="option-btn" onclick="sendOption('${mod.feature}','${trimmed}')">${trimmed}</button>`;
-						html += `<div class="option-desc" id="desc-${trimmed.replace(/[^a-zA-Z0-9_-]/g, '_')}"></div>`;
+						html += `<button class="option-btn" onclick="sendOption('${escapeHTML(mod.feature)}','${escapeHTML(trimmed)}')">${escapeHTML(trimmed)}</button>`;
+						html += `<div class="option-desc" id="desc-${escapeHTML(trimmed.replace(/[^a-zA-Z0-9_-]/g, '_'))}"></div>`;
 					}
 					html += `</div>`;
 				}
