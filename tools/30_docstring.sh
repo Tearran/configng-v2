@@ -199,7 +199,7 @@ main() {
 			generate_module_docs
 			generate_docs_flat_index
 			generate_docs_index
-			_conf_to_json > $DOC_ROOT/modules_metadat.json
+			_conf_to_json > $DOC_ROOT/modules_metadata.json
 
 			;;
 	esac

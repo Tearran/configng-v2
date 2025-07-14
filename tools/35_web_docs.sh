@@ -92,6 +92,6 @@ case "${1:-}" in
 		_about_json2docs
 		;;
 	*)
-		json2docs "${1:-docs/modules_metadat.json}" "${2:-tools/main.html}" "${3:-docs/INDEX.html}"
+		json2docs "${1:-docs/modules_metadata.json}" "${2:-tools/main.html}" "${3:-docs/INDEX.html}"
 		;;
 esac
