@@ -146,6 +146,39 @@ generate_docs_index() {
 	done
 }
 
+_conf_to_json() {
+	find "$SRC_ROOT" -type f -name '*.conf' | while read -r conf; do
+		# Extract section name
+		section=$(awk '/^\[.*\]/ {gsub(/^\[|\]$/, "", $0); print $0; exit}' "$conf")
+
+		# Build JSON object
+		(
+		echo "{"
+		echo "\"module\": \"$section\""
+
+		# Extract key-value pairs, handle multiple '=' properly
+		grep -E '^[[:space:]]*[^#\[].*=' "$conf" | while read -r line; do
+			# Split on first '=' only using bash parameter expansion
+			key="${line%%=*}"
+			value="${line#*=}"
+
+			# Trim whitespace
+			key=$(echo "$key" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+			value=$(echo "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+			# Use jq to properly escape the value
+			echo ",\"$key\": $(echo "$value" | jq -R .)"
+		done
+		echo "}"
+		) | jq -s add  # Combine lines into single JSON object
+	done | jq -s '
+		# Nest by .parent, .group, .module as before
+		reduce .[] as $item ({};
+		.[$item.parent][$item.group][$item.module] = ($item | del(.parent, .group, .module))
+		)
+'
+}
+
 
 show_help() {
 	echo "Usage: $0 [OPTIONS]"
@@ -166,6 +199,8 @@ main() {
 			generate_module_docs
 			generate_docs_flat_index
 			generate_docs_index
+			_conf_to_json > $DOC_ROOT/modules_metadat.json
+
 			;;
 	esac
 
