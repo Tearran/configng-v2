@@ -20,24 +20,24 @@ set -euo pipefail
 #   -h, --help    Show this help message and exit.
 
 _about_json2docs() {
-	cat <<EOF
+		cat <<EOF
 
 Usage: $0 <json-file> <template-html> <output-html>
 
 Inject a JSON object into the Configng V2 HTML docs template.
 
 Arguments:
-  <json-file>      Path to the JSON object file (object only, no JS assignment)
-  <template-html>  Path to the HTML template with JSON block markers
-  <output-html>    Where to write the generated docs HTML
+	<json-file>      Path to the JSON object file (object only, no JS assignment)
+	<template-html>  Path to the HTML template with JSON block markers
+	<output-html>    Where to write the generated docs HTML
 
 Example:
-  $0 data/menu.json tools/main.html docs/modules-menu-simple-dark.html
+	$0 data/menu.json tools/main.html docs/modules-menu-simple-dark.html
 
 Notes:
-  - This does NOT overwrite your template or data file.
-  - Injection replaces only the marked block, preserving everything else.
-  - Intended for @Tearran/configng-v2 documentation and menu generation.
+	- This does NOT overwrite your template or data file.
+	- Injection replaces only the marked block, preserving everything else.
+	- Intended for @Tearran/configng-v2 documentation and menu generation.
 
 EOF
 }
