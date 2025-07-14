@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Generates documentation markdown for each module in ./src/,
-# copies associated images, and builds ./docs/INDEX.md and ./docs/README.md.
+# copies associated images, and builds and ./docs/README.md.
 # See ./src/* for modules and ./src/*.conf for metadata.
 
 DOC_ROOT="./docs"
@@ -197,9 +197,14 @@ main() {
 			;;
 		""|*)
 			generate_module_docs
-			generate_docs_flat_index
+			#generate_docs_flat_index
 			generate_docs_index
 			_conf_to_json > $DOC_ROOT/modules_metadata.json
+			echo "Generated ./docs/modules_metadata.json"
+			cp "$DOC_ROOT/modules_metadata.json" "./tools/uxgo/modules_metadata.json"
+			cp "./tools/uxgo/index.html" "./docs/index.html"
+			echo "Copied index to docs"
+			echo "Copied json to uxgo"
 
 			;;
 	esac
