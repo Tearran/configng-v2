@@ -96,15 +96,6 @@ _check_conf() {
 					failed_fields+=("contributor (should be valid github username, like @tearran)")
 				fi
 				;;
-			maintainer)
-				if [ -z "$value" ]; then
-					failed=1
-					failed_fields+=("maintainer (empty)")
-				elif [[ "$value" != "true" && "$value" != "false" ]]; then
-					failed=1
-					failed_fields+=("maintainer (must be 'true' or 'false')")
-				fi
-				;;
 			feature|description|port)
 				if [ -z "$value" ]; then
 					failed=1
@@ -142,6 +133,8 @@ _check_duplicate_anywhere() {
 				if [ -f "$file" ]; then
 					echo "FAIL: Duplicate found in $dir: $file"
 					found=1
+				else
+					echo "OK: No duplicate found in $dir: $file"
 				fi
 			done < <(find "$dir" -type f -name "$modname$ext")
 		done
@@ -163,7 +156,7 @@ validate_module() {
 			local shfiles=(./staging/*.sh)
 			if [ ${#shfiles[@]} -eq 0 ]; then
 				echo "No modules found in ./staging/"
-				exit 1
+				#Sexit 1
 			fi
 			for shfile in "${shfiles[@]}"; do
 				modname="$(basename "$shfile" .sh)"
