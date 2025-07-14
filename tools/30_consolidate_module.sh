@@ -157,6 +157,39 @@ _write_arrays() {
 	echo "Wrote generated options arrays to $OUT_FILE"
 }
 
+_conf_to_json() {
+	find ./src -type f -name '*.conf' | while read -r conf; do
+		# Extract section name
+		section=$(awk '/^\[.*\]/ {gsub(/^\[|\]$/, "", $0); print $0; exit}' "$conf")
+
+		# Build JSON object
+		(
+		echo "{"
+		echo "\"module\": \"$section\""
+
+		# Extract key-value pairs, handle multiple '=' properly
+		grep -E '^[[:space:]]*[^#\[].*=' "$conf" | while read -r line; do
+			# Split on first '=' only using bash parameter expansion
+			key="${line%%=*}"
+			value="${line#*=}"
+
+			# Trim whitespace
+			key=$(echo "$key" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+			value=$(echo "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+			# Use jq to properly escape the value
+			echo ",\"$key\": $(echo "$value" | jq -R .)"
+		done
+		echo "}"
+		) | jq -s add  # Combine lines into single JSON object
+	done | jq -s '
+		# Nest by .parent, .group, .module as before
+		reduce .[] as $item ({};
+		.[$item.parent][$item.group][$item.module] = ($item | del(.parent, .group, .module))
+		)
+'
+}
+
 consolidate_module() {
 	local cmd="${1:-all}"
 	case "$cmd" in
@@ -171,6 +204,7 @@ consolidate_module() {
 			_consolidate_src
 			_process_confs
 			_write_arrays
+			_conf_to_json > "$LIB_ROOT/module_options.json"
 			;;
 		*)
 			echo "Usage: $0 [consolidate|generate|all]"
