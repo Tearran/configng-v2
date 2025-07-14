@@ -158,7 +158,7 @@ _write_arrays() {
 }
 
 _conf_to_json() {
-	find ./src -type f -name '*.conf' | while read -r conf; do
+	find "$SRC_ROOT" -type f -name '*.conf' | while read -r conf; do
 		# Extract section name
 		section=$(awk '/^\[.*\]/ {gsub(/^\[|\]$/, "", $0); print $0; exit}' "$conf")
 
