@@ -242,5 +242,8 @@ setup_module() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	setup_module "${1:-help}"
-	[[ "$1" != "help" ]] && ./tools/10_validate_module.sh staging
+	SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+	ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+	[[ "$1" != "help" ]] && "$ROOT_DIR/tools/10_validate_module.sh" staging
+
 fi
