@@ -4,7 +4,7 @@ set -euo pipefail
 _about_validate_module() {
 	cat <<EOF
 
-usage: $0 <modulename>|all|help
+usage: $0 staging|all|help
 
 Check results:
 	OK      - File exists and passes checks
@@ -171,8 +171,27 @@ validate_module() {
 				exit 1
 			fi
 		;;
+		staging)
+			shopt -s nullglob   # <--- Add this!
+			local failed=0
+			local shfiles=(./staging/*.sh)
+			if [ ${#shfiles[@]} -eq 0 ]; then
+				echo "No modules found in ./staging/"
+				#exit 1
+			fi
+			for shfile in "${shfiles[@]}"; do
+				modname="$(basename "$shfile" .sh)"
+				echo "==> Checking module: $modname"
+				_check_duplicate_anywhere "$modname" || failed=1
+				echo
+			done
+			if [[ "$failed" -ne 0 ]]; then
+				echo "One or more modules failed validation" >&2
+				exit 1
+			fi
+		;;
 		*)
-			echo "Unknown command" >&2
+			echo "error: $1 is an Unknown command" >&2
 			exit 1
 
 		;;

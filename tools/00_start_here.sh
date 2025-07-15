@@ -242,4 +242,5 @@ setup_module() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	setup_module "${1:-help}"
+	[[ "$1" != "help" ]] && ./tools/10_validate_module.sh staging
 fi
