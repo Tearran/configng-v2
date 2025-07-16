@@ -42,6 +42,8 @@ If you want to contribute, you’ll find the workflow approachable, the structur
 
 ## Contributor Workflow Snapshot
 
+> **⚠️ Important:** Before editing any file, check for auto-generated headers! Some files like `docs/index.html` are generated from source files and should not be edited directly.
+
 1. **Scaffold:**  
    `./tools/start_here.sh newmod`
 2. **Develop & Document:**  

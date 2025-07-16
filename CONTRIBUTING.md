@@ -102,6 +102,21 @@ The workflow enforces modular clarity, testability, and maintainability.**
 - **Document with Bash users in mind:**  
 	Clear comments, usage examples, and minimal assumptions.
 
+## 4.1. Source vs Generated Files
+
+**IMPORTANT:** Some files in this repository are auto-generated and should NOT be edited directly:
+
+- **docs/index.html** - Generated from `tools/uxgo/index.html`
+- **docs/modules_metadata.json** - Generated from module `.conf` files
+- **tools/uxgo/modules_metadata.json** - Copy of the generated metadata
+
+**To make changes:**
+1. Edit the source file (e.g., `tools/uxgo/index.html`)
+2. Run `./tools/30_docstring.sh` to regenerate the files
+3. The generated files will contain clear headers indicating they are auto-generated
+
+**Before editing any file, check for auto-generated headers at the top!**
+
 ---
 
 ## 5. FAQ & Rationale
