@@ -54,10 +54,24 @@ This guide covers the **practical workflow** for contributing modules to confign
 
 ---
 
+## Web Documentation Generation
+
+The project includes web-based documentation generated from module metadata:
+
+- **Generate docs:** `./tools/35_web_docs.sh`
+- **Source template:** `tools/index.html`
+- **Generated files:** `docs/index.html`, `tools/GUI/index.html`
+
+⚠️ **Always edit the source template (`tools/index.html`), not the generated files!**  
+Generated files contain warning comments to prevent confusion.
+
+---
+
 ## Quick Reference
 
 - Scaffold: `./tools/start_here.sh foo`
 - Verify:   `./tools/10_validate_module.sh`
+- Generate docs: `./tools/35_web_docs.sh`
 - Tabs only for Bash scripts.
 - Keep `.conf` files flat and simple.
 - Submit a pull request after local checks pass.

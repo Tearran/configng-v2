@@ -54,10 +54,14 @@ If you want to contribute, you’ll find the workflow approachable, the structur
    `./tools/25_docstring.sh`  
 6. **Generate doc index:**  
    `./tools/26_docstring_index.sh`  
-7. **Consolidate:** Prepare release by flattening to `lib/`  
+7. **Generate web docs:**  
+   `./tools/35_web_docs.sh`  
+8. **Consolidate:** Prepare release by flattening to `lib/`  
    `./tools/30_consolidate_module.sh`
 
 Tabs only, keep it flat, and a help message is required for each module.
+
+**⚠️ Important:** Some files are auto-generated (like `docs/index.html` and `tools/GUI/index.html`). Always check for warning comments before editing files!
 
 ---
 

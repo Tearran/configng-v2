@@ -146,6 +146,34 @@ The baseline template and directory structure used to create new modules. (See: 
 
 ---
 
+## Important: Source vs Generated Files
+
+**⚠️ Always check if a file is auto-generated before editing it!**
+
+Some files in this repository are automatically generated and should **NOT** be edited directly:
+
+### HTML Documentation Files
+
+- **SOURCE**: `tools/index.html` - Edit this file for HTML changes
+- **GENERATED**: `tools/GUI/index.html` - Auto-generated with JSON data injected
+- **GENERATED**: `docs/index.html` - Auto-generated copy of source template
+
+### Generation Process
+
+Run `./tools/35_web_docs.sh` to generate HTML files from source templates and module metadata.
+
+### How to Identify Generated Files
+
+1. **Check for warning comments** - Generated files have HTML comments at the top indicating they are auto-generated
+2. **Check file paths** - Files in `docs/` and `tools/GUI/` are typically generated
+3. **When in doubt, look for the source** - If you see a warning comment, it will tell you which file to edit instead
+
+### Why This Matters
+
+Contributors (including AI reviewers) have repeatedly suggested changes to generated files instead of source files. This creates confusion and wasted effort since changes to generated files are lost when the build process runs.
+
+---
+
 ## TL;DR
 
 - Step 1: `./tools/00_setup_module.sh <modulename>`
