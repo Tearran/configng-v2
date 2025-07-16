@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>configng-v2 Modules Menu</title>
+	<title>configng-v2 Modules Menu (Vertical Options)</title>
 	<style>
 		:root {
 			--bg-main: #181b20;
@@ -266,8 +266,7 @@
 
 <body>
 	<div id="dev-toggle-container">
-		<button id="dev-toggle" onclick="toggledev()" title="Show/hide developer features">Show
-			dev
+		<button id="dev-toggle" onclick="toggleDev()" title="Show/hide developer features">Show dev
 			options</button>
 	</div>
 	<h1>configng-v2 Modules Menu</h1>
@@ -467,7 +466,7 @@
 
 		let data = {};
 		let state = { cat: null, group: null, feature: null };
-		let showdev = window.location.hash === "#dev";
+		let showDev = window.location.hash === "#dev";
 
 		function setBreadcrumbs() {
 			const bc = [];
@@ -542,7 +541,7 @@
 		function hideOrShowCore() {
 			const coreBtn = document.getElementById('menu-btn-core');
 			if (coreBtn) {
-				if (showdev) {
+				if (showDev) {
 					coreBtn.classList.remove('hide-core');
 				} else {
 					coreBtn.classList.add('hide-core');
@@ -564,25 +563,25 @@
 			document.getElementById('command-output').textContent = '';
 		}
 
-		function toggledev() {
-			showdev = !showdev;
-			if (showdev) {
+		function toggleDev() {
+			showDev = !showDev;
+			if (showDev) {
 				window.location.hash = "#dev";
 			} else {
 				window.location.hash = "";
 			}
 			hideOrShowCore();
 			const toggleBtn = document.getElementById('dev-toggle');
-			toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
+			toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
 		}
 
 		window.navTo = navTo;
 		window.sendOption = sendOption;
 
-		window.addeventListener("hashchange", () => {
-			showdev = window.location.hash === "#dev";
+		window.addEventListener("hashchange", () => {
+			showDev = window.location.hash === "#dev";
 			const toggleBtn = document.getElementById('dev-toggle');
-			toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
+			toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
 			hideOrShowCore();
 		});
 
@@ -597,7 +596,7 @@
 					.then(json => {
 						data = json;
 						const toggleBtn = document.getElementById('dev-toggle');
-						toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
+						toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
 						navTo();
 					})
 					.catch(err => {
@@ -607,7 +606,7 @@
 			} else if (typeof JSON_URL === "object") {
 				data = JSON_URL;
 				const toggleBtn = document.getElementById('dev-toggle');
-				toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
+				toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
 				navTo();
 			} else {
 				document.getElementById('menu').innerHTML = "<b>No JSON data found</b>";
