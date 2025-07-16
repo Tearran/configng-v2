@@ -497,7 +497,7 @@
 			if (!state.cat) {
 				html += '<ul>';
 				for (const cat of Object.keys(data)) {
-					html += `<li><button class="menu-btn" id="menu-btn-${escapeHTML(cat.toLowerCase())}" onclick="navTo('${escapeHTML(cat)}')">${escapeHTML(cat)}</button></li>`;
+					html += `<li><button class="menu-btn" id="menu-btn-${escapeHTML(cat.toLowerCase())}" onclick="navTo('${cat.replace(/'/g, "\\'")}')">${escapeHTML(cat)}</button></li>`;
 				}
 				html += '</ul>';
 			} else if (state.cat && !state.group) {
