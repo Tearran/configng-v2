@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>configng-v2 Modules Menu (Vertical Options)</title>
+	<title>configng-v2 Modules Menu</title>
 	<style>
 		:root {
 			--bg-main: #181b20;
@@ -232,7 +232,7 @@
 			display: none !important;
 		}
 
-		#dev-toggle-container {
+		#internal-toggle-container {
 			width: 100vw;
 			max-width: 750px;
 			margin: 0 auto;
@@ -240,7 +240,7 @@
 			justify-content: flex-end;
 		}
 
-		#dev-toggle {
+		#internal-toggle {
 			font-size: 0.98em;
 			background: none;
 			border: none;
@@ -255,8 +255,8 @@
 			margin-bottom: 0.2em;
 		}
 
-		#dev-toggle:hover,
-		#dev-toggle:focus {
+		#internal-toggle:hover,
+		#internal-toggle:focus {
 			color: var(--accent-light);
 			background: #23262b;
 			opacity: 0.90;
@@ -265,8 +265,9 @@
 </head>
 
 <body>
-	<div id="dev-toggle-container">
-		<button id="dev-toggle" onclick="toggleDev()" title="Show/hide developer features">Show dev
+	<div id="internal-toggle-container">
+		<button id="internal-toggle" onclick="toggleinternal()" title="Show/hide internaleloper features">Show
+			internal
 			options</button>
 	</div>
 	<h1>configng-v2 Modules Menu</h1>
@@ -351,7 +352,11 @@
         "require_os": "Debian,Ubuntu,Armbian",
         "require_kernel": "5.15+",
         "port": "false",
-        "helpers": "_about_list_options,_merge_list_options,_parse_list_options"
+        "helpers": "_about_list_options,_merge_list_options,_parse_list_options",
+        "system": "System utilities and login helpers",
+        "software": "Software install and management modules",
+        "network": "Network management modules",
+        "all": "List All user modules (default)"
       },
       "trace": {
         "feature": "trace",
@@ -462,7 +467,7 @@
 
 		let data = {};
 		let state = { cat: null, group: null, feature: null };
-		let showDev = window.location.hash === "#dev";
+		let showinternal = window.location.hash === "#internal";
 
 		function setBreadcrumbs() {
 			const bc = [];
@@ -537,7 +542,7 @@
 		function hideOrShowCore() {
 			const coreBtn = document.getElementById('menu-btn-core');
 			if (coreBtn) {
-				if (showDev) {
+				if (showinternal) {
 					coreBtn.classList.remove('hide-core');
 				} else {
 					coreBtn.classList.add('hide-core');
@@ -559,25 +564,25 @@
 			document.getElementById('command-output').textContent = '';
 		}
 
-		function toggleDev() {
-			showDev = !showDev;
-			if (showDev) {
-				window.location.hash = "#dev";
+		function toggleinternal() {
+			showinternal = !showinternal;
+			if (showinternal) {
+				window.location.hash = "#internal";
 			} else {
 				window.location.hash = "";
 			}
 			hideOrShowCore();
-			const toggleBtn = document.getElementById('dev-toggle');
-			toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
+			const toggleBtn = document.getElementById('internal-toggle');
+			toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
 		}
 
 		window.navTo = navTo;
 		window.sendOption = sendOption;
 
-		window.addEventListener("hashchange", () => {
-			showDev = window.location.hash === "#dev";
-			const toggleBtn = document.getElementById('dev-toggle');
-			toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
+		window.adinternalentListener("hashchange", () => {
+			showinternal = window.location.hash === "#internal";
+			const toggleBtn = document.getElementById('internal-toggle');
+			toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
 			hideOrShowCore();
 		});
 
@@ -591,8 +596,8 @@
 					})
 					.then(json => {
 						data = json;
-						const toggleBtn = document.getElementById('dev-toggle');
-						toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
+						const toggleBtn = document.getElementById('internal-toggle');
+						toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
 						navTo();
 					})
 					.catch(err => {
@@ -601,8 +606,8 @@
 					});
 			} else if (typeof JSON_URL === "object") {
 				data = JSON_URL;
-				const toggleBtn = document.getElementById('dev-toggle');
-				toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
+				const toggleBtn = document.getElementById('internal-toggle');
+				toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
 				navTo();
 			} else {
 				document.getElementById('menu').innerHTML = "<b>No JSON data found</b>";

@@ -54,8 +54,10 @@ json2docs() {
 
 	local NEW_JSON JS_ASSIGN
 	NEW_JSON="$(cat "$JSON_FILE")"
-	JS_ASSIGN=$'\tconst JSON_URL = '"$NEW_JSON"';'
-
+	# Escape the sentinel string `</script>` so that it is harmless when embedded.
+	# We only need to mangle the closing tag, leaving JSON intact for JS.
+	safe_json=${NEW_JSON//<\/script>/<\\/script>}
+	JS_ASSIGN=$'\tconst JSON_URL = '"$safe_json"';'
 	awk -v js="$JS_ASSIGN" '
 	BEGIN {inblock=0}
 	{
@@ -119,7 +121,7 @@ web_docs(){
 		*)
 			_conf_to_json > $ROOT_DIR/docs/modules_metadata.json
 			cp $ROOT_DIR/tools/index.html $ROOT_DIR/docs/index.html
-			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.json}" "${2:-$ROOT_DIR/tools/index.html}" "${3:-$ROOT_DIR/tools/uxgo/index.html}"
+			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.json}" "${2:-$ROOT_DIR/tools/index.html}" "${3:-$ROOT_DIR/tools/GUI/index.html}"
 			echo "done"
 			;;
 	esac
