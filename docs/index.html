@@ -232,7 +232,7 @@
 			display: none !important;
 		}
 
-		#internal-toggle-container {
+		#dev-toggle-container {
 			width: 100vw;
 			max-width: 750px;
 			margin: 0 auto;
@@ -240,7 +240,7 @@
 			justify-content: flex-end;
 		}
 
-		#internal-toggle {
+		#dev-toggle {
 			font-size: 0.98em;
 			background: none;
 			border: none;
@@ -255,8 +255,8 @@
 			margin-bottom: 0.2em;
 		}
 
-		#internal-toggle:hover,
-		#internal-toggle:focus {
+		#dev-toggle:hover,
+		#dev-toggle:focus {
 			color: var(--accent-light);
 			background: #23262b;
 			opacity: 0.90;
@@ -265,9 +265,9 @@
 </head>
 
 <body>
-	<div id="internal-toggle-container">
-		<button id="internal-toggle" onclick="toggleinternal()" title="Show/hide internaleloper features">Show
-			internal
+	<div id="dev-toggle-container">
+		<button id="dev-toggle" onclick="toggledev()" title="Show/hide developer features">Show
+			dev
 			options</button>
 	</div>
 	<h1>configng-v2 Modules Menu</h1>
@@ -281,7 +281,7 @@
 
 		let data = {};
 		let state = { cat: null, group: null, feature: null };
-		let showinternal = window.location.hash === "#internal";
+		let showdev = window.location.hash === "#dev";
 
 		function setBreadcrumbs() {
 			const bc = [];
@@ -356,7 +356,7 @@
 		function hideOrShowCore() {
 			const coreBtn = document.getElementById('menu-btn-core');
 			if (coreBtn) {
-				if (showinternal) {
+				if (showdev) {
 					coreBtn.classList.remove('hide-core');
 				} else {
 					coreBtn.classList.add('hide-core');
@@ -378,25 +378,25 @@
 			document.getElementById('command-output').textContent = '';
 		}
 
-		function toggleinternal() {
-			showinternal = !showinternal;
-			if (showinternal) {
-				window.location.hash = "#internal";
+		function toggledev() {
+			showdev = !showdev;
+			if (showdev) {
+				window.location.hash = "#dev";
 			} else {
 				window.location.hash = "";
 			}
 			hideOrShowCore();
-			const toggleBtn = document.getElementById('internal-toggle');
-			toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
+			const toggleBtn = document.getElementById('dev-toggle');
+			toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
 		}
 
 		window.navTo = navTo;
 		window.sendOption = sendOption;
 
-		window.adinternalentListener("hashchange", () => {
-			showinternal = window.location.hash === "#internal";
-			const toggleBtn = document.getElementById('internal-toggle');
-			toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
+		window.addeventListener("hashchange", () => {
+			showdev = window.location.hash === "#dev";
+			const toggleBtn = document.getElementById('dev-toggle');
+			toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
 			hideOrShowCore();
 		});
 
@@ -410,8 +410,8 @@
 					})
 					.then(json => {
 						data = json;
-						const toggleBtn = document.getElementById('internal-toggle');
-						toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
+						const toggleBtn = document.getElementById('dev-toggle');
+						toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
 						navTo();
 					})
 					.catch(err => {
@@ -420,8 +420,8 @@
 					});
 			} else if (typeof JSON_URL === "object") {
 				data = JSON_URL;
-				const toggleBtn = document.getElementById('internal-toggle');
-				toggleBtn.textContent = showinternal ? "Hide internal options" : "Show internal options";
+				const toggleBtn = document.getElementById('dev-toggle');
+				toggleBtn.textContent = showdev ? "Hide dev options" : "Show dev options";
 				navTo();
 			} else {
 				document.getElementById('menu').innerHTML = "<b>No JSON data found</b>";
