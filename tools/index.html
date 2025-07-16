@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>configng-v2 Modules Menu (Vertical Options)</title>
+	<title>configng-v2 Modules Menu</title>
 	<style>
 		:root {
 			--bg-main: #181b20;
@@ -274,7 +274,10 @@
 	<div id="menu"></div>
 	<div id="command-output"></div>
 	<script>
-		const JSON_URL = "./modules_metadata.json";
+		// ----- BEGIN: Easy-to-edit JSON
+		const JSON_URL = "https://raw.githubusercontent.com/Tearran/configng-v2/refs/heads/main/docs/modules_metadata.json";
+		// ----- END: Easy-to-edit JSON
+
 		let data = {};
 		let state = { cat: null, group: null, feature: null };
 		let showDev = window.location.hash === "#dev";
@@ -396,22 +399,33 @@
 			hideOrShowCore();
 		});
 
-		// Dynamically load JSON from GitHub
-		fetch(JSON_URL)
-			.then(response => {
-				if (!response.ok) throw new Error("Failed to fetch JSON");
-				return response.json();
-			})
-			.then(json => {
-				data = json;
+		// Use fetch to load JSON_URL (if it's a string), or use as object directly.
+		(function () {
+			if (typeof JSON_URL === "string") {
+				fetch(JSON_URL)
+					.then(response => {
+						if (!response.ok) throw new Error("Failed to fetch JSON");
+						return response.json();
+					})
+					.then(json => {
+						data = json;
+						const toggleBtn = document.getElementById('dev-toggle');
+						toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
+						navTo();
+					})
+					.catch(err => {
+						document.getElementById('menu').innerHTML = "<b>Failed to load JSON from GitHub</b>";
+						console.error(err);
+					});
+			} else if (typeof JSON_URL === "object") {
+				data = JSON_URL;
 				const toggleBtn = document.getElementById('dev-toggle');
 				toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
 				navTo();
-			})
-			.catch(err => {
-				document.getElementById('menu').innerHTML = "<b>Failed to load JSON from GitHub</b>";
-				console.error(err);
-			});
+			} else {
+				document.getElementById('menu').innerHTML = "<b>No JSON data found</b>";
+			}
+		})();
 	</script>
 </body>
 
