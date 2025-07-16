@@ -274,7 +274,10 @@
 	<div id="menu"></div>
 	<div id="command-output"></div>
 	<script>
-		const JSON_URL = "./modules_metadata.json";
+		// ----- BEGIN: Easy-to-edit JSON
+		const JSON_URL = "https://raw.githubusercontent.com/Tearran/configng-v2/refs/heads/main/docs/modules_metadata.json";
+		// ----- END: Easy-to-edit JSON
+
 		let data = {};
 		let state = { cat: null, group: null, feature: null };
 		let showDev = window.location.hash === "#dev";
@@ -308,7 +311,7 @@
 			if (!state.cat) {
 				html += '<ul>';
 				for (const cat of Object.keys(data)) {
-					html += `<li><button class="menu-btn" id="menu-btn-${escapeHTML(cat.toLowerCase())}" onclick="navTo('${escapeHTML(cat)}')">${escapeHTML(cat)}</button></li>`;
+					html += `<li><button class="menu-btn" id="menu-btn-${escapeHTML(cat.toLowerCase())}" onclick="navTo('${cat.replace(/'/g, "\\'")}')">${escapeHTML(cat)}</button></li>`;
 				}
 				html += '</ul>';
 			} else if (state.cat && !state.group) {
@@ -361,11 +364,10 @@
 		}
 
 		function escapeHTML(str) {
-			return str.replace(/[<>&"]/g, function (c) {
-				return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c];
-			});
+			return str.replace(/[<>&"']/g, c =>
+				({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c])
+			);
 		}
-
 		function sendOption(feature, option) {
 			const out = document.getElementById('command-output');
 			out.textContent = `Would send: ${feature} ${option}`;
@@ -396,22 +398,33 @@
 			hideOrShowCore();
 		});
 
-		// Dynamically load JSON from GitHub
-		fetch(JSON_URL)
-			.then(response => {
-				if (!response.ok) throw new Error("Failed to fetch JSON");
-				return response.json();
-			})
-			.then(json => {
-				data = json;
+		// Use fetch to load JSON_URL (if it's a string), or use as object directly.
+		(function () {
+			if (typeof JSON_URL === "string") {
+				fetch(JSON_URL)
+					.then(response => {
+						if (!response.ok) throw new Error("Failed to fetch JSON");
+						return response.json();
+					})
+					.then(json => {
+						data = json;
+						const toggleBtn = document.getElementById('dev-toggle');
+						toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
+						navTo();
+					})
+					.catch(err => {
+						document.getElementById('menu').innerHTML = "<b>Failed to load JSON from GitHub</b>";
+						console.error(err);
+					});
+			} else if (typeof JSON_URL === "object") {
+				data = JSON_URL;
 				const toggleBtn = document.getElementById('dev-toggle');
 				toggleBtn.textContent = showDev ? "Hide dev options" : "Show dev options";
 				navTo();
-			})
-			.catch(err => {
-				document.getElementById('menu').innerHTML = "<b>Failed to load JSON from GitHub</b>";
-				console.error(err);
-			});
+			} else {
+				document.getElementById('menu').innerHTML = "<b>No JSON data found</b>";
+			}
+		})();
 	</script>
 </body>
 

@@ -199,13 +199,8 @@ main() {
 			generate_module_docs
 			#generate_docs_flat_index
 			generate_docs_index
-			_conf_to_json > $DOC_ROOT/modules_metadata.json
-			echo "Generated ./docs/modules_metadata.json"
-			cp "$DOC_ROOT/modules_metadata.json" "./tools/uxgo/modules_metadata.json"
-			cp "./tools/uxgo/index.html" "./docs/index.html"
-			echo "Copied index to docs"
-			echo "Copied json to uxgo"
-
+			#_conf_to_json > $DOC_ROOT/modules_metadata.json
+			#echo "Generated ./docs/modules_metadata.json"
 			;;
 	esac
 

@@ -9,10 +9,10 @@ Provides timing, tracing, and progress utilities for Bash modules. Supports trac
 Usage: trace <option> | <"message string">
 
 Options:
-	help               Show this help message
-	"message string"   Show trace message (if TRACE is set)
-	reset              (Re)set starting point for timing
-	total              Show total time since reset, then reset
+	help	- Show this help message
+	<string>	- Show trace message (if TRACE is set)
+	reset	- (Re)set starting point for timing
+	total	- Show total time since reset, then reset
 
 Examples:
 	# Start a new timing session

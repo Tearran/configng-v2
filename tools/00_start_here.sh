@@ -85,6 +85,17 @@ set -euo pipefail
 # ./${MODULE}.sh - Armbian Config V2 module
 
 ${MODULE}() {
+	case "\${1:-}" in
+		help|-h|--help)
+			_about_${MODULE}
+			;;
+		*)
+			_${MODULE}_main
+			;;
+	esac
+}
+
+_${MODULE}_main() {
 	# TODO: implement module logic
 	echo "${MODULE} - Armbian Config V2 test"
 	echo "Scaffold test"
@@ -119,13 +130,21 @@ Notes:
 EOF
 }
 
-# ./${MODULE}.sh - Armbian Config V2 test entrypoint
+### START ./${MODULE}.sh - Armbian Config V2 test entrypoint
 
 if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
-	echo "${MODULE} - Armbian Config V2 test"
-	echo "# TODO: implement module logic"
-	exit 1
+	# --- Capture and assert help output ---
+	help_output="\$(${MODULE} help)"
+	echo "\$help_output" | grep -q "Usage: ${MODULE}" || {
+		echo "fail: Help output does not contain expected usage string"
+		echo "test complete"
+		exit 1
+	}
+	# --- end assertion ---
+	${MODULE} "\$@"
 fi
+
+### END ./${MODULE}.sh - Armbian Config V2 test entrypoint
 
 EOH
 }
@@ -242,4 +261,8 @@ setup_module() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	setup_module "${1:-help}"
+	SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+	ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+	[[ "$1" != "help" ]] && "$ROOT_DIR/tools/10_validate_module.sh" staging
+
 fi
