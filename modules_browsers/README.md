@@ -19,10 +19,13 @@ This directory contains scripts and utilities for exploring and interacting with
 
 1. Ensure `modules_browser.html` and `modules_metadata.json` are present (regenerate with `./workflow/35_web_docs.sh` if needed).
 2. Open `modules_browser.html` in any web browser **or**:
-   - Run `go run modules_browser.go` for a desktop app window (requires Go and the `webview` Go module).
-   - Use `web-server.go` or `web-server.py` to serve the directory, then visit [http://localhost:8080/modules_browser.html](http://localhost:8080/modules_browser.html).
 
-### Python GUI
+### GO webview
+<img width="960" height="604" alt="{946B063F-B7DF-49FE-9779-097DB3EB69FB}" src="https://github.com/user-attachments/assets/b53fb8f9-064f-40e1-bdeb-bc0369d74b42" />
+   - Run `go run modules_browser.go` for a desktop app window (requires Go and the `webview` Go module).
+
+### Python tkinter
+<img width="676" height="429" alt="{98CB24B3-B8D7-406A-9A30-51942E19BC34}" src="https://github.com/user-attachments/assets/d19f2a94-2934-4c9e-8738-85fd883903e8" />
 
 ```sh
 cd modules_browsers
@@ -30,6 +33,7 @@ python3 modules_browser.py
 ```
 
 ### Bash+Zenity Browser
+<img width="226" height="171" alt="{12CB818B-41B7-486B-A8C7-4C62FC8E33C7}" src="https://github.com/user-attachments/assets/9ebad382-b294-4296-b27a-c37a7c25ba1d" />
 
 ```sh
 cd modules_browsers
