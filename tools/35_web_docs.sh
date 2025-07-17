@@ -159,7 +159,7 @@ web_docs(){
 
 			# Add auto-generated warning to the copied docs file
 			_add_auto_generated_warning "$ROOT_DIR/docs/index.html" "tools/index.html" "This file is a direct copy of the source template."
-			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.json}" "${2:-$ROOT_DIR/tools/index.html}" "${3:-$ROOT_DIR/tools/GUI/index.html}"
+			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.json}" "${2:-$ROOT_DIR/tools/index.html}" "${3:-$ROOT_DIR/tools/GUI/modules_browser.html}"
 			echo "done"
 			;;
 	esac

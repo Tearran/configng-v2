@@ -10,14 +10,14 @@ import (
 )
 
 func main() {
-	// Use the working directory for index.html path
-	htmlPath, err := filepath.Abs("index.html")
+	// Use the working directory for modules_browser.html path
+	htmlPath, err := filepath.Abs("modules_browser.html")
 	if err != nil {
-		log.Fatalf("Cannot find index.html: %v", err)
+		log.Fatalf("Cannot find modules_browser.html: %v", err)
 	}
 
 	if _, err := os.Stat(htmlPath); err != nil {
-		log.Fatalf("index.html not found: %v", err)
+		log.Fatalf("modules_browser.html not found: %v", err)
 	}
 
 	url := "file://" + htmlPath
