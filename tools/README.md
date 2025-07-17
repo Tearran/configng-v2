@@ -19,12 +19,11 @@ This guide covers the **practical workflow** for contributing modules to confign
    ```sh
    ./tools/start_here.sh <modulename>
    ```
-   - Creates `staging/<modulename>.sh`, `.conf`, and `.md`.
+   - Creates `staging/<modulename>.sh`, and `.conf`.
 
 2. **Develop**
    - Write module logic in `.sh` (use **tabs** for indentation).
    - Fill out `.conf` (flat key=value).
-   - Document in `.md`.
 
 3. **Verify & Test**
    - Run:
@@ -36,10 +35,22 @@ This guide covers the **practical workflow** for contributing modules to confign
 
 4. **Promote (for maintainers)**
    - Move ready modules from `staging/` to `src/` as defined in `.conf`.
-
+     ```sh
+     ./tools/20_promote_module.sh
+     ```
+5. ***Generate Documents
+     ```sh
+     ./tools/tools/30_docstring.sh
+    ```
+6. **Generate JSON and html for `./tools/GUI/*`
+   ```sh
+   ./tools/35_web_docs.sh"
+   ```
 5. **Consolidate (for maintainers)**
    - Flatten `src/` modules into `lib/` as needed for releases.
-
+     ```sh
+     ./tools/tools/40_consolidate_module.sh
+     ```
 ---
 
 ## Best Practices
