@@ -57,7 +57,7 @@ python3 web-server.py
 This file is auto-generated! Do not edit it directly. To update module documentation:
 
 ```sh
-cd tools
+cd workflow
 ./35_web_docs.sh
 ```
 
