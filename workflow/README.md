@@ -9,7 +9,7 @@ This guide covers the **practical workflow** for contributing modules to confign
 - `staging/` — Work-in-progress modules (development area).
 - `src/` — Develomnet modules (after promotion).
 - `lib/` — Assembled Bash libraries (for the final framework).
-- `tools/` — Scripts for scaffolding, checking, and automating the workflow.
+- `workflow/` — Scripts for scaffolding, checking, and automating the workflow.
 
 ---
 
@@ -18,7 +18,7 @@ This guide covers the **practical workflow** for contributing modules to confign
 1. **Scaffold a Module**
    - run
    ```sh
-   ./tools/start_here.sh <modulename>
+   ./workflow/start_here.sh <modulename>
    ```
    - Creates `staging/<modulename>.sh`, and `.conf`.
 
@@ -30,7 +30,7 @@ This guide covers the **practical workflow** for contributing modules to confign
    - Manually test your module in `staging/`.
    - Run:
      ```sh
-     ./tools/10_validate_module.sh
+     ./workflow/10_validate_module.sh
      ```
    - fix invalid if any
      
@@ -38,18 +38,18 @@ This guide covers the **practical workflow** for contributing modules to confign
    - Move ready modules from `staging/` to `src/` as defined in `.conf`.
    - run
      ```sh
-     ./tools/20_promote_module.sh
+     ./workflow/20_promote_module.sh
      ```
 6. **Generate Documents from metadata**
    - run
      ```sh
-     ./tools/tools/30_docstring.sh
+     ./workflow/30_docstring.sh
      ```
 7. **Generate json object**
-   - Used for ./tools/GUI/modules_browser.*`
+   - Used for ./workflow/GUI/modules_browser.*`
    - run
      ```sh
-      ./tools/35_web_docs.sh"
+      ./workflow/35_web_docs.sh"
       ```
    - generates a json object
    - injets json object into modules-brouser.hmtl for use with go and weserver
@@ -57,7 +57,7 @@ This guide covers the **practical workflow** for contributing modules to confign
    - Flatten `src/` modules into `lib/` as needed for releases.
    - run
      ```sh
-     ./tools/tools/40_consolidate_module.sh
+     ./workflow/40_consolidate_module.sh
      ```
 ---
 
@@ -75,8 +75,8 @@ This guide covers the **practical workflow** for contributing modules to confign
 
 ## Quick Reference
 
-- Scaffold: `./tools/start_here.sh foo`
-- Verify:   `./tools/10_validate_module.sh`
+- Scaffold: `./workflow/start_here.sh foo`
+- Verify:   `./workflow/10_validate_module.sh`
 - Tabs only for Bash scripts.
 - Keep `.conf` files flat and simple.
 - Submit a pull request after local checks pass.
