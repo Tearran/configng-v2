@@ -43,6 +43,7 @@ bash modules_browser.sh
 Requires `jq` and `zenity` (`sudo apt install jq zenity`).
 
 ### Go HTTP Server
+<img width="960" height="604" alt="{76D15EB2-9E4B-4290-92F5-59FD4F1C50DE}" src="https://github.com/user-attachments/assets/918da28b-d382-4161-aa6b-086cd6378f1e" />
 
 ```sh
 cd modules_browsers
