@@ -32,22 +32,20 @@ This guide covers the **practical workflow** for contributing modules to confign
      ```sh
      ./tools/10_validate_module.sh
      ```
-   - Checks for missing required fields.
-   - CHek for dupliate names
-
-
-6. **Promote modules to `./src`**
+   - fix invalid if any
+     
+5. **Promote modules to `./src`**
    - Move ready modules from `staging/` to `src/` as defined in `.conf`.
    - run
      ```sh
      ./tools/20_promote_module.sh
      ```
-7. **Generate Documents from metadata**
+6. **Generate Documents from metadata**
    - run
      ```sh
      ./tools/tools/30_docstring.sh
      ```
-8. **Generate json object**
+7. **Generate json object**
    - Used for ./tools/GUI/modules_browser.*`
    - run
      ```sh
@@ -55,7 +53,7 @@ This guide covers the **practical workflow** for contributing modules to confign
       ```
    - generates a json object
    - injets json object into modules-brouser.hmtl for use with go and weserver
-5. **Consolidate (for maintainers)**
+8. **Consolidate (for maintainers)**
    - Flatten `src/` modules into `lib/` as needed for releases.
    - run
      ```sh
