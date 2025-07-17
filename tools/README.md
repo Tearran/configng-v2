@@ -50,9 +50,9 @@ This guide covers the **practical workflow** for contributing modules to confign
 8. **Generate json object**
    - Used for ./tools/GUI/modules_browser.*`
    - run
-   ```sh
-   ./tools/35_web_docs.sh"
-   ```
+     ```sh
+      ./tools/35_web_docs.sh"
+      ```
    - generates a json object
    - injets json object into modules-brouser.hmtl for use with go and weserver
 5. **Consolidate (for maintainers)**
