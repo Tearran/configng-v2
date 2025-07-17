@@ -38,11 +38,11 @@ This guide covers the **practical workflow** for contributing modules to confign
      ```sh
      ./tools/20_promote_module.sh
      ```
-5. ***Generate Documents
+5. **Generate Documents**
      ```sh
      ./tools/tools/30_docstring.sh
     ```
-6. **Generate JSON and html for `./tools/GUI/*`
+6. **Generate JSON and html for `./tools/GUI/*`**
    ```sh
    ./tools/35_web_docs.sh"
    ```
