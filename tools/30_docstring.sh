@@ -71,7 +71,7 @@ get_summary() {
 	awk 'NR>1 && NF && $0 !~ /^#/' "$md" | head -n1
 }
 
-# Generate per-module docs from .sh and .conf
+# generate_module_docs creates markdown documentation files for each shell module by extracting metadata, copying associated images, and including usage help, outputting them to the documentation directory.
 generate_module_docs() {
 	rm -rf "$DOC_ROOT"
 	mkdir -p "$DOC_ROOT"
@@ -93,7 +93,7 @@ generate_module_docs() {
 	done < <(find_modules)
 }
 
-# Generate a grouped index in ./docs/README.md using parent and group
+# generate_docs_index creates a grouped index in ./docs/README.md, organizing module documentation links by parent and group with summaries.
 generate_docs_index() {
 	echo "# Module Documentation" > "$DOC_ROOT/README.md"
 	echo >> "$DOC_ROOT/README.md"
@@ -175,6 +175,7 @@ show_help() {
 	echo "  -h, --help    Show this help message and exit"
 }
 
+# main is the entry point for the script, handling command-line arguments to display help or generate module documentation and an index.
 main() {
 	case "$1" in
 		-h|--help)

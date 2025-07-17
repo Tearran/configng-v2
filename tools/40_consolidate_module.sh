@@ -159,6 +159,7 @@ _write_arrays() {
 
 
 
+# consolidate_module dispatches commands to consolidate source files, process configuration files, and generate associative arrays based on the specified operation.
 consolidate_module() {
 	local cmd="${1:-all}"
 	case "$cmd" in

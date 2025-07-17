@@ -148,6 +148,7 @@ _conf_to_json() {
 '
 }
 
+# web_docs is the main entry point for generating HTML documentation by injecting JSON data into an HTML template, or displaying usage information if requested.
 web_docs(){
 	case "${1:-}" in
 		-h|--help|help)
