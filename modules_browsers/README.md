@@ -5,7 +5,7 @@ This directory contains scripts and utilities for exploring and interacting with
 ## Contents
 
 - `modules_browser.go` — Go program that launches a desktop window (`webview`) showing the interactive modules browser (served from `modules_browser.html`).
-- `modules_browser.html` — Single-page web interface (auto-generated, do not edit directly) for browsing all module features. Run `./tools/35_web_docs.sh` to regenerate after editing source metadata.
+- `modules_browser.html` — Single-page web interface (auto-generated, do not edit directly) for browsing all module features. Run `./workflow/35_web_docs.sh` to regenerate after editing source metadata.
 - `modules_browser.py` — Python/Tkinter GUI for browsing modules and viewing feature details from `modules_metadata.json`.
 - `modules_browser.sh` — Bash+Zenity dialog browser for modules, requiring `jq` and `zenity`. Lets you select category/group/feature and view details in a graphical dialog.
 - `modules_metadata.json` — Machine-readable metadata file containing all available module features, options, and descriptions. Used by all browsers above.
@@ -17,7 +17,7 @@ This directory contains scripts and utilities for exploring and interacting with
 
 ### HTML Browser
 
-1. Ensure `modules_browser.html` and `modules_metadata.json` are present (regenerate with `./tools/35_web_docs.sh` if needed).
+1. Ensure `modules_browser.html` and `modules_metadata.json` are present (regenerate with `./workflow/35_web_docs.sh` if needed).
 2. Open `modules_browser.html` in any web browser **or**:
    - Run `go run modules_browser.go` for a desktop app window (requires Go and the `webview` Go module).
    - Use `web-server.go` or `web-server.py` to serve the directory, then visit [http://localhost:8080/modules_browser.html](http://localhost:8080/modules_browser.html).
