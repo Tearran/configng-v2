@@ -93,20 +93,6 @@ generate_module_docs() {
 	done < <(find_modules)
 }
 
-# Generate a flat index of all docs in ./docs/INDEX.md
-generate_docs_flat_index() {
-	echo "# Module Documentation" > "$DOC_ROOT/INDEX.md"
-	echo >> "$DOC_ROOT/INDEX.md"
-	i=1
-	for md in "$DOC_ROOT"/*.md; do
-		[[ "$md" == "$DOC_ROOT/INDEX.md" ]] && continue
-		mod_name="$(basename "$md" .md)"
-		summary="$(get_summary "$md")"
-		echo "${i}. [${mod_name}](./${mod_name}.md)${summary:+ — $summary}" >> "$DOC_ROOT/INDEX.md"
-		((i++))
-	done
-}
-
 # Generate a grouped index in ./docs/README.md using parent and group
 generate_docs_index() {
 	echo "# Module Documentation" > "$DOC_ROOT/README.md"
@@ -197,13 +183,11 @@ main() {
 			;;
 		""|*)
 			generate_module_docs
-			#generate_docs_flat_index
 			generate_docs_index
 			#_conf_to_json > $DOC_ROOT/modules_metadata.json
 			#echo "Generated ./docs/modules_metadata.json"
 			;;
 	esac
-
 
 }
 

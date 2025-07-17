@@ -165,4 +165,6 @@ web_docs(){
 	esac
 }
 
-web_docs "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	web_docs "$@"
+fi
