@@ -25,14 +25,14 @@ This directory contains scripts and utilities for exploring and interacting with
 ### Python GUI
 
 ```sh
-cd tools/GUI
+cd modules_browsers
 python3 modules_browser.py
 ```
 
 ### Bash+Zenity Browser
 
 ```sh
-cd tools/GUI
+cd modules_browsers
 bash modules_browser.sh
 ```
 
@@ -41,14 +41,14 @@ Requires `jq` and `zenity` (`sudo apt install jq zenity`).
 ### Go HTTP Server
 
 ```sh
-cd tools/GUI
+cd modules_browsers
 go run web-server.go
 ```
 
 ### Python HTTP Server
 
 ```sh
-cd tools/GUI
+cd modules_browsers
 python3 web-server.py
 ```
 
