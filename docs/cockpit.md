@@ -1,11 +1,10 @@
 # cockpit
-
-![cockpit](cockpit.png)
-
 Web-based administrative interface for managing Linux servers.
 
 ## About
 Cockpit provides an easy-to-use, web-based graphical interface for system administration tasks such as managing users, services, storage, networking, and system updates. This module integrates Cockpit with Armbian Config V3, allowing users to install, remove, enable, disable, start, stop, and check the status of Cockpit directly from the config-ng menu or CLI.
+
+![cockpit image](./cockpit.png)
 
 ## Usage
 ~~~bash

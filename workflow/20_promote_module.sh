@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Promote modules from ./staging to their src/ destinations and images to docs/
+# Promote modules from ./staging to their src/ destinations, including images
 promote_module() {
 	for sh_file in ./staging/*.sh; do
 		[[ -f "$sh_file" ]] || continue
@@ -27,12 +27,12 @@ promote_module() {
 			mv "$sh_file" "$dest_dir/"
 			mv "$conf_file" "$dest_dir/"
 
-			# Move any matching image files to ./docs/
+			# Move any matching image files to the module destination directory
 			for ext in png jpg jpeg gif svg; do
 				img_file="./staging/${base_name}.${ext}"
 				if [[ -f "$img_file" ]]; then
-					echo "Moving image: $img_file to ./docs/"
-					mv "$img_file" ./docs/
+					echo "Moving image: $img_file to $dest_dir/"
+					mv "$img_file" "$dest_dir/"
 				fi
 			done
 		else
