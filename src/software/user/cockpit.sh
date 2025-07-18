@@ -37,8 +37,6 @@ EOF
 }
 
 cockpit() {
-
-
 	case "${1:-}" in
 		install)
 			echo "Installing Cockpit..."
