@@ -93,25 +93,24 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trace "loading Yes No Box module"
 	source src/core/interface/yes_no_box.sh || exit 1
 
-	trace "Loading message box module"
+	trace "Loading OK box module"
 	source src/core/interface/ok_box.sh || exit 1
+
+	trace "Loading info box module"
+	source src/core/interface/info_box.sh || exit 1
 
 	trace "Checking for Admin privileges"
 	# Check if not root and first argument is empty
-	if [[ $EUID != 0 && -z ${1:-} ]]; then
-		ok_box <<< "this module requires root privileges"
-		trace "User is not root, exiting"
-		trace total
-		exit 1
-	elif [[ $EUID != 0 && "${1:-}" == "help" ]]; then
-		trace "User requested help, but is not root"
-		trace "showing help message"
-		_about_net_render
-		trace total
-		exit 0
-	fi
 
 	trace "Loading submenu for net_render module"
+		if [[ "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
+		echo "This module requires root privileges (use sudo)."
+		trace "User is not root, exiting with help message"
+		_about_net_render
+		trace total
+		exit 1
+	fi
+
 	[[ ! ${1:-} ]] && submenu net_render || net_render "$@"
 	trace total
 	exit 0
