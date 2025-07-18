@@ -115,17 +115,16 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trace "Loading info box module"
 	source src/core/interface/info_box.sh || exit 1
 
-	trace "Checking for Admin privileges"
-	# Check if not root and first argument is empty
+	trace "Check if not root and first argument is empty"
 
-	trace "Loading submenu for net_render module"
+
 	if [[ -z "$CI" && "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
 		echo "This module requires root privileges (use sudo)."
-		trace "User is not root, exiting with help message"
-		_about_cockpit
+		echo "User is not root, exiting"
 		trace total
 		exit 1
 	else
+		trace "Loading submenu for cockpit module"
 		[[ ! ${1:-} ]] && submenu cockpit || cockpit "$@"
 		trace total
 		exit 0

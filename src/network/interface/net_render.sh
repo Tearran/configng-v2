@@ -75,7 +75,7 @@ EOF
 ##---------- Start DEMO/test code block
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	TITLE="${TITLE:-"net render"}" # title for dialog boxes
+	TITLE="${TITLE:-"net_render"}" # title for dialog boxes
 	DIALOG=${DIALOG:-whiptail} # options whiptail dialog
 
 	# Load trace module
@@ -99,21 +99,19 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trace "Loading info box module"
 	source src/core/interface/info_box.sh || exit 1
 
-	trace "Checking for Admin privileges"
-	# Check if not root and first argument is empty
+	trace "Check if not root and first argument is empty"
 
-	trace "Loading submenu for net_render module"
-	if [[ "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
+	if [[ -z "$CI" && "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
 		echo "This module requires root privileges (use sudo)."
-		trace "User is not root, exiting with help message"
-		_about_net_render
+		echo "User is not root, exiting"
 		trace total
 		exit 1
+	else
+		trace "Loading submenu for net_render module"
+		[[ ! ${1:-} ]] && submenu net_render || net_render "$@"
+		trace total
+		exit 0
 	fi
-
-	[[ ! ${1:-} ]] && submenu net_render || net_render "$@"
-	trace total
-	exit 0
 fi
 
 ##------------- End DEMO/test code block
