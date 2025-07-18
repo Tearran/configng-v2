@@ -75,11 +75,13 @@ EOF
 ##---------- Start DEMO/test code block
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	TITLE="${TITLE:-net_render}" # title for dialog boxes
+	TITLE="${TITLE:-"net render"}" # title for dialog boxes
 	DIALOG=${DIALOG:-whiptail} # options whiptail dialog
+
 	# Load trace module
 	TRACE="eurt" # Any non null will enable trace output
 	source src/core/initialize/trace.sh || exit 1
+
 	# start trace checkpoint timer
 	trace reset
 	trace "Loaded and started trace module"
@@ -94,8 +96,20 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	trace "Loading message box module"
 	source src/core/interface/ok_box.sh || exit 1
 
-	trace "Loading Checking for Admin privileges"
-	[[ $EUID != 0 ]] && ok_box <<< "this module requires root privileges" && exit 1
+	trace "Checking for Admin privileges"
+	# Check if not root and first argument is empty
+	if [[ $EUID != 0 && -z ${1:-} ]]; then
+		ok_box <<< "this module requires root privileges"
+		trace "User is not root, exiting"
+		trace total
+		exit 1
+	elif [[ $EUID != 0 && "${1:-}" == "help" ]]; then
+		trace "User requested help, but is not root"
+		trace "showing help message"
+		_about_net_render
+		trace total
+		exit 0
+	fi
 
 	trace "Loading submenu for net_render module"
 	[[ ! ${1:-} ]] && submenu net_render || net_render "$@"
