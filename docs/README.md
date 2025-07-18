@@ -6,11 +6,13 @@
     - [menu_from_options](./menu_from_options.md) — Parse a list_options message and present commands as an interactive menu.
     - [trace](./trace.md) — Lightweight timing and trace message utility for Configng V2 modules.
 - interface
+    - [checklist_box](./checklist_box.md) — Show an interactive ON/OFF checklist from columnar text using dialog, whiptail, or a simple read fallback.
     - [info_box](./info_box.md) — Display a rolling info box with dialog/whiptail; reads and shows lines from stdin or a single message.
     - [input_box](./input_box.md) — Prompt the user for input using whiptail, dialog, or shell fallback; reads prompt from argument or stdin and prints result to stdout.
     - [ok_box](./ok_box.md) — Displays a message to the user using the configured dialog tool.
     - [package](./package.md) — Helpers for bulk packages operations (install, remove, upgrade, etc.)
     - [service](./service.md) — Systemd service management helpers (start stop enable etc.)
+    - [set_colors](./set_colors.md) — Set terminal and whiptail/dialog background colors.
     - [submenu](./submenu.md) — Displays an interactive submenu for module functions based on their help output.
     - [yes_no_box](./yes_no_box.md) — Portable Bash yes/no prompt function supporting whiptail, dialog, or simple shell read fallback.
 
@@ -25,7 +27,4 @@
 ## system
 - login
     - [adjust_motd](./adjust_motd.md) — Adjust welcome screen (motd)
-- ui,terminal
-    - [checklist_box](./checklist_box.md) — Show an interactive ON/OFF checklist from columnar text using dialog, whiptail, or a simple read fallback.
-    - [set_colors](./set_colors.md) — Set terminal and whiptail/dialog background colors.
 
