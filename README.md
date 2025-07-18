@@ -18,7 +18,7 @@ It’s a modular Bash framework that builds on everything we learned from the or
 
 **No hidden runtime logic, no mysterious wrappers.**  
 The code you see is the code that runs—no black boxes.  
-If you want to add or fix something, you can start right away using the tools in `tools/`, with clear validation and self-contained help.
+If you want to add or fix something, you can start right away using the tools in `workflow/`, with clear validation and self-contained help.
 
 **configng-v2** is built to avoid the patchwork and confusion of legacy config tools. It's open, transparent, and ready to grow with the community.  
 If you want to contribute, you’ll find the workflow approachable, the structure predictable, and the docs right where you need them.
@@ -43,19 +43,19 @@ If you want to contribute, you’ll find the workflow approachable, the structur
 ## Contributor Workflow Snapshot
 
 1. **Scaffold:**  
-   `./tools/start_here.sh newmod`
+   `./workflow/start_here.sh newmod`
 2. **Develop & Document:**  
    Edit `.sh`, `.conf` in `staging/` optional 250x250 logo image optional 
 3. **Validate:**  
-   `./tools/10_validate_module.sh`  
+   `./workflow/10_validate_module.sh`  
 4. **Promote:**  
-   `./tools/20_promote_module.sh`  
+   `./workflow/20_promote_module.sh`  
 5. **Generate module docs:**  
-   `./tools/25_docstring.sh`  
+   `./workflow/25_docstring.sh`  
 6. **Generate doc index:**  
-   `./tools/26_docstring_index.sh`  
+   `./workflow/26_docstring_index.sh`  
 7. **Consolidate:** Prepare release by flattening to `lib/`  
-   `./tools/30_consolidate_module.sh`
+   `./workflow/30_consolidate_module.sh`
 
 Tabs only, keep it flat, and a help message is required for each module.
 
@@ -66,4 +66,4 @@ Tabs only, keep it flat, and a help message is required for each module.
 
 ---
 
-*See `tools/README.md` and `CONTRIBUTING.md` for details. Or just run `tools/start_here.sh` and get started!*
+*See `workflow/README.md` and `CONTRIBUTING.md` for details. Or just run `workflow/start_here.sh` and get started!*
