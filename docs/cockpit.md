@@ -1,4 +1,7 @@
 # cockpit
+
+![cockpit](cockpit.png)
+
 Web-based administrative interface for managing Linux servers.
 
 ## About
