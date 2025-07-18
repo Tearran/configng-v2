@@ -25,4 +25,7 @@
 ## system
 - login
     - [adjust_motd](./adjust_motd.md) — Adjust welcome screen (motd)
+- ui,terminal
+    - [checklist_box](./checklist_box.md) — Show an interactive ON/OFF checklist from columnar text using dialog, whiptail, or a simple read fallback.
+    - [set_colors](./set_colors.md) — Set terminal and whiptail/dialog background colors.
 
