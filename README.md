@@ -15,22 +15,6 @@ Looking for what this project can do?
 
 ---
 
-## 🛠 How Documentation is Generated
-
-Documentation is **auto-generated** from the source files in `./src/` using our scripts.  
-To update documentation after adding or editing a module, just run:
-
-```bash
-./workflow/30_docstring.sh
-```
-
-This will:
-- Build per-module docs in `./docs/`
-- Update the main documentation index at `./docs/README.md`
-- Copy images and metadata automatically
-
----
-
 ## 🚀 Browsing Modules
 
 - Use [docs/README.md](./docs/README.md) to see all available modules.
@@ -41,7 +25,7 @@ This will:
 
 ## 📦 About configng-v2
 
-configng-v2 is an upgraded, modular configuration system inspired by [armbian/configng](https://github.com/armbian/configng), but redesigned for clarity, maintainability, and user-friendly documentation.
+configng-v2 is proof of consept, modular metadat parsed documentation and system configuration utility inspired by [armbian/configng](https://github.com/armbian/configng), but redesigned metadata usablity for user freindly document clarity, scafolding for ease of developing modules, validation for maintainability, and an open approach to contribution. The goal is to make configuration more transparent, easier to document, and simpler for anyone to extend
 
 ---
 
