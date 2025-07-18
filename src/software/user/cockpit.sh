@@ -88,10 +88,48 @@ cockpit() {
 	esac
 }
 
+##---------- Start DEMO/test code block
 
-# DEMO Menu Interface
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	# DEMO submenu integration
-	source lib/armbian-config/core.sh
-	cockpit "$@"
+	TITLE="${TITLE:-"Cockpit"}" # title for dialog boxes
+	DIALOG=${DIALOG:-whiptail} # options whiptail dialog
+
+	# Load trace module
+	TRACE="eurt" # Any non null will enable trace output
+	source src/core/initialize/trace.sh || exit 1
+
+	# start trace checkpoint timer
+	trace reset
+	trace "Loaded and started trace module"
+	trace "Start trace comments"
+
+	trace "Loading submenu module"
+	source src/core/interface/submenu.sh || exit 1
+
+	trace "loading Yes No Box module"
+	source src/core/interface/yes_no_box.sh || exit 1
+
+	trace "Loading OK box module"
+	source src/core/interface/ok_box.sh || exit 1
+
+	trace "Loading info box module"
+	source src/core/interface/info_box.sh || exit 1
+
+	trace "Checking for Admin privileges"
+	# Check if not root and first argument is empty
+
+	trace "Loading submenu for net_render module"
+	if [[ "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
+		echo "This module requires root privileges (use sudo)."
+		trace "User is not root, exiting with help message"
+		_about_cockpit
+		trace total
+		exit 1
+	fi
+
+	[[ ! ${1:-} ]] && submenu cockpit || cockpit "$@"
+	trace total
+	exit 0
 fi
+
+##------------- End DEMO/test code block
