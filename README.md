@@ -25,7 +25,7 @@ Looking for what this project can do?
 ## 🗂 Module Browsers
 
 Module browsers are proof-of-concept GUI applications that use JSON to display and interact with modules.   
-Try the live demo at [GitHub Pages](https://tearran.github.io/configng-v2/) or documentation [modules_browsers](https://github.com/Tearran/configng-v2/blob/main/modules_browsers/README.md)
+Try the live demo at [GitHub Pages](https://tearran.github.io/configng-v2/index.html) or documentation [modules_browsers](https://github.com/Tearran/configng-v2/blob/main/modules_browsers/README.md)
 
 ---
 
