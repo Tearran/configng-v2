@@ -119,7 +119,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# Check if not root and first argument is empty
 
 	trace "Loading submenu for net_render module"
-	if [[ "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
+	if [[ -z "$CI" && "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
 		echo "This module requires root privileges (use sudo)."
 		trace "User is not root, exiting with help message"
 		_about_cockpit
