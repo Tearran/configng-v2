@@ -125,11 +125,12 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 		_about_cockpit
 		trace total
 		exit 1
+	else
+		[[ ! ${1:-} ]] && submenu cockpit || cockpit "$@"
+		trace total
+		exit 0
 	fi
 
-	[[ ! ${1:-} ]] && submenu cockpit || cockpit "$@"
-	trace total
-	exit 0
 fi
 
 ##------------- End DEMO/test code block
