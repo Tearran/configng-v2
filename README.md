@@ -1,6 +1,13 @@
 # configng-v2
 
-**Welcome to the configng-v2 modular configuration system!**
+Welcome to the configng-v2 modular metadata and configuration system!
+
+---
+
+## 📦 About configng-v2
+
+configng-v2 is a proof-of-concept modular utility for metadata-parsed documentation (outputting to `md` and `json`) and system configuration, inspired by [armbian/configng](https://github.com/armbian/configng). It features redesigned metadata usability for user-friendly documentation clarity, scaffolding for easier module development, validation for maintainability, and an open approach to contribution. The goal is to make configuration more transparent, easier to document, and simpler for anyone to extend.
+
 
 ---
 
@@ -15,19 +22,13 @@ Looking for what this project can do?
 
 ---
 
-## 🚀 Browsing Modules
+## 🗂 Module Browsers
 
-- Use [docs/README.md](./docs/README.md) to see all available modules.
-- Click any module for detailed documentation and usage.
-- Images and extended descriptions help you choose the right tool.
-
----
-
-## 📦 About configng-v2
-
-configng-v2 is proof of consept, modular metadat parsed documentation and system configuration utility inspired by [armbian/configng](https://github.com/armbian/configng), but redesigned metadata usablity for user freindly document clarity, scafolding for ease of developing modules, validation for maintainability, and an open approach to contribution. The goal is to make configuration more transparent, easier to document, and simpler for anyone to extend
+Module browsers are proof-of-concept GUI applications that use JSON to display and interact with modules.   
+Try the live demo at [GitHub Pages](https://tearran.github.io/configng-v2/) or documentation [modules_browsers](https://github.com/Tearran/configng-v2/blob/main/modules_browsers/README.md)
 
 ---
+
 
 **Questions or suggestions?  
 Open an issue or check out the docs!**
