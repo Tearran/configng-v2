@@ -74,6 +74,6 @@ EOF
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
-	source lib/armbian-config/core.sh
+	source ./lib/armbian-config/core.sh
 	net_render "$@"
 fi
