@@ -1,69 +1,49 @@
-# configng-v2: Next Generation Armbian Configuration
+# configng-v2
+
+**Welcome to the configng-v2 modular configuration system!**
 
 ---
 
-## Project
+## 📚 Documentation & Module Index
 
-**configng-v2** is the next step for making Armbian system configuration easy, clear, and maintainable—for users, maintainers, and contributors.  
-It’s a modular Bash framework that builds on everything we learned from the original *armbian-config* and *configng*. We’ve stripped away confusing parts and put a focus on transparency, flexibility, and a contributor workflow that actually works.
+Looking for what this project can do?  
+**Start by browsing our [Module Documentation](./docs/README.md)!**
 
-- **For users:**  
-  Every configuration task is a framework module—grouped, focused scripts. All options are visible, easy to use from the CLI, and every module provides a help message.
-- **For contributors:**  
-  The workflow is streamlined:  
-  1. Scaffold a new mini-module with a single command.  
-  2. Develop and test in `staging/`.  
-  3. Validate, document, and promote to production.  
-  4. All scripts use tabs (no mixing), and configs use a flat key=value format.
-
-**No hidden runtime logic, no mysterious wrappers.**  
-The code you see is the code that runs—no black boxes.  
-If you want to add or fix something, you can start right away using the tools in `workflow/`, with clear validation and self-contained help.
-
-**configng-v2** is built to avoid the patchwork and confusion of legacy config tools. It's open, transparent, and ready to grow with the community.  
-If you want to contribute, you’ll find the workflow approachable, the structure predictable, and the docs right where you need them.
+- Every module is documented with its features, usage, and extended description.
+- Images and metadata are included for visual clarity.
+- Modules are grouped by parent and group, so you can easily find related tools.
 
 ---
 
-## Why configng-v2?
+## 🛠 How Documentation is Generated
 
-- Clear split between backend logic and UI—improve either without breaking the other
-- Modular structure—focus on just the part you want to change
-- Tab-indented Bash—no exceptions
-- Flat configs—simple key=value; no nested config logic in modules
-- CLI and TUI options—use it how you want, scriptable and interactive
-- Designed for maintainability and easy onboarding
+Documentation is **auto-generated** from the source files in `./src/` using our scripts.  
+To update documentation after adding or editing a module, just run:
 
-> **Note:**  
-> configng-v2 module configs use a flat key=value format for simplicity.  
-> YAML is used elsewhere in the project where appropriate (for example, for Netplan integration, CI workflows, or packaging), but not as the primary format for configuring modules themselves.
+```bash
+./workflow/30_docstring.sh
+```
 
----
-
-## Contributor Workflow Snapshot
-
-1. **Scaffold:**  
-   `./workflow/start_here.sh newmod`
-2. **Develop & Document:**  
-   Edit `.sh`, `.conf` in `staging/` optional 250x250 logo image optional 
-3. **Validate:**  
-   `./workflow/10_validate_module.sh`  
-4. **Promote:**  
-   `./workflow/20_promote_module.sh`  
-5. **Generate module docs:**  
-   `./workflow/25_docstring.sh`  
-6. **Generate doc index:**  
-   `./workflow/26_docstring_index.sh`  
-7. **Consolidate:** Prepare release by flattening to `lib/`  
-   `./workflow/30_consolidate_module.sh`
-
-Tabs only, keep it flat, and a help message is required for each module.
+This will:
+- Build per-module docs in `./docs/`
+- Update the main documentation index at `./docs/README.md`
+- Copy images and metadata automatically
 
 ---
 
-> We’re not just rewriting old tools—we’re building a system where anyone can jump in, contribute, and trust what’s running on their board.  
-> If you want to help shape the next-gen config tool for Armbian, configng-v2 is open for your ideas, scripts, and docs.
+## 🚀 Browsing Modules
+
+- Use [docs/README.md](./docs/README.md) to see all available modules.
+- Click any module for detailed documentation and usage.
+- Images and extended descriptions help you choose the right tool.
 
 ---
 
-*See `workflow/README.md` and `CONTRIBUTING.md` for details. Or just run `workflow/start_here.sh` and get started!*
+## 📦 About configng-v2
+
+configng-v2 is an upgraded, modular configuration system inspired by [armbian/configng](https://github.com/armbian/configng), but redesigned for clarity, maintainability, and user-friendly documentation.
+
+---
+
+**Questions or suggestions?  
+Open an issue or check out the docs!**
