@@ -156,12 +156,9 @@ web_docs(){
 		*)
 			_conf_to_json > $ROOT_DIR/docs/modules_metadata.json
 			echo "_conf_to_json > $ROOT_DIR/docs/modules_metadata.json"
-			cp $ROOT_DIR/workflow/index.html $ROOT_DIR/docs/index.html
-			echo "cp $ROOT_DIR/workflow/index.html $ROOT_DIR/docs/index.html"
-			# Add auto-generated warning to the copied docs file
 
-			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.json}" "${2:-$ROOT_DIR/workflow/index.html}" "${3:-$ROOT_DIR/modules_browsers/modules_browser.html}"
-			_add_auto_generated_warning "$ROOT_DIR/docs/index.html" "workflow/index.html" "This file is a direct copy of the source template."
+			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.jsosn}" "${2:-$ROOT_DIR/workflow/index.html}" "${3:-$ROOT_DIR/modules_browsers/modules_browser.html}"
+			_add_auto_generated_warning "$ROOT_DIR/docs/modules_browser.html" "workflow/index.html" "This file is a direct copy of the source template."
 			echo "done"
 			;;
 	esac

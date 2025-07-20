@@ -64,20 +64,6 @@
   },
   "core": {
     "initialize": {
-      "menu_from_options": {
-        "feature": "menu_from_options",
-        "description": "Parse a list_options message and present commands as an interactive menu.",
-        "extend_desc": "Displays available commands from a list_options message using whiptail, dialog, or terminal input. Returns the selected command for further processing.",
-        "documents": "true",
-        "options": "command",
-        "contributor": "@Tearran",
-        "maintainer": "true",
-        "arch": "arm64,armhf,x86-64",
-        "require_os": "Debian,Ubuntu,Armbian",
-        "require_kernel": "5.15+",
-        "port": "false",
-        "helpers": "_about_menu_from_options"
-      },
       "list_options": {
         "feature": "list_options",
         "description": "Show available option groups and their usage for configng-v2 modules.",
@@ -132,6 +118,20 @@
         "reset": "Start a new timer",
         "total": "Prints total time",
         "<string>": "A echo wrapper to note trace placement"
+      },
+      "submenu": {
+        "feature": "submenu",
+        "description": "Parse a list_options message and present commands as an interactive menu.",
+        "extend_desc": "Displays available commands from a list_options message using whiptail, dialog, or terminal input. Returns the selected command for further processing.",
+        "documents": "true",
+        "options": "command",
+        "contributor": "@Tearran",
+        "maintainer": "true",
+        "arch": "arm64,armhf,x86-64",
+        "require_os": "Debian,Ubuntu,Armbian",
+        "require_kernel": "5.15+",
+        "port": "false",
+        "helpers": "_about_submenu"
       }
     },
     "interface": {
@@ -222,18 +222,6 @@
         "require_kernel": "5.15+",
         "port": "false",
         "helpers": "_about_ok_box"
-      },
-      "submenu": {
-        "feature": "submenu",
-        "description": "Displays an interactive submenu for module functions based on their help output.",
-        "extend_desc": "Parses the help message of a given module and presents an interactive menu via dialog, whiptail, or CLI prompt.",
-        "options": "<module_name help>",
-        "contributor": "@tearran",
-        "arch": "arm64,armhf,x86-64",
-        "require_os": "Debian,Ubuntu,Armbian",
-        "require_kernel": "5.15+",
-        "port": "false",
-        "helpers": "_about_submenu"
       },
       "yes_no_box": {
         "feature": "yes_no_box",
