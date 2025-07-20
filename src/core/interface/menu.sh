@@ -18,16 +18,6 @@ menu() {
 }
 
 _about_menu() {
-	cat <<-EOF
-	Usage: menu <command-or-module> [args...]
-	Commands:
-		help	- Show this help.
-	<function_name>	- Show the interactive menu for a module.
-	EOF
-}
-
-
-_about_menu() {
 	cat <<EOF
 Usage: menu <command>
 
