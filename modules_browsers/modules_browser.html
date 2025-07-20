@@ -330,7 +330,7 @@ source and generated files. See issue #72 for details.
     }
   },
   "software": {
-    "user": {
+    "management": {
       "cockpit": {
         "feature": "cockpit",
         "description": "Web-based administrative interface for managing Linux servers.",
@@ -374,7 +374,7 @@ source and generated files. See issue #72 for details.
         "description": "Show available option groups and their usage for configng-v2 modules.",
         "extend_desc": "Lists features/options for core, system, network, and software modules. Outputs usage and example commands for each group.",
         "documents": "true",
-        "options": "main,core,system,software,network,help",
+        "options": "all,core,system,software,network,help",
         "contributor": "@tearran",
         "maintainer": "false",
         "arch": "arm64,armhf,x86-64",
@@ -385,7 +385,28 @@ source and generated files. See issue #72 for details.
         "system": "System utilities and login helpers",
         "software": "Software install and management modules",
         "network": "Network management modules",
-        "all": "List All user modules (default)"
+        "all": "List All user modules (default)",
+        "Kernel": "Alternative kernels, headers, overlays, bootenv",
+        "Storage": "Install to internal media, ZFS, NFS, read-only rootfs",
+        "Access": "Manage SSH daemon options, enable 2FA",
+        "User": "Change shell, adjust MOTD",
+        "Updates": "OS updates and distribution upgrades",
+        "Armbian": "Armbian infrastructure services",
+        "Backup": "Backup solutions for your data",
+        "Containers": "Docker containerization and KVM virtual machines",
+        "DNS": "Network-wide ad blockers servers",
+        "Database": "SQL database servers and web interface managers",
+        "DevTools": "Applications and tools for developmentSS",
+        "Downloaders": "Download apps for movies, TV shows, music and subtitles",
+        "Finance": "Manage your finances",
+        "HomeAutomation": "Home Automation for control home appliances",
+        "Management": "Remote File & Management tools",
+        "Media": "Media servers, organizers and editors",
+        "Monitoring": "Real-time monitoring, collecting metrics, up-time status",
+        "Netconfig": "Console network tools for measuring load and bandwidth",
+        "Printing": "Tools for printing and 3D printing",
+        "VPN": "Virtual Private Network tools",
+        "WebHosting": "Web server LEMP reverse proxy Let's Encrypt SSLS"
       },
       "trace": {
         "feature": "trace",
@@ -446,7 +467,7 @@ source and generated files. See issue #72 for details.
       "checklist_box": {
         "feature": "checklist_box",
         "description": "Show an interactive ON/OFF checklist from columnar text using dialog, whiptail, or a simple read fallback.",
-        "extend_desc": "\",
+        "extend_desc": "extend_desc=This module provides a checklist UI for enabling/disabling items in scripts, compatible with dialog, whiptail, and a fallback read-mode for non-interactive terminals. Pass columnar text (item, description, status) via stdin or argument, and checklist_box will present an interactive selection. Outputs the selected items as a space-separated list for further scripting or configuration.",
         "options": "help,checklist_box",
         "contributor": "@Tearran",
         "arch": "arm,x86_64,aarch64",
@@ -456,6 +477,18 @@ source and generated files. See issue #72 for details.
         "helpers": "_about_checklist_box",
         "help": "Show help for this module",
         "checklist_box": "Show an interactive checklist and output selected items"
+      },
+      "menu": {
+        "feature": "menu",
+        "description": "Displays an interactive menu for module functions based on their help output.",
+        "extend_desc": "Parses the help message of a given module and presents an interactive menu via dialog, whiptail, or CLI prompt.",
+        "options": "<module_name help>",
+        "contributor": "@tearran",
+        "arch": "arm64,armhf,x86-64",
+        "require_os": "Debian,Ubuntu,Armbian",
+        "require_kernel": "5.15+",
+        "port": "false",
+        "helpers": "_about_menu"
       },
       "input_box": {
         "feature": "input_box",

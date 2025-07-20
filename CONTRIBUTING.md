@@ -23,8 +23,8 @@ the intended upgrade to [armbian/configng](https://github.com/armbian/configng).
 - `staging/` — Where modules are created and refined before integration.
 - `src/` — Production-ready source files (promoted from staging).
 - `lib/` — Consolidated, production-assembled Bash libraries (flattened from `src/`).
-- `tools/` — Scripts for scaffolding, promotion, consolidation, packaging, and workflow automation.
-	- Module scaffold: [`tools/00_setup_module.sh`](./tools/00_setup_module.sh)
+- `workflow/` — Scripts for scaffolding, promotion, consolidation, packaging, and workflow automation.
+	- Module scaffold: [`workflow/00_setup_module.sh`](./workflow/00_setup_module.sh)
 
 Each module consists of:
 - `modulename.sh` — The Bash implementation.
@@ -42,7 +42,7 @@ Each module follows a strict flow from creation to packaging:
 Create a new module scaffold:
 
 ```sh
-./tools/00_setup_module.sh <modulename>
+./workflow/00_setup_module.sh <modulename>
 ```
 
 This generates:
@@ -58,7 +58,7 @@ This generates:
 
 ### Step 3: Verify & Test
 
-- Run `./tools/02_verify_pull_request.sh` to check your files in `staging/` for formatting, required fields, and basic issues.
+- Run `./workflow/02_verify_pull_request.sh` to check your files in `staging/` for formatting, required fields, and basic issues.
 - Manually verify module behavior in `staging/` for correctness and compatibility.
 - GitHub Actions runs `shellcheck`, formatting checks, and required field validation on pull requests.
 
@@ -142,15 +142,15 @@ The functions and code within each module that perform actual system operations 
 The core logic that loads, parses, and dispatches modules. This includes scaffolding, option parsing, and coordination between modules, but is not directly user-facing.
 
 **Module Scaffold**  
-The baseline template and directory structure used to create new modules. (See: [`tools/00_setup_module.sh`](./tools/00_setup_module.sh))
+The baseline template and directory structure used to create new modules. (See: [`workflow/00_setup_module.sh`](./workflow/00_setup_module.sh))
 
 ---
 
 ## TL;DR
 
-- Step 1: `./tools/00_setup_module.sh <modulename>`
-- Step 2: `./tools/02_verify_pull_request.sh`
-- Step 3: Make a pull request
+- Step 1: `./workflow/00_start_here.sh <modulename>`
+- Step 2: `./workflow/10_validate_module.sh`
+- Step 3: `./workflow/20_promote_module.sh`
 - Step 4: Fix failing Checks if needed
 - Step 5: Request review
 

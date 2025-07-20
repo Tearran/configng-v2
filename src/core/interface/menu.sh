@@ -1,46 +1,36 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# submenu - Menu dispatcher/helper for config-v3 modules
+# menu - Menu dispatcher/helper for config-v3 modules
 
-submenu() {
+menu() {
 	local cmd="${1:-help}"
 	shift || true
 
 	case "$cmd" in
 		help|-h|--help)
-			_about_submenu
+			_about_menu
 			;;
 		*)
-			_submenu "$cmd" "$@"
+			_menu "$cmd" "$@"
 			;;
 	esac
 }
 
-_about_submenu() {
-	cat <<-EOF
-	Usage: submenu <command-or-module> [args...]
-	Commands:
-		help	- Show this help.
-	<function_name>	- Show the interactive submenu for a module.
-	EOF
-}
-
-
-_about_submenu() {
+_about_menu() {
 	cat <<EOF
-Usage: submenu <command>
+Usage: menu <command>
 
 Commands:
-	<function_name>	- Show the interactive submenu for a module.
+	<function_name>	- Show the interactive menu for a module.
 	help        - Show this help message
 
 Examples:
 	# Run the test operation
-	submenu cockpit
+	menu cockpit
 
 	# Show help
-	submenu help
+	menu help
 
 Notes:
 	- Replace 'foo' and 'bar' with real commands for your module.
@@ -52,17 +42,18 @@ EOF
 }
 
 
-_submenu() {
+_menu() {
 	local function_name="${1:-}"
+	local cmd="${2:-help}"
 	shift || true
 
 	if [[ -z "$function_name" ]]; then
-		echo "No function specified for submenu."
+		echo "No function specified for menu."
 		return 1
 	fi
 
 	local help_message
-	help_message=$("$function_name" help 2>/dev/null || true)
+	help_message=$("$function_name" "$cmd" 2>/dev/null || true)
 	if [[ -z "$help_message" ]]; then
 		echo "No help message from: $function_name"
 		return 1
@@ -71,7 +62,9 @@ _submenu() {
 	local menu_items=()
 	local item_keys=()
 	while IFS= read -r line; do
-		if [[ $line =~ ^[[:space:]]*([a-zA-Z0-9_-]+)[[:space:]]*-\s*(.*)$ ]]; then
+
+		if [[ $line =~ ^[[:space:]]*([a-zA-Z0-9_-]+)[[:space:]]*-[[:space:]]*(.*)$ ]]; then
+
 			menu_items+=("${BASH_REMATCH[1]} - ${BASH_REMATCH[2]}")
 			item_keys+=("${BASH_REMATCH[1]}")
 		fi
@@ -86,14 +79,14 @@ _submenu() {
 			done
 			choice=$(dialog --title "${function_name^}" --menu "Choose an option:" 0 80 9 "${dialog_options[@]}" 2>&1 >/dev/tty)
 			;;
-		whiptail)
+		whiptail|*)
 			local whiptail_options=()
 			for ((i=0; i<${#item_keys[@]}; i++)); do
 				whiptail_options+=("${item_keys[i]}" "${menu_items[i]#*- }")
 			done
 			choice=$(whiptail --title "${function_name^}" --menu "Choose an option:" 0 80 9 "${whiptail_options[@]}" 3>&1 1>&2 2>&3)
 			;;
-		read|*)
+		read)
 			echo "Available options:"
 			echo "0. Cancel"
 			for ((i=0; i<${#menu_items[@]}; i++)); do
@@ -136,7 +129,7 @@ _submenu() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DEBUG=${DEBUG:-1}
-	DIALOG=${DIALOG:-read}
-	submenu "$@"
+	DIALOG=${DIALOG:-whiptail}
+	menu "$@"
 fi
 

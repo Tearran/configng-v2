@@ -12,7 +12,7 @@ commands:
 	system    - System utilities and login helpers
 	software  - Software install and management modules
 	network   - Network management modules
-	all       - List All user modules (default)
+	all       - List All user modules
 
 Examples:
 	# List all available modules

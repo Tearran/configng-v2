@@ -11,7 +11,7 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Set library directory relative to project root
 LIB_DIR="$ROOT_DIR/lib/armbian-config"
-
+DIALOG="${DIALOG:-whiptail}"
 # Load core logic
 source "$LIB_DIR/core.sh" || exit 1
 
@@ -25,18 +25,16 @@ if [[ -d "$ROOT_DIR/staging" ]]; then
 	# Set trace true for staging development
 	TRACE=true
 	trace "OK: Staging"
-	"$ROOT_DIR/tools/30_consolidate_module.sh"
+	"$ROOT_DIR/workflow/40_consolidate_module.sh"
 	for file in "$ROOT_DIR"/staging/*.sh; do
 		# Only source if a matching file exists (avoid globbing if no .sh files)
 		[[ -f "$file" ]] && source "$file"
-
 	done
 fi
 
 ### END source staging/ ###
 
 source "$LIB_DIR/software.sh" || exit 1
-
 trace "OK: sourced software modules"
 
 source "$LIB_DIR/network.sh" || exit 1
@@ -68,21 +66,20 @@ case "$user_cmd" in
 		trace "OK: list_options $user_opt"
 		;;
 	"--menu"|"-m"|"")
-		DIALOG="${DIALOG:-whiptail}"
-		if ! command -v menu_from_options &>/dev/null; then
-			echo "ERR: menu_from_options not found" >&2
-			exit 1
-		fi
 
-		if ! choice=$(menu_from_options <<< "$(submenu "${2:-list_options}")"); then
-			# user cancelled -> clean exit rather than fall-through
+
+		if choice_text=$(menu "list_options"); then
+			choice=$(menu_from_options <<< "$choice_text") || exit 0
+		else
 			exit 0
 		fi
-		[[ -n "$choice" ]] && submenu "$choice"
+
+		[[ -n "$choice" ]] && menu "$choice"
 		;;
 	*)
-		echo "Error: Unknown command"
-		exit 1
+
+		menu "$@"
+
 		;;
 esac
 
