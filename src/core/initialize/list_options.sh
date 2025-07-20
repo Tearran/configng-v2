@@ -72,7 +72,7 @@ commands:
 	system    - System utilities and login helpers
 	software  - Software install and management modules
 	network   - Network management modules
-	all       - List All user modules (default)
+	all       - List All user modules
 
 Examples:
 	# List all available modules
@@ -95,8 +95,10 @@ EOF
 
 # Main execution block, runs if script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	SCRIPT_DIR="$(dirname "$0")"
-	LIB_DIR="$SCRIPT_DIR/../../../lib/armbian-config"
+	# Get absolute path to the directory containing this script
+	SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+	# Set project root as the parent directory of SCRIPT_DIR
+	ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 	# Clear any existing arrays, then declare new ones
 	unset module_options 2>/dev/null || true
@@ -107,7 +109,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	declare -A module_options
 
 	# Source your arrays file with module metadata
-	source "$LIB_DIR/module_options_arrays.sh" || exit 1
+	source "$ROOT_DIR/lib/armbian-config/module_options_arrays.sh" || exit 1
 
 	# Merge all group arrays into one big associative array
 	_merge_list_options core_options system_options software_options network_options
