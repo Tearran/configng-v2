@@ -187,6 +187,18 @@
         "help": "Show help for this module",
         "checklist_box": "Show an interactive checklist and output selected items"
       },
+      "menu": {
+        "feature": "menu",
+        "description": "Displays an interactive menu for module functions based on their help output.",
+        "extend_desc": "Parses the help message of a given module and presents an interactive menu via dialog, whiptail, or CLI prompt.",
+        "options": "<module_name help>",
+        "contributor": "@tearran",
+        "arch": "arm64,armhf,x86-64",
+        "require_os": "Debian,Ubuntu,Armbian",
+        "require_kernel": "5.15+",
+        "port": "false",
+        "helpers": "_about_menu"
+      },
       "input_box": {
         "feature": "input_box",
         "description": "Prompt the user for input using whiptail, dialog, or shell fallback; reads prompt from argument or stdin and prints result to stdout.",

@@ -75,7 +75,7 @@ cockpit() {
 			echo "Disabling Cockpit at boot (socket)..."
 			systemctl disable cockpit.socket
 			;;
-		help|--help|-h|"")
+		help|--help|-h)
 			_about_cockpit
 			;;
 		*)

@@ -1,6 +1,9 @@
 # checklist_box
 Show an interactive ON/OFF checklist from columnar text using dialog, whiptail, or a simple read fallback.
 
+## About
+extend_desc=This module provides a checklist UI for enabling/disabling items in scripts, compatible with dialog, whiptail, and a fallback read-mode for non-interactive terminals. Pass columnar text (item, description, status) via stdin or argument, and checklist_box will present an interactive selection. Outputs the selected items as a space-separated list for further scripting or configuration.
+
 ## Usage
 ~~~bash
 Usage: checklist_box [<columnar message>]

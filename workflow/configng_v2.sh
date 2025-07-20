@@ -72,7 +72,7 @@ case "$user_cmd" in
 			exit 1
 		fi
 
-		if ! choice=$(menu_from_options <<< "$(submenu "${2:-list_options}")"); then
+		if ! choice=$(menu_from_options <<< "$(menu "list_options")"); then
 			# user cancelled -> clean exit rather than fall-through
 			exit 0
 		fi
@@ -80,7 +80,7 @@ case "$user_cmd" in
 		;;
 	*)
 
-		submenu "$@"
+		menu "$@"
 		#echo "Error: Unknown command"
 		#exit 1
 		;;
