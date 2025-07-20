@@ -78,7 +78,7 @@ _submenu() {
 	done <<< "$help_message"
 
 	local choice=""
-	case "${DIALOG:-read}" in
+	case "${DIALOG:-}" in
 		dialog)
 			local dialog_options=()
 			for ((i=0; i<${#item_keys[@]}; i++)); do
