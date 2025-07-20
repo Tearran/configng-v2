@@ -62,7 +62,9 @@ _menu() {
 	local menu_items=()
 	local item_keys=()
 	while IFS= read -r line; do
-		if [[ $line =~ ^[[:space:]]*([a-zA-Z0-9_-]+)[[:space:]]*-\s*(.*)$ ]]; then
+
+		if [[ $line =~ ^[[:space:]]*([a-zA-Z0-9_-]+)[[:space:]]*-[[:space:]]*(.*)$ ]]; then
+
 			menu_items+=("${BASH_REMATCH[1]} - ${BASH_REMATCH[2]}")
 			item_keys+=("${BASH_REMATCH[1]}")
 		fi
