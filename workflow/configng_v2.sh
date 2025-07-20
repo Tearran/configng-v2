@@ -61,14 +61,16 @@ user_args="${3:-}"
 
 case "$user_cmd" in
 	"--help"|"-h")
-		user_opt="${user_opt:-all}"
+		user_opt="${user_opt:-help}"
 		list_options "$user_opt"
 		trace "OK: list_options $user_opt"
 		;;
 	"--menu"|"-m"|"")
+		user_opt="${user_opt:-help}"
+		trace "OK: list_options $user_opt"
 
-
-		if choice_text=$(menu "list_options"); then
+		if choice_text=$(menu "list_options" "$user_opt"); then
+			trace "OK: menu list"
 			choice=$(submenu <<< "$choice_text") || exit 0
 		else
 			exit 0
@@ -78,7 +80,7 @@ case "$user_cmd" in
 		;;
 	*)
 
-		menu "$@"
+		"$@"
 
 		;;
 esac
