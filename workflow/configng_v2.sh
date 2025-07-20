@@ -67,15 +67,6 @@ case "$user_cmd" in
 		;;
 	"--menu"|"-m"|"")
 
-		if ! command -v menu_from_options &>/dev/null; then
-			echo "ERR: menu_from_options not found" >&2
-			exit 1
-		fi
-
-		#if ! choice=$(menu_from_options <<< "$(menu "list_options")"); then
-		#	# user cancelled -> clean exit rather than fall-through
-		#	exit 0
-		#fi
 
 		if choice_text=$(menu "list_options"); then
 			choice=$(menu_from_options <<< "$choice_text") || exit 0
@@ -88,8 +79,7 @@ case "$user_cmd" in
 	*)
 
 		menu "$@"
-		#echo "Error: Unknown command"
-		#exit 1
+
 		;;
 esac
 
