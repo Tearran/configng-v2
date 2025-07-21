@@ -154,11 +154,12 @@ web_docs(){
 			_about_json2docs
 			;;
 		*)
+			echo "Please wait: Nesting may take a few moments to complete"
 			_conf_to_json > $ROOT_DIR/docs/modules_metadata.json
 			echo "_conf_to_json > $ROOT_DIR/docs/modules_metadata.json"
-
-			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.jsosn}" "${2:-$ROOT_DIR/workflow/index.html}" "${3:-$ROOT_DIR/modules_browsers/modules_browser.html}"
-			_add_auto_generated_warning "$ROOT_DIR/docs/modules_browser.html" "workflow/index.html" "This file is a direct copy of the source template."
+			cp "$ROOT_DIR/workflow/index.html" "$ROOT_DIR/docs/modules_browser.html"
+			json2docs "${1:-$ROOT_DIR/docs/modules_metadata.json}" "${2:-$ROOT_DIR/workflow/index.html}" "${3:-$ROOT_DIR/modules_browsers/modules_browser.html}"
+			_add_auto_generated_warning "$ROOT_DIR/docs/modules_browser.html" "$ROOT_DIR/workflow/index.html" "This file is a direct copy of the source template."
 			echo "done"
 			;;
 	esac
