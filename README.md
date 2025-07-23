@@ -11,6 +11,18 @@ configng-v2 is a proof-of-concept modular utility for metadata-parsed documentat
 
 ---
 
+## 🗺️ Project Roadmap
+
+Want to understand the project's progress and future plans?  
+**Check our [Project Roadmap](./ROADMAP.md)** for detailed milestone tracking!
+
+- View completion status of major development phases
+- See what's been accomplished and what's planned
+- Find ways to contribute to specific milestones
+- Track progress on features like testing framework, UI expansion, and release packaging
+
+---
+
 ## 📚 Documentation & Module Index
 
 Looking for what this project can do?  
