@@ -17,7 +17,7 @@
     - [yes_no_box](./yes_no_box.md) — Portable Bash yes/no prompt function supporting whiptail, dialog, or simple shell read fallback.
 
 ## network
-- interface
+- network
     - [net_render](./net_render.md) — Set or check the current Netplan renderer (NetworkManager or networkd) for all interfaces.
 
 ## software
@@ -25,6 +25,6 @@
     - [cockpit](./cockpit.md) — Web-based administrative interface for managing Linux servers.
 
 ## system
-- login
+- user
     - [adjust_motd](./adjust_motd.md) — Adjust welcome screen (motd)
 
