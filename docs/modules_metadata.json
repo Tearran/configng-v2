@@ -1,6 +1,6 @@
 {
   "system": {
-    "login": {
+    "user": {
       "adjust_motd": {
         "feature": "adjust_motd",
         "description": "Adjust welcome screen (motd)",
@@ -19,7 +19,7 @@
     }
   },
   "network": {
-    "interface": {
+    "network": {
       "net_render": {
         "feature": "net_render",
         "description": "Set or check the current Netplan 'renderer' (NetworkManager or networkd) for all interfaces.",
@@ -80,28 +80,27 @@
         "system": "System utilities and login helpers",
         "software": "Software install and management modules",
         "network": "Network management modules",
-        "all": "List All user modules (default)",
-        "Kernel": "Alternative kernels, headers, overlays, bootenv",
-        "Storage": "Install to internal media, ZFS, NFS, read-only rootfs",
-        "Access": "Manage SSH daemon options, enable 2FA",
-        "User": "Change shell, adjust MOTD",
-        "Updates": "OS updates and distribution upgrades",
-        "Armbian": "Armbian infrastructure services",
-        "Backup": "Backup solutions for your data",
-        "Containers": "Docker containerization and KVM virtual machines",
-        "DNS": "Network-wide ad blockers servers",
-        "Database": "SQL database servers and web interface managers",
-        "DevTools": "Applications and tools for developmentSS",
-        "Downloaders": "Download apps for movies, TV shows, music and subtitles",
-        "Finance": "Manage your finances",
-        "HomeAutomation": "Home Automation for control home appliances",
-        "Management": "Remote File & Management tools",
-        "Media": "Media servers, organizers and editors",
-        "Monitoring": "Real-time monitoring, collecting metrics, up-time status",
-        "Netconfig": "Console network tools for measuring load and bandwidth",
-        "Printing": "Tools for printing and 3D printing",
-        "VPN": "Virtual Private Network tools",
-        "WebHosting": "Web server LEMP reverse proxy Let's Encrypt SSLS"
+        "kernel": "Alternative kernels, headers, overlays, bootenv",
+        "storage": "Install to internal media, ZFS, NFS, read-only rootfs",
+        "access": "Manage SSH daemon options, enable 2FA",
+        "user": "Change shell, adjust MOTD",
+        "updates": "OS updates and distribution upgrades",
+        "armbian": "Armbian infrastructure services",
+        "backup": "Backup solutions for your data",
+        "containers": "Docker containerization and KVM virtual machines",
+        "dns": "Network-wide ad blockers servers",
+        "database": "SQL database servers and web interface managers",
+        "devtools": "Applications and tools for developmentSS",
+        "downloaders": "Download apps for movies, TV shows, music and subtitles",
+        "finance": "Manage your finances",
+        "homeAutomation": "Home Automation for control home appliances",
+        "management": "Remote File & Management tools",
+        "media": "Media servers, organizers and editors",
+        "monitoring": "Real-time monitoring, collecting metrics, up-time status",
+        "netconfig": "Console network tools for measuring load and bandwidth",
+        "printing": "Tools for printing and 3D printing",
+        "vpn": "Virtual Private Network tools",
+        "nebHosting": "Web server LEMP reverse proxy Let's Encrypt SSLS"
       },
       "trace": {
         "feature": "trace",
