@@ -99,31 +99,6 @@ emit_section() {
 	done
 }
 
-
-_process_confs() {
-	local meta section key value
-	while IFS= read -r meta; do
-		[[ -e "$meta" ]] || continue
-		section=""
-		declare -A section_kv=()
-
-		while IFS='=' read -r key value || [[ -n "$key" ]]; do
-			if [[ "$key" =~ ^\[(.*)\]$ ]]; then
-				emit_section "$section" section_kv
-				section="${BASH_REMATCH[1]}"
-				section_kv=()
-				continue
-			fi
-			[[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
-			section_kv["$key"]="$value"
-		done < "$meta"
-
-		emit_section "$section" section_kv
-	done < <(find "$SRC_ROOT" -type f -name '*.conf')
-}
-
-
-
 _process_confs() {
 	while IFS= read -r meta; do
 		[[ -e "$meta" ]] || continue
@@ -158,6 +133,135 @@ _write_arrays() {
 }
 
 
+_process_parent_group_() {
+
+	local conf="./src/core/initialize/list_options.conf"
+	declare -A parent_options
+	declare -A group_options
+
+	current_section=""
+	{
+	echo -e "#\n######## start append descriptions ########\n"
+	while IFS= read -r line || [[ -n "$line" ]]; do
+		# Remove comments and trim
+		line="${line%%#*}"
+		line="${line%%;*}"
+		line="${line#"${line%%[![:space:]]*}"}"
+		line="${line%"${line##*[![:space:]]}"}"
+		[[ -z "$line" ]] && continue
+
+		# Section header
+		if [[ "$line" =~ ^\[(.*)\]$ ]]; then
+			current_section="${BASH_REMATCH[1]}"
+			continue
+		fi
+
+		# Key-value pair
+		if [[ "$line" =~ ^([a-zA-Z0-9_]+)=(.*)$ ]]; then
+			key="${BASH_REMATCH[1]}"
+			val="${BASH_REMATCH[2]}"
+
+			# Parent/group descriptions from [options], [system], [software], etc.
+			case "$current_section" in
+				options|system|software|network|all)
+					group_options["$current_section,$key"]="$val"
+					;;
+				list_options)
+					# Extract parent and group for module
+					[[ "$key" == "parent" ]] && module_parent="$val"
+					[[ "$key" == "group" ]] && module_group="$val"
+					[[ "$key" == "description" ]] && module_desc="$val"
+					;;
+			esac
+		fi
+
+	done < "$conf"
+
+	# Example: output arrays for system_options, software_options, etc.
+	echo -e "\n# core_options\n"
+	echo "core_options[core,description]=\"Core modules and helpers\""
+	echo "core_options[core,$module_group]=\"$module_desc\""
+
+	echo -e "\n# system_options\n"
+	for key in "${!group_options[@]}"; do
+		section="${key%%,*}"
+		name="${key#*,}"
+		[[ "$section" == "system" ]] && echo "system_options[system,$name]=\"${group_options[$key]}\""
+	done
+
+	echo -e "\n#software_options\n"
+	for key in "${!group_options[@]}"; do
+		section="${key%%,*}"
+		name="${key#*,}"
+		[[ "$section" == "software" ]] && echo "software_options[software,$name]=\"${group_options[$key]}\""
+	done
+	echo -e "#\n######## end append descriptions ########\n"
+	} >> "$OUT_FILE"
+	echo "Wrote generated options arrays to $OUT_FILE"
+
+
+}
+
+_process_parent_group() {
+	local conf="./src/core/initialize/list_options.conf"
+	declare -A parent_options
+	declare -A group_options
+
+	local current_section=""
+	local key val
+	local -A module_section
+
+	echo -e "#\n######## start append descriptions ########\n"
+
+	# Parse config file
+	while IFS= read -r line || [[ -n "$line" ]]; do
+		# Clean up line
+		line="${line%%#*}"
+		line="${line%%;*}"
+		line="${line#"${line%%[![:space:]]*}"}"
+		line="${line%"${line##*[![:space:]]}"}"
+		[[ -z "$line" ]] && continue
+
+		# Section header
+		if [[ "$line" =~ ^\[(.*)\]$ ]]; then
+			current_section="${BASH_REMATCH[1]}"
+			continue
+		fi
+
+		# Key-value
+		if [[ "$line" =~ ^([a-zA-Z0-9_]+)=(.*)$ ]]; then
+			key="${BASH_REMATCH[1]}"
+			val="${BASH_REMATCH[2]}"
+			case "$current_section" in
+				options)
+					# Parent descriptions
+					parent_options["$key"]="$val"
+					;;
+				system|software|network|all)
+					# Group descriptions
+					group_options["$current_section,$key"]="$val"
+					;;
+				*)
+					# For completeness, you could handle [list_options] etc here if needed
+					;;
+			esac
+		fi
+	done < "$conf"
+
+	# Emit parent descriptions (system_options[system,description], etc)
+	for parent in "${!parent_options[@]}"; do
+		echo "${parent}_options[${parent},description]=\"${parent_options[$parent]}\""
+	done
+
+	# Emit group descriptions (system_options[system,Kernel], etc)
+	for key in "${!group_options[@]}"; do
+		local section="${key%%,*}"
+		local name="${key#*,}"
+		echo "${section}_options[${section},${name}]=\"${group_options[$key]}\""
+	done
+
+	echo -e "#\n######## end append descriptions ########\n"
+}
 
 consolidate_module() {
 	local cmd="${1:-all}"
@@ -173,6 +277,8 @@ consolidate_module() {
 			_consolidate_src
 			_process_confs
 			_write_arrays
+			_process_parent_group >> "$OUT_FILE"
+			echo "Wrote generated descriptions to $OUT_FILE"
 			;;
 		*)
 			echo "Usage: $0 [consolidate|generate|all]"
