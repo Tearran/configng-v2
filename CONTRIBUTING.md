@@ -3,6 +3,8 @@
 This guide describes the module development and assembly process for **configng-v2**,  
 the intended upgrade to [armbian/configng](https://github.com/armbian/configng).
 
+📋 **For project milestones and roadmap, see [ROADMAP.md](./ROADMAP.md)**
+
 ---
 
 ## 1. Philosophy: Bash-Native Modularity

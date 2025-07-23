@@ -2,6 +2,8 @@
 
 This guide covers the **practical workflow** for contributing modules to configng-v2.  
 
+📋 **For project roadmap and milestone tracking, see [ROADMAP.md](../ROADMAP.md)**  
+
 ---
 
 ## Directory Structure
