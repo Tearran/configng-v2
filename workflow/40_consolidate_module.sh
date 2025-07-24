@@ -5,7 +5,7 @@ set -euo pipefail
 SRC_ROOT="./src"
 OUT_FILE="./lib/armbian-config/module_options_arrays.sh"
 LIB_ROOT="./lib/armbian-config"
-IGNORE_FILES=("readme.sh")
+IGNORE_FILES=("readme.sh" "module-browser.html")
 
 declare -A array_entries
 declare -A group_counts  # For unique id per group

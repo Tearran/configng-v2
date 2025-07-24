@@ -1,20 +1,13 @@
 #!/usr/bin/env bash
 
-# ./array_to_json.sh - Armbian Config V2 module
-# Outputs all parents as a single JSON object (legacy-compatible)
-# The "command" field is a proper array (split on commas)
-# If a parent or group description is missing, it will be marked as ***MISSING DESCRIPTION: [parent,group]***
+# Get absolute path to the directory containing this script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-array_to_json() {
-	case "${1:-}" in
-		help|-h|--help)
-			_about_array_to_json
-			;;
-		*)
-			_array_to_json_main | jq --indent 4 .
-			;;
-	esac
-}
+# Set project root as the parent directory of SCRIPT_DIR
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+LIB_DIR="$ROOT_DIR/lib/armbian-config"
+SRC_ROOT="$ROOT_DIR/src"
+
 _array_to_json_main() {
 	echo '{'
 	echo '	"menu": ['
@@ -202,31 +195,30 @@ EOF
 	echo '}'
 }
 
+
+array_to_json() {
+	case "${1:-}" in
+		help|-h|--help)
+			_about_array_to_json
+			;;
+		*)
+			_array_to_json_main | jq --indent 4 .
+			;;
+	esac
+}
 _about_array_to_json() {
 	cat <<EOF
 Usage: array_to_json <command> [options]
 
 Commands:
-	test        - Run a basic test of the array_to_json module
-	foo         - Example 'foo' operation (replace with real command)
-	bar         - Example 'bar' operation (replace with real command)
 	help        - Show this help message
 
 Examples:
 	# Run the test operation
-	array_to_json test
-
-	# Perform the foo operation with an argument
-	array_to_json foo arg1
+	array_to_json
 
 	# Show help
 	array_to_json help
-
-Notes:
-	- Replace 'foo' and 'bar' with real commands for your module.
-	- All commands should accept '--help', '-h', or 'help' for details, if implemented.
-	- Intended for use with the config-v2 menu and scripting.
-	- Keep this help message up to date if commands change.
 
 EOF
 }
@@ -248,6 +240,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	array_to_json | jq --indent 4 . > "$ROOT_DIR/lib/armbian-config/config.jobs.json"
 	cp "$ROOT_DIR/lib/armbian-config/config.jobs.json" "$ROOT_DIR/modules_browsers/modules_metadata.json"
 	cp "$ROOT_DIR/lib/armbian-config/config.jobs.json" "$ROOT_DIR/docs/modules_metadata.json"
+	cp "$ROOT_DIR/src/module_browser.html" "$ROOT_DIR/docs/index.html"
 fi
 
 ### END ./array_to_json.sh - Armbian Config V2 test entrypoint
