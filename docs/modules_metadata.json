@@ -45,8 +45,10 @@
                     "status": "Stable",
                     "helpers": "_about_net_render",
                     "about": "Provides a simple interface to toggle or display the Netplan network renderer. Does not manage service installation or enablement.",
-                    "condition": "",
-                    "command": []
+                    "condition": "net_render status",
+                    "command": [
+                        "net_render help"
+                    ]
                 }
             ]
         },
@@ -70,8 +72,10 @@
                             "status": "Stable",
                             "helpers": "_about_cockpit",
                             "about": "Cockpit provides an easy-to-use, web-based graphical interface for system administration tasks such as managing users, services, storage, networking, and system updates. This module integrates Cockpit with Armbian Config V3, allowing users to install, remove, enable, disable, start, stop, and check the status of Cockpit directly from the config-ng menu or CLI.",
-                            "condition": "",
-                            "command": []
+                            "condition": "cockpit status",
+                            "command": [
+                                "cockpit help"
+                            ]
                         }
                     ]
                 }
