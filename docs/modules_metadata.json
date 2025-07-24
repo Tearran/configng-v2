@@ -20,8 +20,10 @@
                             "status": "Stable",
                             "helpers": "_about_adjust_motd,_set_adjust_motd,_reload_adjust_motd",
                             "about": "",
-                            "condition": "",
-                            "command": []
+                            "condition": "adjust_motd show",
+                            "command": [
+                                "adjust_motd help"
+                            ]
                         }
                     ]
                 }
