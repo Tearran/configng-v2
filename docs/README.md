@@ -1,6 +1,8 @@
 # Module Documentation
 
 ## core
+*Core system utilities and configuration tools*
+
 - initialize
     - [list_options](./list_options.md) — Show available option groups and their usage for configng-v2 modules.
     - [trace](./trace.md) — Lightweight timing and trace message utility for Configng V2 modules.
@@ -17,14 +19,20 @@
     - [yes_no_box](./yes_no_box.md) — Portable Bash yes/no prompt function supporting whiptail, dialog, or simple shell read fallback.
 
 ## network
+*Network management modules*
+
 - network
     - [net_render](./net_render.md) — Set or check the current Netplan renderer (NetworkManager or networkd) for all interfaces.
 
 ## software
+*Software install and management modules*
+
 - management
     - [cockpit](./cockpit.md) — Web-based administrative interface for managing Linux servers.
 
 ## system
+*System utilities and login helpers*
+
 - user
     - [adjust_motd](./adjust_motd.md) — Adjust welcome screen (motd)
 

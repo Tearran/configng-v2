@@ -65,6 +65,34 @@ get_group() {
 	grep -E '^group=' "$conf" | head -n1 | cut -d= -f2- | xargs
 }
 
+# Parse parent group descriptions from list_options.conf
+get_parent_descriptions() {
+	local list_options_conf="$SRC_ROOT/core/initialize/list_options.conf"
+	declare -A descriptions
+	
+	if [[ -f "$list_options_conf" ]]; then
+		# Parse the [options] section for parent descriptions
+		while IFS='=' read -r key value; do
+			# Remove leading/trailing whitespace and comments
+			key=$(echo "$key" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+			value=$(echo "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+			
+			# Skip empty lines and comments
+			[[ -z "$key" || "$key" =~ ^#.*$ ]] && continue
+			
+			# Store the description
+			descriptions["$key"]="$value"
+		done < <(sed -n '/^\[options\]$/,/^\[.*\]$/p' "$list_options_conf" | grep '^[^#\[].*=' | grep -v '^\[')
+	fi
+	
+	# Set default description for core if not found
+	[[ -z "${descriptions[core]}" ]] && descriptions["core"]="Core system utilities and configuration tools"
+	
+	# Print the description for the requested parent
+	local parent="$1"
+	echo "${descriptions[$parent]}"
+}
+
 # Grab summary (first non-header, non-empty line) from module doc
 get_summary() {
 	local md="$1"
@@ -117,6 +145,12 @@ generate_docs_index() {
 	mapfile -t parents < <(for k in "${!tree[@]}"; do echo "${k%%|*}"; done | sort -u)
 	for parent in "${parents[@]}"; do
 		echo "## $parent" >> "$DOC_ROOT/README.md"
+		# Add parent description if available
+		parent_desc="$(get_parent_descriptions "$parent")"
+		if [[ -n "$parent_desc" ]]; then
+			echo "*${parent_desc}*" >> "$DOC_ROOT/README.md"
+			echo >> "$DOC_ROOT/README.md"
+		fi
 		mapfile -t groups < <(for k in "${!tree[@]}"; do [[ "${k%%|*}" == "$parent" ]] && echo "${k#*|}"; done | sort -u)
 		for group in "${groups[@]}"; do
 			echo "- $group" >> "$DOC_ROOT/README.md"
