@@ -20,7 +20,7 @@ This guide covers the **practical workflow** for contributing modules to confign
 1. **Scaffold a Module**
    - run
    ```sh
-   ./workflow/start_here.sh <modulename>
+   ./workflow/00_start_here.sh <modulename>
    ```
    - Creates `staging/<modulename>.sh`, and `.conf`.
 
@@ -34,7 +34,7 @@ This guide covers the **practical workflow** for contributing modules to confign
      ```sh
      ./workflow/10_validate_module.sh
      ```
-   - fix invalid if any
+   - fix invalid/missing if any
      
 5. **Promote modules to `./src`**
    - Move ready modules from `staging/` to `src/` as defined in `.conf`.
@@ -47,20 +47,20 @@ This guide covers the **practical workflow** for contributing modules to confign
      ```sh
      ./workflow/30_docstring.sh
      ```
-7. **Generate json object**
-   - Used for ./workflow/GUI/modules_browser.*`
-   - run
-     ```sh
-      ./workflow/35_web_docs.sh"
-      ```
-   - generates a json object
-   - injets json object into modules-brouser.hmtl for use with go and weserver
-8. **Consolidate (for maintainers)**
+7. **Consolidate (for maintainers)**
    - Flatten `src/` modules into `lib/` as needed for releases.
    - run
      ```sh
      ./workflow/40_consolidate_module.sh
      ```
+8. **Generate json object**
+   - Used for:
+      - ./modules_browsers/modules_browser.*
+      - ./docs/index.html
+      - ./lib/armbian-config/config.jobs.json
+   - run
+     ```sh
+      ./workflow/35_web_docs.sh"
 ---
 
 ## Best Practices
