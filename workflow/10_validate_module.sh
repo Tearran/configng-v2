@@ -25,7 +25,6 @@ EOF
 }
 
 
-
 _check_sh() {
 	file="$1"
 	modname="$(basename "$file" .sh)"
@@ -33,14 +32,17 @@ _check_sh() {
 		echo "MISSING: $file"
 		return 1
 	fi
+	# Check for _about_<modname>() function
 	if ! grep -Eq "^(function[[:space:]]+)?_about_${modname}[[:space:]]*\(\)[[:space:]]*\{" "$file"; then
 		echo "FAIL: $file missing _about_${modname}()"
 		return 1
 	fi
+
 	echo "OK: $file"
 }
 
 _check_conf() {
+	# Check for required fields in <modulename>.conf
 	local REQUIRED_CONF_FIELDS=(feature options helpers description parent group contributor port)
 	local file="$1"
 	local failed=0
@@ -50,7 +52,7 @@ _check_conf() {
 		echo "MISSING: $file"
 		return 1
 	fi
-
+	# Check for feature= line
 	local feature
 	feature="$(grep -E "^feature=" "$file" | cut -d= -f2- | xargs)"
 

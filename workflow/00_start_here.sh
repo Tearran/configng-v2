@@ -15,7 +15,6 @@ Creates Armbian Config V2 module scaffolding in ./staging/
 Outputs:
 	- <module_name>.conf    Module metadata template
 	- <module_name>.sh      Module Bash template
-	- <module_name>.md      Documentation stub (deprecated)
 
 Example:
 	$0 mymodule
