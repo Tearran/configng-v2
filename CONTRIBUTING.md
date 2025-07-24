@@ -1,3 +1,9 @@
-# Development Guide: configng-v2 (Armbian Config Next Generation)
+# Contributing to configng-v2
 
-See workflow/README.md
+Thank you for your interest in contributing!
+
+- To learn how to develop and promote modules, **see [`workflow/README.md`](./workflow/README.md)**.
+- Please follow our Bash-friendly guidelines, keep configs flat, and document your modules clearly.
+- Submit pull requests with clear descriptions and reference relevant issues if applicable.
+
+See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) for project policies.
