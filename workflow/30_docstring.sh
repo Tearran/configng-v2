@@ -54,6 +54,15 @@ copy_and_markdown_image() {
 }
 
 # Extract parent from .conf for grouping
+
+# Extract parent group descriptions from list_options.conf
+get_parent_description() {
+	local parent="$1"
+	local list_options_conf="src/core/initialize/list_options.conf"
+	if [[ -f "$list_options_conf" ]]; then
+		grep -A 20 "^[options]" "$list_options_conf" | grep "^${parent}=" | cut -d= -f2- | xargs
+	fi
+}
 get_parent() {
 	local conf="$1"
 	grep -E '^parent=' "$conf" | head -n1 | cut -d= -f2- | xargs
@@ -108,6 +117,12 @@ generate_docs_index() {
 		if [[ -f "$conf_file" ]]; then
 			p="$(get_parent "$conf_file")"
 			[[ -n "$p" ]] && parent="$p"
+		# Add parent description if available
+		parent_desc="$(get_parent_description "$parent")"
+		if [[ -n "$parent_desc" ]]; then
+			echo "*${parent_desc}*" >> "$DOC_ROOT/README.md"
+			echo >> "$DOC_ROOT/README.md"
+		fi
 			g="$(get_group "$conf_file")"
 			[[ -n "$g" ]] && group="$g"
 		fi
