@@ -247,6 +247,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	array_to_json | jq --indent 4 . > "$ROOT_DIR/lib/armbian-config/config.jobs.json"
 	cp "$ROOT_DIR/lib/armbian-config/config.jobs.json" "$ROOT_DIR/modules_browsers/modules_metadata.json"
+	cp "$ROOT_DIR/lib/armbian-config/config.jobs.json" "$ROOT_DIR/docs/modules_metadata.json"
 fi
 
 ### END ./array_to_json.sh - Armbian Config V2 test entrypoint
