@@ -12,6 +12,7 @@ This guide covers the **practical workflow** for contributing modules to confign
 - `src/` — Develomnet modules (after promotion).
 - `lib/` — Assembled Bash libraries (for the final framework).
 - `workflow/` — Scripts for scaffolding, checking, and automating the workflow.
+- `modules_browsers/` - Protoype GUI emplementaions to interact with modules metadata
 
 ---
 
@@ -22,10 +23,11 @@ This guide covers the **practical workflow** for contributing modules to confign
    ```sh
    ./workflow/00_start_here.sh <modulename>
    ```
-   - Creates `staging/<modulename>.sh`, and `.conf`.
+   - Creates `staging/<modulename>.sh`, and `staging/<modulename>.conf`.
 
 3. **Develop**
    - Write module logic in `.sh` (use **tabs** for indentation).
+   - updade the _about_<modulename> help message
    - Fill out `.conf` (flat key=value).
 
 4. **Verify & Test**
@@ -47,13 +49,14 @@ This guide covers the **practical workflow** for contributing modules to confign
      ```sh
      ./workflow/30_docstring.sh
      ```
-7. **Consolidate (for maintainers)**
+7. **Consolidate modules**
    - Flatten `src/` modules into `lib/` as needed for releases.
    - run
      ```sh
      ./workflow/40_consolidate_module.sh
      ```
 8. **Generate json object**
+   - json object from consolidated modules array
    - Used for:
       - ./modules_browsers/README.md
       - ./docs/index.html
