@@ -1,6 +1,3 @@
-<!--
-Edit this file 
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -268,35 +265,25 @@ Edit this file
 </head>
 
 <body>
-        <div id="dev-toggle-container">
-                <button id="dev-toggle" onclick="toggleDev()" title="Show/hide core/internal options">Show core/internal
-                        options</button>
-        </div>
+        <!-- REMOVED: dev-toggle button -->
         <h1>configng-v2 Modules Menu</h1>
         <div id="breadcrumbs"></div>
         <div id="menu"></div>
         <div id="command-output"></div>
         <script>
-
-                // ----- BEGIN: json loading
                 const JSON_URL = "https://raw.githubusercontent.com/Tearran/configng-v2/refs/heads/main/docs/modules_metadata.json";
-                // ----- END: JSON loading
-
                 let data = {};
                 let state = { cat: null, group: null, feature: null };
-                let coreHidden = true; // Start with core hidden; toggle via button
 
                 (function () {
                         if (typeof JSON_URL === "object") {
                                 data = JSON_URL;
-                                updateDevToggleBtn();
                                 navTo();
                         } else if (typeof JSON_URL === "string" && JSON_URL.startsWith("http")) {
                                 fetch(JSON_URL)
                                         .then(r => r.json())
                                         .then(json => {
                                                 data = json;
-                                                updateDevToggleBtn();
                                                 navTo();
                                         })
                                         .catch(() => {
@@ -330,29 +317,21 @@ Edit this file
                         clearOutput();
                 }
 
+                // UNCHANGED: renderMenu now always shows all categories (including "core")
                 function renderMenu() {
                         const menu = document.getElementById('menu');
                         let html = '';
                         let menuArr = data.menu;
 
-                        // Hide core if toggled off and not currently viewing core
-                        if (coreHidden && (!state.cat || state.cat === "core")) {
-                                menuArr = menuArr.filter(c => c.id !== "core");
-                                if (state.cat === "core") {
-                                        state.cat = null; // Reset to top if core was being viewed and is now hidden
-                                        setBreadcrumbs();
-                                }
-                        }
-
                         if (!state.cat) {
                                 html += '<ul>';
                                 for (const cat of menuArr) {
                                         html += `<li>
-					<button class="menu-btn" id="menu-btn-${escapeHTML(cat.id.toLowerCase())}" onclick="navTo('${escapeHTML(cat.id)}')">
-						<span>${escapeHTML(cat.id)}</span>
-						${cat.description ? `<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(cat.description)}</span>` : ""}
-					</button>
-				</li>`;
+						<button class="menu-btn" id="menu-btn-${escapeHTML(cat.id.toLowerCase())}" onclick="navTo('${escapeHTML(cat.id)}')">
+							<span>${escapeHTML(cat.id)}</span>
+							${cat.description ? `<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(cat.description)}</span>` : ""}
+						</button>
+					</li>`;
                                 }
                                 html += '</ul>';
                         } else {
@@ -361,31 +340,30 @@ Edit this file
                                         menu.innerHTML = "<b>Category not found</b>";
                                         return;
                                 }
-                                if (!state.group) {
-                                        const entries = catObj.sub || [];
+                                const entries = catObj.sub || [];
+                                if (!state.group && !state.feature) {
                                         html += `<h2>Category: ${escapeHTML(catObj.id)}</h2>`;
                                         if (catObj.description) html += `<div class="desc">${escapeHTML(catObj.description)}</div>`;
                                         html += '<ul>';
                                         for (const entry of entries) {
                                                 if ('feature' in entry) {
                                                         html += `<li>
-							<button class="feature-btn" onclick="navTo('${escapeHTML(catObj.id)}', null, '${escapeHTML(entry.id)}')">
-								<span class="feature-label">${escapeHTML(entry.id)}</span>
-								<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(entry.description || '')}</span>
-							</button>
-						</li>`;
+								<button class="feature-btn" onclick="navTo('${escapeHTML(catObj.id)}', null, '${escapeHTML(entry.id)}')">
+									<span class="feature-label">${escapeHTML(entry.id)}</span>
+									<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(entry.description || '')}</span>
+								</button>
+							</li>`;
                                                 } else if ('sub' in entry && Array.isArray(entry.sub)) {
                                                         html += `<li>
-							<button class="menu-btn" id="menu-btn-${escapeHTML(entry.id.toLowerCase())}" onclick="navTo('${escapeHTML(catObj.id)}','${escapeHTML(entry.id)}')">
-								<span>${escapeHTML(entry.id)}</span>
-								${entry.description ? `<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(entry.description)}</span>` : ""}
-							</button>
-						</li>`;
+								<button class="menu-btn" id="menu-btn-${escapeHTML(entry.id.toLowerCase())}" onclick="navTo('${escapeHTML(catObj.id)}','${escapeHTML(entry.id)}')">
+									<span>${escapeHTML(entry.id)}</span>
+									${entry.description ? `<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(entry.description)}</span>` : ""}
+								</button>
+							</li>`;
                                                 }
                                         }
                                         html += '</ul>';
-                                } else if (!state.feature) {
-                                        const entries = (catObj.sub || []);
+                                } else if (state.group && !state.feature) {
                                         const groupObj = entries.find(g => g.id === state.group);
                                         if (!groupObj) {
                                                 menu.innerHTML = `<b>Group not found</b>`;
@@ -396,23 +374,22 @@ Edit this file
                                         html += '<ul>';
                                         for (const mod of (groupObj.sub || [])) {
                                                 html += `<li>
-						<button class="feature-btn" onclick="navTo('${escapeHTML(catObj.id)}','${escapeHTML(groupObj.id)}','${escapeHTML(mod.id)}')">
-							<span class="feature-label">${escapeHTML(mod.id)}</span>
-							<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(mod.description || '')}</span>
-						</button>
-					</li>`;
+							<button class="feature-btn" onclick="navTo('${escapeHTML(catObj.id)}','${escapeHTML(groupObj.id)}','${escapeHTML(mod.id)}')">
+								<span class="feature-label">${escapeHTML(mod.id)}</span>
+								<span class="feature-desc">&nbsp;–&nbsp;${escapeHTML(mod.description || '')}</span>
+							</button>
+						</li>`;
                                         }
                                         html += '</ul>';
                                 } else {
-                                        const groupObjs = (catObj.sub || []);
                                         let mod = null;
                                         if (state.group) {
-                                                const groupObj = groupObjs.find(g => g.id === state.group);
+                                                const groupObj = entries.find(g => g.id === state.group);
                                                 if (groupObj && groupObj.sub) {
                                                         mod = groupObj.sub.find(m => m.id === state.feature);
                                                 }
                                         } else {
-                                                mod = (catObj.sub || []).find(m => m.id === state.feature);
+                                                mod = entries.find(m => m.id === state.feature);
                                         }
                                         if (!mod) {
                                                 menu.innerHTML = `<b>Module not found</b>`;
@@ -451,21 +428,9 @@ Edit this file
                 function clearOutput() {
                         document.getElementById('command-output').textContent = '';
                 }
-                function toggleDev() {
-                        coreHidden = !coreHidden;
-                        updateDevToggleBtn();
-                        navTo();
-                }
-                function updateDevToggleBtn() {
-                        const btn = document.getElementById('dev-toggle');
-                        btn.textContent = coreHidden ? "Show core/internal options" : "Hide core/internal options";
-                }
+                // REMOVED: toggleDev and updateDevToggleBtn
                 window.navTo = navTo;
                 window.sendOption = sendOption;
-                window.toggleDev = toggleDev;
-                window.addEventListener("hashchange", () => {
-                        updateDevToggleBtn();
-                });
         </script>
 </body>
 
