@@ -31,13 +31,13 @@ the intended upgrade to [armbian/configng](https://github.com/armbian/configng).
 Each module consists of:
 - `modulename.sh` — The Bash implementation.
 - `modulename.conf` — Configuration and registration info (flat, Bash/INI style).
-- `modulename.md` — Documentation for the module.
+- `modulename.md` — Metadata generatated documentation for the module.
 
 ---
 
 ## 3. Module Workflow: From Staging to Package
 
-Each module follows a strict flow from creation to packaging:
+Each module follows a flow from creation to packaging:
 
 ### Step 1: Scaffold
 
@@ -50,39 +50,45 @@ Create a new module scaffold:
 This generates:
 - `staging/<modulename>.sh`
 - `staging/<modulename>.conf`
-- `staging/<modulename>.md`
 
 ### Step 2: Develop
 
 - Implement logic in `.sh` with **tabs** for indentation.
 - Fill out all required fields in the `.conf` file.
-- Update the module documentation in the `.md` file as needed.
 
 ### Step 3: Verify & Test
 
-- Run `./workflow/02_verify_pull_request.sh` to check your files in `staging/` for formatting, required fields, and basic issues.
+- Run `./workflow/10_validate_module.sh` to check your files in `staging/` for formatting, required fields, and basic issues.
 - Manually verify module behavior in `staging/` for correctness and compatibility.
-- GitHub Actions runs `shellcheck`, formatting checks, and required field validation on pull requests.
+- GitHub Actions runs `shellcheck`, and formatting checks.
 
 ### Step 4: Promote
-
-- Move module components to their target locations as defined in `.conf`:
+- Run `./workflow/20_promote_module.sh`
+- this will move module components to their target locations as defined in `.conf`:
 	- `.sh` → `src/<parent>/`
 	- `.conf` → `src/<parent>/`
-	- `.md` → `src/<parent>/`
 - This step makes the module part of the main tree and signals it's ready for assembly.
 
-### Step 5: Consolidate
+### Step 6: generate documents 
+- Run `workflow/30_docstring.sh`
+- this will generate a mardown file for each valid module. 
 
-- Flatten all `src/<parent>/*.sh` into a single `lib/<parent>.sh`.
+### Step 6: Consolidate
+- run `./workflow/40_consolidate_module.sh`
+- this will Flatten all `src/<parent>/*.sh` into a single `lib/<parent>.sh`.
+- generates an assositive array from src/<parent>/*.conf
 - This creates production-grade output files used as the main framework.
 
-### TODO Step 6: Production Test
+### Step 7: Generate json object
+- run `./workflow/50_array_to_json.sh`
+- this is use for TUI/GUI/UX interfacing 
+
+### TODO Step 8: Production Test
 
 - Run full framework tests using the consolidated scripts in `lib/`.
 - This ensures compatibility and functionality in their final state.
 
-### TODO: Step 7: Package
+### TODO: Step 9: Package
 
 - If production-test passes, package the tool (e.g., `.deb`) using the build system.
 - Output is stored in `build/` or `dist/`.
