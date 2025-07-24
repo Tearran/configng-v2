@@ -42,7 +42,7 @@ This guide covers the **practical workflow** for contributing modules to confign
      ```sh
      ./workflow/20_promote_module.sh
      ```
-6. **Generate Documents from metadata**
+6. **Generate Documents from promoted metadata**
    - run
      ```sh
      ./workflow/30_docstring.sh
@@ -55,12 +55,13 @@ This guide covers the **practical workflow** for contributing modules to confign
      ```
 8. **Generate json object**
    - Used for:
-      - ./modules_browsers/modules_browser.*
+      - ./modules_browsers/README.md
       - ./docs/index.html
       - ./lib/armbian-config/config.jobs.json
    - run
      ```sh
-      ./workflow/35_web_docs.sh"
+      .workflow/50_array_to_json.sh
+     ```
 ---
 
 ## Best Practices
@@ -72,16 +73,6 @@ This guide covers the **practical workflow** for contributing modules to confign
   - Sourceable by the framework (TUI/automation).
 - **Minimal dependencies:** Document any required module dependencies.
 - **Clear help output:** Each module must support `--help`.
-
----
-
-## Quick Reference
-
-- Scaffold: `./workflow/start_here.sh foo`
-- Verify:   `./workflow/10_validate_module.sh`
-- Tabs only for Bash scripts.
-- Keep `.conf` files flat and simple.
-- Submit a pull request after local checks pass.
 
 ---
 
