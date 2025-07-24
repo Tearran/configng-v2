@@ -69,14 +69,14 @@ This generates:
 	- `.conf` → `src/<parent>/`
 - This step makes the module part of the main tree and signals it's ready for assembly.
 
-### Step 6: generate documents 
+### Step 5: Generate documentation
 - Run `workflow/30_docstring.sh`
-- this will generate a mardown file for each valid module. 
+- This will generate a Markdown file for each valid module.
 
 ### Step 6: Consolidate
 - run `./workflow/40_consolidate_module.sh`
 - this will Flatten all `src/<parent>/*.sh` into a single `lib/<parent>.sh`.
-- generates an assositive array from src/<parent>/*.conf
+- Generates an associative array from `src/<parent>/*.conf`
 - This creates production-grade output files used as the main framework.
 
 ### Step 7: Generate json object
