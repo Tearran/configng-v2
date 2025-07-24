@@ -1,6 +1,9 @@
 # adjust_motd
 Adjust welcome screen (motd)
 
+## About
+Adjusts the Armbian MOTD (Message of the Day) welcome screen. Lets you list, preview, enable, or disable MOTD sections like system info, tips, and commands. Changes are applied by updating config files and reloading MOTD scripts.
+
 ## Usage
 ~~~bash
 Usage: adjust_motd <command> [arguments]

@@ -19,7 +19,7 @@
                             "require_kernel": "5.15+",
                             "status": "Stable",
                             "helpers": "_about_adjust_motd,_set_adjust_motd,_reload_adjust_motd",
-                            "about": "",
+                            "about": "Adjusts the Armbian MOTD (Message of the Day) welcome screen. Lets you list, preview, enable, or disable MOTD sections like system info, tips, and commands. Changes are applied by updating config files and reloading MOTD scripts.",
                             "condition": "adjust_motd show",
                             "command": [
                                 "adjust_motd help"
