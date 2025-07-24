@@ -32,28 +32,29 @@ cd modules_browsers
 python3 modules_browser.py
 ```
 
-### Go HTTP Server
+### Simple HTTP Servers
 <img width="960" height="604" alt="{76D15EB2-9E4B-4290-92F5-59FD4F1C50DE}" src="https://github.com/user-attachments/assets/918da28b-d382-4161-aa6b-086cd6378f1e" />
+
+#### GO 
 
 ```sh
 cd modules_browsers
 go run web-server.go
 ```
 
-### Python HTTP Server
+#### Python
 
 ```sh
 cd modules_browsers
 python3 web-server.py
 ```
 
-## Regenerating `modules_browser.html`
 
-This file is auto-generated! Do not edit it directly. To update module documentation:
+### To generate json and html 
 
 ```sh
 cd workflow
-./35_web_docs.sh
+workflow/50_array_to_json.sh
 ```
 
 This will refresh `modules_browser.html` and `modules_metadata.json` based on the latest modules.
