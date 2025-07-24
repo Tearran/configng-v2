@@ -233,7 +233,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	LIB_DIR="$ROOT_DIR/lib/armbian-config"
 	SRC_ROOT="$ROOT_DIR/src"
 
-	arrays=(system_options network_options software_options)
+	arrays=(system_options network_options software_options core_options)
 
 	source "$ROOT_DIR/lib/armbian-config/module_options_arrays.sh"
 
