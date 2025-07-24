@@ -32,16 +32,6 @@ cd modules_browsers
 python3 modules_browser.py
 ```
 
-### Bash+Zenity Browser
-<img width="226" height="171" alt="{12CB818B-41B7-486B-A8C7-4C62FC8E33C7}" src="https://github.com/user-attachments/assets/9ebad382-b294-4296-b27a-c37a7c25ba1d" />
-
-```sh
-cd modules_browsers
-bash modules_browser.sh
-```
-
-Requires `jq` and `zenity` (`sudo apt install jq zenity`).
-
 ### Go HTTP Server
 <img width="960" height="604" alt="{76D15EB2-9E4B-4290-92F5-59FD4F1C50DE}" src="https://github.com/user-attachments/assets/918da28b-d382-4161-aa6b-086cd6378f1e" />
 
