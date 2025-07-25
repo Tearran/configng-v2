@@ -11,8 +11,8 @@ This roadmap outlines the development milestones and goals for configng-v2, the 
 | [Metadata Foundation](#1-metadata-foundation) | ✅ COMPLETED | 100% | Core metadata architecture and .conf system |
 | [Documentation Generators](#2-documentation-generators) | ✅ COMPLETED | 100% | Automated docs from metadata |
 | [Scaffolding](#3-scaffolding) | ✅ COMPLETED | 100% | Module creation and development tools |
-| [CLI Integration](#4-cli-integration) | | 🔄 PARTIAL | 90% | Command-line interface and menu system |
-| [Multi-format Documentation](#5-multi-format-documentation) | | 🔄 PARTIAL | 90% | bash Array, MD, and JSON output formats |
+| [CLI Integration](#4-cli-integration) | 🔄 PARTIAL | 90% | Command-line interface and menu system |
+| [Multi-format Documentation](#5-multi-format-documentation) | 🔄 PARTIAL | 90% | bash Array, MD, and JSON output formats |
 | [UI Expansion](#6-ui-expansion) | 🔄 PARTIAL | 20% | Web interfaces and module browsers |
 | [Testing Framework](#7-testing-framework) | 🔄 PARTIAL | 60% | Validation and quality assurance |
 | [Release/Packaging](#8-releasepackaging) | ❌ TODO | 0% | Production builds and distribution |
