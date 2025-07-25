@@ -48,7 +48,7 @@ Automated documentation generation from module metadata is fully functional.
 
 **✅ Completed Features:**
 - Markdown generation from `.conf` files (`30_docstring.sh`)
-- JSON metadata compilation (`35_web_docs.sh`)
+- JSON metadata compilation
 - Image integration and copying
 - Cross-reference generation
 - Module index creation
@@ -67,7 +67,7 @@ Module scaffolding and development workflow is mature and well-documented.
 
 **✅ Completed Features:**
 - Interactive module creation (`00_start_here.sh`)
-- Template generation for `.sh`, `.conf`, and `.md` files
+- Template generation for `.sh`, and `.conf` files
 - Development workflow automation
 - Module promotion system (`20_promote_module.sh`)
 - Validation and verification tools
