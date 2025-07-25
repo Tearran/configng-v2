@@ -14,7 +14,7 @@ This roadmap outlines the development milestones and goals for configng-v2, the 
 | [CLI Integration](#4-cli-integration) | 🔄 PARTIAL | 90% | Command-line interface and menu system |
 | [Multi-format Documentation](#5-multi-format-documentation) | 🔄 PARTIAL | 90% | bash Array, MD, and JSON output formats |
 | [UI Expansion](#6-ui-expansion) | 🔄 PARTIAL | 20% | Web interfaces and module browsers |
-| [Testing Framework](#7-testing-framework) | 🔄 PARTIAL | 60% | Validation and quality assurance |
+| [Testing Framework](#7-testing-framework) | 🔄 PARTIAL | 10% | Validation and quality assurance |
 | [Release/Packaging](#8-releasepackaging) | ❌ TODO | 0% | Production builds and distribution |
 
 ---
