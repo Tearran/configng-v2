@@ -274,5 +274,5 @@ This roadmap is updated regularly as milestones progress. Check the [project iss
 - [CONTRIBUTING.md](./CONTRIBUTING.md) - Development workflow and guidelines
 - [workflow/README.md](./workflow/README.md) - Detailed workflow documentation
 - [docs/README.md](./docs/README.md) - Module documentation index
-- [modules_browsers/README.md](./modules_browsers/README.md) - Web interface documentation
+- [modules_browsers/README.md](./modules_browsers/README.md) - json based interface documentation
 - 
