@@ -1,13 +1,12 @@
-# configng-v2
-
-Welcome to the configng-v2 modular metadata and configuration system!
-
----
-
 ## 📦 About configng-v2
 
-configng-v2 is a proof-of-concept modular utility for metadata-parsed documentation (outputting to `md` and `json`) and system configuration, inspired by [armbian/configng](https://github.com/armbian/configng). It features redesigned metadata usability for user-friendly documentation clarity, scaffolding for easier module development, validation for maintainability, and an open approach to contribution. The goal is to make configuration more transparent, easier to document, and simpler for anyone to extend.
+configng-v2 is a proof-of-concept modular utility focused on making configuration modules easier to build, document, and maintain. Inspired by [armbian/configng](https://github.com/armbian/configng), this project is not a re-implementation of `armbian-config` itself, but a toolkit (SDK) and documentation system for creating compatible modules.
 
+This version (v2) targets developers and advanced users who want to create or extend configuration modules in a consistent, interoperable way. The system enables users to specify API calls for desired functionality, and allows developers to provide compatible implementations for those APIs in a standardized format. It also provides features for gathering cluster information, system analysis, and module adjustment, making it possible to build smarter, context-aware modules.
+
+A key goal is backwards compatibility: although the internal tooling and documentation are redesigned, the final production output should remain the same or very similar to existing solutions.
+
+By focusing on clarity, maintainability, and ease of contribution, configng-v2 aims to make configuration more transparent, flexible, and accessible for everyone.
 
 ---
 
@@ -19,7 +18,7 @@ Want to understand the project's progress and future plans?
 - View completion status of major development phases
 - See what's been accomplished and what's planned
 - Find ways to contribute to specific milestones
-- Track progress on features like testing framework, UI expansion, and release packaging
+- Track progress on features like the testing framework, UI expansion, and release packaging
 
 ---
 
@@ -36,8 +35,8 @@ Looking for what this project can do?
 
 ## 🗂 Module Browsers
 
-Module browsers are proof-of-concept GUI applications that use JSON to display and interact with modules.   
-Try the live demo at [GitHub Pages](https://tearran.github.io/configng-v2/index.html) or documentation [modules_browsers](https://github.com/Tearran/configng-v2/blob/main/modules_browsers/README.md)
+Module browsers are proof-of-concept GUI applications that use JSON to display and interact with modules.  
+Try the live demo at [GitHub Pages](https://tearran.github.io/configng-v2/index.html) or see documentation in [modules_browsers](https://github.com/Tearran/configng-v2/blob/main/modules_browsers/README.md).
 
 ---
 
