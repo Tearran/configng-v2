@@ -5,6 +5,7 @@ This roadmap outlines the development milestones and goals for configng-v2, the 
 ---
 
 ## 📋 Milestone Overview
+> Note: Project Progression Percent Done Is AI-Generated (Approximate)
 
 | Milestone | Status | Completion | Description |
 |-----------|--------|------------|-------------|
