@@ -127,39 +127,19 @@ adjust_motd() {
 	esac
 }
 
-##---------- Start DEMO/test code block
+### START ./adjust_motd.sh - Armbian Config V2 test entrypoint
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	TITLE="${TITLE:-"adjust_motd"}" # title for dialog boxes
-	DIALOG=${DIALOG:-whiptail} # options whiptail dialog
-
-	# Load trace module
-	TRACE="eurt" # Any non null will enable trace output
-	source src/core/initialize/trace.sh || exit 1
-
-	# start trace checkpoint timer
-	trace reset
-	trace "Loaded and started trace module"
-	trace "Start trace comments"
-
-	trace "Loading submenu module"
-	source src/core/interface/submenu.sh || exit 1
-
-	trace "loading Yes No Box module"
-	source src/core/interface/yes_no_box.sh || exit 1
-
-	trace "Loading OK box module"
-	source src/core/interface/ok_box.sh || exit 1
-
-	trace "Loading info box module"
-	source src/core/interface/info_box.sh || exit 1
-
-	trace "Check if not root and first argument is empty"
-	trace "Loading submenu for adjust_motd module"
-	[[ ! ${1:-} ]] && submenu adjust_motd || adjust_motd "$@"
-	trace total
-	exit 0
-
+	# --- Capture and assert help output ---
+	help_output="$(adjust_motd help)"
+	echo "$help_output" | grep -q "Usage: adjust_motd" || {
+		echo "fail: Help output does not contain expected usage string"
+		echo "test complete"
+		exit 1
+	}
+	# --- end assertion ---
+	adjust_motd "$@"
 fi
 
-##------------- End DEMO/test code block
+### END ./adjust_motd.sh - Armbian Config V2 test entrypoint
+
