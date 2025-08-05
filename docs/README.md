@@ -25,6 +25,8 @@
     - [cockpit](./cockpit.md) — Web-based administrative interface for managing Linux servers.
 
 ## system
+- kernel
+    - [boot_kernel](./boot_kernel.md) — Manage, hold, unhold, and update kernel, bootloader (U-Boot), and related Armbian packages.
 - user
     - [adjust_motd](./adjust_motd.md) — Adjust welcome screen (motd)
 

@@ -1,6 +1,6 @@
-# Module Workflow & Development Guide: configng-v2
+# Module SDK & Development Guide: configng-v2
 
-This guide covers the **practical workflow** for contributing modules to configng-v2.  
+This guide covers the **practical SDK** for contributing modules to configng-v2.  
 
 📋 **For project roadmap and milestone tracking, see [ROADMAP.md](../ROADMAP.md)**  
 
@@ -11,17 +11,17 @@ This guide covers the **practical workflow** for contributing modules to confign
 - `staging/` — Work-in-progress modules (development area).
 - `src/` — Develomnet modules (after promotion).
 - `lib/` — Assembled Bash libraries (for the final framework).
-- `workflow/` — Scripts for scaffolding, checking, and automating the workflow.
+- `SDK/` — Scripts for scaffolding, checking, and automating the SDK.
 - `modules_browsers/` - Protoype GUI emplementaions to interact with modules metadata
 
 ---
 
-## Module Contribution Workflow
+## Module Contribution SDK
 
 1. **Scaffold a Module**
    - run
    ```sh
-   ./workflow/00_start_here.sh <modulename>
+   ./SDK/00_start_here.sh <modulename>
    ```
    - Creates `staging/<modulename>.sh`, and `staging/<modulename>.conf`.
 
@@ -34,7 +34,7 @@ This guide covers the **practical workflow** for contributing modules to confign
    - Manually test your module in `staging/`.
    - Run:
      ```sh
-     ./workflow/10_validate_module.sh
+     ./SDK/10_validate_module.sh
      ```
    - fix invalid/missing if any
      
@@ -42,18 +42,18 @@ This guide covers the **practical workflow** for contributing modules to confign
    - Move ready modules from `staging/` to `src/` as defined in `.conf`.
    - run
      ```sh
-     ./workflow/20_promote_module.sh
+     ./SDK/20_promote_module.sh
      ```
 6. **Generate Documents from promoted metadata**
    - run
      ```sh
-     ./workflow/30_docstring.sh
+     ./SDK/30_docstring.sh
      ```
 7. **Consolidate modules**
    - Flatten `src/` modules into `lib/` as needed for releases.
    - run
      ```sh
-     ./workflow/40_consolidate_module.sh
+     ./SDK/40_consolidate_module.sh
      ```
 8. **Generate json object**
    - json object from consolidated modules array
@@ -63,7 +63,7 @@ This guide covers the **practical workflow** for contributing modules to confign
       - ./lib/armbian-config/config.jobs.json
    - run
      ```sh
-      .workflow/50_array_to_json.sh
+      .SDK/50_array_to_json.sh
      ```
 ---
 

@@ -40,12 +40,12 @@ Try the live demo at [GitHub Pages](https://tearran.github.io/configng-v2/index.
 
 ---
 
-## 🛠 Workflow Scripts
+## 🛠 SDK Scripts
 
-Workflow scripts automate common tasks for module development, validation, and documentation.  
-Explore them in [`workflow/`](./workflow/):
+SDK scripts automate common tasks for module development, validation, and documentation.  
+Explore them in [`SDK/`](./SDK/):
 
-All scripts are modular and documented for clarity—see [`workflow/README.md`](./workflow/README.md) for details.
+All scripts are modular and documented for clarity—see [`SDK/README.md`](./SDK/README.md) for details.
 
 ---
 

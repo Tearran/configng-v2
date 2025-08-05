@@ -38,7 +38,7 @@ The core metadata architecture is fully implemented and mature.
 - Option descriptions and help text
 
 **📁 Key Files:**
-- `workflow/00_start_here.sh` - Template generator
+- `SDK/00_start_here.sh` - Template generator
 - `src/*/` - Module configuration files
 - `docs/modules_metadata.json` - Aggregated metadata
 
@@ -56,28 +56,28 @@ Automated documentation generation from module metadata is fully functional.
 - Hierarchical documentation structure
 
 **📁 Key Files:**
-- `workflow/30_docstring.sh` - MD documentation generator
-- `workflow/30_metadata_docs.sh` - Advanced metadata processing
-- `workflow/35_web_docs.sh` - JSON and web documentation
+- `SDK/30_docstring.sh` - MD documentation generator
+- `SDK/30_metadata_docs.sh` - Advanced metadata processing
+- `SDK/35_web_docs.sh` - JSON and web documentation
 - `docs/` - Generated documentation output
 
 ### 3. Scaffolding
 **Status:** ✅ COMPLETED  
 
-Module scaffolding and development workflow is mature and well-documented.
+Module scaffolding and development SDK is mature and well-documented.
 
 **✅ Completed Features:**
 - Interactive module creation (`00_start_here.sh`)
 - Template generation for `.sh`, and `.conf` files
-- Development workflow automation
+- Development SDK automation
 - Module promotion system (`20_promote_module.sh`)
 - Validation and verification tools
 - Staging area for development
 
 **📁 Key Files:**
-- `workflow/00_start_here.sh` - Main scaffolding tool
-- `workflow/10_validate_module.sh` - Module validation
-- `workflow/20_promote_module.sh` - Module promotion
+- `SDK/00_start_here.sh` - Main scaffolding tool
+- `SDK/10_validate_module.sh` - Module validation
+- `SDK/20_promote_module.sh` - Module promotion
 - `staging/` - Development workspace
 
 ### 4. CLI Integration
@@ -93,7 +93,7 @@ Command-line interface and menu system are fully functional.
 - Trace and debugging capabilities
 
 **📁 Key Files:**
-- `workflow/configng_v2.sh` - Main CLI interface
+- `SDK/configng_v2.sh` - Main CLI interface
 - `src/core/interface/menu.sh` - Menu system
 - `src/core/interface/submenu.sh` - Submenu handling
 - `src/core/initialize/list_options.sh` - Option listing
@@ -115,7 +115,7 @@ Multiple output formats are supported for documentation and metadata.
 - `docs/*.md` - Markdown documentation
 - `docs/modules_metadata.json` - JSON metadata
 - `modules_browsers/modules_browser.html` - HTML interface
-- `workflow/index.html` - Web demo
+- `SDK/index.html` - Web demo
 
 ### 6. UI Expansion
 **Status:** 🔄 PARTIAL  
@@ -145,7 +145,7 @@ Web interfaces and module browsers are functional but can be expanded.
 - `modules_browsers/modules_browser.html` - Main web interface
 - `modules_browsers/modules_browser.py` - Python processing
 - `modules_browsers/web-server.py` - Development server
-- `workflow/index.html` - Demo interface
+- `SDK/index.html` - Demo interface
 
 ### 7. Testing Framework
 **Status:** 🔄 PARTIAL  
@@ -174,8 +174,8 @@ Basic validation exists but comprehensive testing needs expansion.
 - Test coverage metrics
 
 **📁 Key Files:**
-- `workflow/10_validate_module.sh` - Current validation
-- `.github/workflows/` - CI/CD integration
+- `SDK/10_validate_module.sh` - Current validation
+- `.github/SDKs/` - CI/CD integration
 - Test modules embedded in source files
 
 ### 8. Release/Packaging
@@ -195,7 +195,7 @@ Production builds and distribution system needs implementation.
 **📁 Target Files:**
 - `build/` - Build artifacts (to be created)
 - `dist/` - Distribution packages (to be created)
-- Release workflow scripts (to be created)
+- Release SDK scripts (to be created)
 
 ---
 
@@ -253,7 +253,7 @@ Interested in contributing? Here's how to help with specific milestones:
 - Create new visualization options
 
 ### Release/Packaging (0% complete)
-- Design packaging workflow
+- Design packaging SDK
 - Create build automation
 - Set up distribution infrastructure
 - Write installation documentation
@@ -271,8 +271,8 @@ This roadmap is updated regularly as milestones progress. Check the [project iss
 
 ## 📚 Related Documentation
 
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - Development workflow and guidelines
-- [workflow/README.md](./workflow/README.md) - Detailed workflow documentation
+- [CONTRIBUTING.md](./CONTRIBUTING.md) - Development SDK and guidelines
+- [SDK/README.md](./SDK/README.md) - Detailed SDK documentation
 - [docs/README.md](./docs/README.md) - Module documentation index
 - [modules_browsers/README.md](./modules_browsers/README.md) - json based interface documentation
 - 
