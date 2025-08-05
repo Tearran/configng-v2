@@ -69,14 +69,13 @@ input_box() {
 	fi
 }
 
-# Demo block (only runs if called directly)
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	DIALOG="${DIALOG:-whiptail}"
 	TITLE="$DIALOG"
 	# Source ok_box.sh unless already in it
-	if [[ "$(basename "${BASH_SOURCE[0]}")" != "ok_box.sh" ]]; then
-		source ./src/core/interface/ok_box.sh
-	fi
+	[[ "$(basename "${BASH_SOURCE[0]}")" != "ok_box.sh" ]] && source ./src/core/interface/ok_box.sh;
+	
 	ok_box <<< "$(input_box "Enter something:")"
 
 fi

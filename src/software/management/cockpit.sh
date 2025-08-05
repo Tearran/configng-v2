@@ -86,7 +86,7 @@ cockpit() {
 	esac
 }
 
-##---------- Start DEMO/test code block
+
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	TITLE="${TITLE:-"Cockpit"}" # title for dialog boxes
@@ -115,19 +115,12 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
 	trace "Check if not root and first argument is empty"
 
+	trace "Loading submenu for cockpit module"
+	[[ ! ${1:-} ]] && submenu cockpit || cockpit "$@"
+	trace total
+	exit 0
 
-	if [[ -z "$CI" && "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
-		echo "This module requires root privileges (use sudo)."
-		echo "User is not root, exiting"
-		trace total
-		exit 1
-	else
-		trace "Loading submenu for cockpit module"
-		[[ ! ${1:-} ]] && submenu cockpit || cockpit "$@"
-		trace total
-		exit 0
-	fi
 
 fi
 
-##------------- End DEMO/test code block
+

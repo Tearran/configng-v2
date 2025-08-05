@@ -155,18 +155,11 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	source src/core/interface/info_box.sh || exit 1
 
 	trace "Check if not root and first argument is empty"
+	trace "Loading submenu for adjust_motd module"
+	[[ ! ${1:-} ]] && submenu adjust_motd || adjust_motd "$@"
+	trace total
+	exit 0
 
-	if [[ -z "${CI:-}" && "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
-		echo "This module requires root privileges (use sudo)."
-		echo "User is not root, exiting"
-		trace total
-		exit 1
-	else
-		trace "Loading submenu for adjust_motd module"
-		[[ ! ${1:-} ]] && submenu adjust_motd || adjust_motd "$@"
-		trace total
-		exit 0
-	fi
 fi
 
 ##------------- End DEMO/test code block
