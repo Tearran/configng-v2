@@ -63,7 +63,7 @@ This guide covers the **practical SDK** for contributing modules to configng-v2.
       - ./lib/armbian-config/config.jobs.json
    - run
      ```sh
-      .SDK/50_array_to_json.sh
+      ./SDK/50_array_to_json.sh
      ```
 ---
 
