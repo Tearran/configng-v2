@@ -52,7 +52,7 @@ trace "OK: sourced core modules"
 if [[ -d "$ROOT_DIR/staging" ]]; then
 	# Set trace true for staging development show times
 	# Verbose output and timers
-	
+
 	TRACE=true
 	trace "OK: Staging"
 	for file in "$ROOT_DIR"/staging/*.sh; do
