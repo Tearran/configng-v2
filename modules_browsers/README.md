@@ -5,7 +5,7 @@ This directory contains scripts and utilities for exploring and interacting with
 ## Contents
 
 - `modules_browser.go` — Go program that launches a desktop window (`webview`) showing the interactive modules browser (served from `modules_browser.html`).
-- `modules_browser.html` — Single-page web interface (auto-generated, do not edit directly) for browsing all module features. Run `./workflow/35_web_docs.sh` to regenerate after editing source metadata.
+- `modules_browser.html` — Single-page web interface (auto-generated, do not edit directly) for browsing all module features. Run `./SDK/35_web_docs.sh` to regenerate after editing source metadata.
 - `modules_browser.py` — Python/Tkinter GUI for browsing modules and viewing feature details from `modules_metadata.json`.
 - `modules_browser.sh` — Bash+Zenity dialog browser for modules, requiring `jq` and `zenity`. Lets you select category/group/feature and view details in a graphical dialog.
 - `modules_metadata.json` — Machine-readable metadata file containing all available module features, options, and descriptions. Used by all browsers above.
@@ -17,7 +17,7 @@ This directory contains scripts and utilities for exploring and interacting with
 
 ### HTML Browser
 
-1. Ensure `modules_browser.html` and `modules_metadata.json` are present (regenerate with `./workflow/35_web_docs.sh` if needed).
+1. Ensure `modules_browser.html` and `modules_metadata.json` are present (regenerate with `./SDK/35_web_docs.sh` if needed).
 2. Open `modules_browser.html` in any web browser **or**:
 
 ### GO webview
@@ -53,8 +53,8 @@ python3 web-server.py
 ### To generate json and html 
 
 ```sh
-cd workflow
-workflow/50_array_to_json.sh
+cd SDK
+SDK/50_array_to_json.sh
 ```
 
 This will refresh `modules_browser.html` and `modules_metadata.json` based on the latest modules.

@@ -86,48 +86,22 @@ cockpit() {
 	esac
 }
 
-##---------- Start DEMO/test code block
+
+
+### START ./cockpit.sh - Armbian Config V2 test entrypoint
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	TITLE="${TITLE:-"Cockpit"}" # title for dialog boxes
-	DIALOG=${DIALOG:-whiptail} # options whiptail dialog
-
-	# Load trace module
-	TRACE="eurt" # Any non null will enable trace output
-	source src/core/initialize/trace.sh || exit 1
-
-	# start trace checkpoint timer
-	trace reset
-	trace "Loaded and started trace module"
-	trace "Start trace comments"
-
-	trace "Loading submenu module"
-	source src/core/interface/submenu.sh || exit 1
-
-	trace "loading Yes No Box module"
-	source src/core/interface/yes_no_box.sh || exit 1
-
-	trace "Loading OK box module"
-	source src/core/interface/ok_box.sh || exit 1
-
-	trace "Loading info box module"
-	source src/core/interface/info_box.sh || exit 1
-
-	trace "Check if not root and first argument is empty"
-
-
-	if [[ -z "$CI" && "${1:-}" != "help" && "${1:-}" != "--help" && "${1:-}" != "-h" && "$EUID" != "0" ]]; then
-		echo "This module requires root privileges (use sudo)."
-		echo "User is not root, exiting"
-		trace total
+	# --- Capture and assert help output ---
+	help_output="$(cockpit help)"
+	echo "$help_output" | grep -q "Usage: cockpit" || {
+		echo "fail: Help output does not contain expected usage string"
+		echo "test complete"
 		exit 1
-	else
-		trace "Loading submenu for cockpit module"
-		[[ ! ${1:-} ]] && submenu cockpit || cockpit "$@"
-		trace total
-		exit 0
-	fi
-
+	}
+	# --- end assertion ---
+	cockpit "$@"
 fi
 
-##------------- End DEMO/test code block
+### END ./cockpit.sh - Armbian Config V2 test entrypoint
+
+

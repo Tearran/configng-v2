@@ -5,6 +5,27 @@
             "description": "System utilities and login helpers",
             "sub": [
                 {
+                    "id": "kernel",
+                    "description": "Alternative kernels, headers, overlays, bootenv",
+                    "sub": [
+                        {
+                            "id": "KER001",
+                            "feature": "boot_kernel",
+                            "description": "Manage, hold, unhold, and update kernel, bootloader (U-Boot), and related Armbian packages.",
+                            "options": "help,hold,unhold,status,update",
+                            "author": "@Tearran",
+                            "arch": "arm64,armhf,amd64",
+                            "require_os": "Armbian,Ubuntu,Debian",
+                            "require_kernel": "4.19+",
+                            "status": "Stable",
+                            "helpers": "_about_boot_kernel,_boot_kernel_hold,_boot_kernel_unhold,_boot_kernel_status,_boot_kernel_update",
+                            "about": "This module provides commands to manage all kernel, bootloader (U-Boot), and related Armbian packages on your system. You can hold or unhold these packages to prevent or allow updates, check their status, and trigger updates for all matching packages. Designed for use with Armbian Config V2 menus or scripting, it operates on all installed packages matching 'linux-*' or 'armbian-*'.",
+                            "condition": "",
+                            "command": []
+                        }
+                    ]
+                },
+                {
                     "id": "user",
                     "description": "Change shell, adjust MOTD",
                     "sub": [
