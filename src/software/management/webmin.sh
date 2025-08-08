@@ -61,7 +61,7 @@ function webmin() {
 			pkg_install webmin
 			echo "Webmin installed successfully."
 		;;
-		"remove|purge")
+		remove|purge)
 			## remove webmin
 			srv_disable webmin
 			pkg_remove webmin
