@@ -1,3 +1,5 @@
+<img width="256" height="256" alt="armbian-configng" src="https://github.com/user-attachments/assets/49f1a04e-c80a-4b38-9f1e-7c2afce5aa78" />
+
 ## 📦 About configng-v2
 
 configng-v2 is a proof-of-concept modular utility focused on making configuration modules easier to build, document, and maintain. Inspired by [armbian/configng](https://github.com/armbian/configng), this project is not a re-implementation of `armbian-config` itself, but a toolkit (SDK) and documentation system for creating compatible modules.
