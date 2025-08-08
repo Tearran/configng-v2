@@ -100,7 +100,7 @@ function webmin() {
 			if srv_active webmin; then
 				echo "Webmin service is active."
 				return 0
-			elif ! srv_enabled webmin ]]; then
+			elif ! srv_enabled webmin; then
 				echo "Webmin service is disabled."
 				return 1
 			else
