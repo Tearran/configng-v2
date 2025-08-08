@@ -8,34 +8,34 @@ _about_webmin() {
 Usage: webmin <command>
 
 Commands:
-    help        - Show this help message
-    install     - Install Webmin
-    remove      - Remove Webmin
-    start       - Start the Webmin service
-    stop        - Stop the Webmin service
-    enable      - Enable Webmin to start on boot
-    disable     - Disable Webmin from starting on boot
-    status      - Show the status of the Webmin service
-    check       - Perform a basic check of Webmin
+	help        - Show this help message
+	install     - Install Webmin
+	remove      - Remove Webmin
+	start       - Start the Webmin service
+	stop        - Stop the Webmin service
+	enable      - Enable Webmin to start on boot
+	disable     - Disable Webmin from starting on boot
+	status      - Show the status of the Webmin service
+	check       - Perform a basic check of Webmin
 
 Examples:
-    # Install Webmin
-    module_webmin install
+	# Install Webmin
+	module_webmin install
 
-    # Start Webmin
-    module_webmin start
+	# Start Webmin
+	module_webmin start
 
-    # Check Webmin status
-    module_webmin status
+	# Check Webmin status
+	module_webmin status
 
 Notes:
-    - Maintainer: @Tearran
-    - Author: @Tearran
-    - Status: Active
-    - Documentation: https://webmin.com/docs/
-    - Port: 10000
-    - Supported Architectures: x86-64 arm64 armhf
-    - Group: Management
+	- Maintainer: @Tearran
+	- Author: @Tearran
+	- Status: Active
+	- Documentation: https://webmin.com/docs/
+	- Port: 10000
+	- Supported Architectures: x86-64 arm64 armhf
+	- Group: Management
 
 EOF
 }
@@ -131,4 +131,3 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 fi
 
 ### END ./webmin.sh - Armbian Config V2 test entrypoint
-
