@@ -20,13 +20,13 @@ Commands:
 
 Examples:
 	# Install Webmin
-	module_webmin install
+	webmin install
 
 	# Start Webmin
-	module_webmin start
+	webmin start
 
 	# Check Webmin status
-	module_webmin status
+	webmin status
 
 Notes:
 	- Maintainer: @Tearran
