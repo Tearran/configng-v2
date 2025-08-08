@@ -65,8 +65,8 @@ function webmin() {
 			## remove webmin
 			srv_disable webmin
 			pkg_remove webmin
-			rm /etc/apt/sources.list.d/webmin.list
-			rm /usr/share/keyrings/webmin-archive-keyring.gpg
+			rm -f /etc/apt/sources.list.d/webmin.list
+			rm -f /usr/share/keyrings/webmin-archive-keyring.gpg
 			pkg_update
 			echo "Webmin removed successfully."
 		;;
