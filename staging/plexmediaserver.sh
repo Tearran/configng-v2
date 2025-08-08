@@ -38,7 +38,8 @@ plexmediaserver() {
 			fi
 		;;
 		*)
-			echo "Uknown command"
+			echo "Unknown command. Try: plexmediaserver --help"
+			return 1
 	esac
 }
 
