@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Directory containing SVGs
-SRC_DIR="share/icons/hicolor/scalable"
+SRC_DIR="images/scalable"
 # List of desired sizes
 SIZES=(16 32 64 128 256 512)
 
