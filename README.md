@@ -1,4 +1,4 @@
-<img width="256" height="256" alt="armbian-configng" src="https://github.com/user-attachments/assets/49f1a04e-c80a-4b38-9f1e-7c2afce5aa78" />
+<img width="256" height="256" alt="armbian-configng" src="https://raw.githubusercontent.com/Tearran/configng-v2/refs/heads/main/images/scalable/configng-tux_v2.svg" />
 
 ## 📦 About configng-v2
 
