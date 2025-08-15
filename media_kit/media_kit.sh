@@ -9,8 +9,7 @@ media_kit() {
 			_about_media_kit
 			;;
 		index)
-			_html_page > index.html
-
+			_html_index > index.html
 			;;
 		icon)
 			_icon_set_from_svg
@@ -20,7 +19,6 @@ media_kit() {
 			;;
 		all)
 			_icon_set_from_svg
-
 			_index_json
 			_html_index > index.html
 			_html_server
@@ -40,18 +38,8 @@ _html_index() {
 	<link rel="icon" type="image/x-icon" href="./favicon.ico">
 	<title>Armbian Logos</title>
 	<style>
-		body {
-			font-family: sans-serif;
-			margin: 0;
-			padding: 0;
-			background: #f8f8f8;
-		}
-		header, footer {
-			background: #333;
-			color: #fff;
-			padding: 1em;
-			text-align: center;
-		}
+		body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
+		header, footer { background: #333; color: #fff; padding: 1em; text-align: center; }
 		main {
 			padding: 1em;
 			display: grid;
@@ -60,33 +48,16 @@ _html_index() {
 			gap: 1em;
 		}
 		@media (max-width: 768px) {
-			main {
-				grid-template-columns: 1fr;
-				grid-template-rows: auto;
-			}
+			main { grid-template-columns: 1fr; grid-template-rows: auto; }
 		}
-		.section {
-			padding: 1em;
-			background: #f0f0f0;
-			border-radius: 6px;
-		}
-		.section h2 {
-			margin-top: 0;
-		}
-		img {
-			margin: 0.5em;
-			vertical-align: middle;
-		}
-		.legacy {
-			opacity: 0.85; /* Slightly dim legacy sections */
-		}
-		ul {
-			list-style-type: none;
-			padding-left: 0;
-		}
-		ul li {
-			margin: 0.2em 0;
-		}
+		.section { padding: 1em; background: #f0f0f0; border-radius: 6px; }
+		.section h2 { margin-top: 0; }
+		img { margin: 0.5em; vertical-align: middle; }
+		.legacy { opacity: 0.85; }
+		ul { list-style-type: none; padding-left: 0; }
+		ul li { margin: 0.2em 0; }
+		.meta { font-size: 0.95em; color: #444; margin: 0.25em 0 0.5em 0; }
+		.meta span { display: inline-block; min-width: 70px; }
 	</style>
 </head>
 <body>
@@ -120,6 +91,11 @@ _html_index() {
 	</footer>
 
 	<script>
+		function valueOrNull(val) {
+			// Null, empty string, or undefined become 'null'
+			return (val === undefined || val === null || val === "") ? "<span style='color:#c00'>null</span>" : val;
+		}
+
 		fetch('logos.json')
 			.then(response => response.json())
 			.then(data => {
@@ -135,22 +111,51 @@ _html_index() {
 					const container = document.getElementById(sectionId);
 					if (!container) return;
 
-					// Adapt for PNG object format
-					const pngList = logo.pngs.map(p => {
-						if (typeof p === 'string') {
-							return `<li><a href="${p}">${p.split('/').pop()}</a></li>`;
-						} else {
-							return `<li><a href="${p.path}">${p.size}</a> – ${p.kb} KB</li>`;
-						}
-					}).join('');
+					let div = document.createElement('div');
 
-					const div = document.createElement('div');
-					div.innerHTML = `
-						<hr>
-						<img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
-						<p>${logo.name} PNG:</p>
-						<ul>${pngList}</ul>
+					let meta = logo.svg_meta || {};
+					let metaHtml = `
+						<div class="meta">
+							<span><b>Title:</b> ${valueOrNull(meta.title)}</span>
+							<span><b>Description:</b> ${valueOrNull(meta.desc)}</span>
+							<span><b>Size:</b> ${valueOrNull(meta.width)} x ${valueOrNull(meta.height)}</span>
+							<span><b>ViewBox:</b> ${valueOrNull(meta.viewBox)}</span>
+						</div>
 					`;
+
+					if (!logo.pngs || logo.pngs.length === 0 || logo.category.endsWith('legacy')) {
+						div.innerHTML = `
+							<hr>
+							<a href="${logo.svg}" target="_blank">
+								<img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
+							</a>
+							${metaHtml}
+							<p><a href="${logo.svg}" target="_blank">Open SVG / Download</a></p>
+						`;
+					} else {
+						const pngList = logo.pngs.map(p =>
+							`<li><a href="${p.path}">${p.size} PNG</a> – ${p.kb} KB</li>`
+						).join('');
+						const gifList = logo.gifs.map(g =>
+							`<li><a href="${g.path}">${g.size} GIF</a> – ${g.kb} KB</li>`
+						).join('');
+						const jpgList = logo.jpgs.map(j =>
+							`<li><a href="${j.path}">${j.size} JPG</a> – ${j.kb} KB</li>`
+						).join('');
+						div.innerHTML = `
+							<hr>
+							<a href="${logo.svg}" target="_blank">
+								<img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
+							</a>
+							${metaHtml}
+							<p>${logo.name} Downloads:</p>
+							<ul>
+								${pngList}
+								${gifList}
+								${jpgList}
+							</ul>
+						`;
+					}
 					container.appendChild(div);
 				});
 			});
@@ -161,7 +166,6 @@ EOF
 }
 
 _index_json() {
-
 	OUTPUT="logos.json"
 	mapfile -t svg_files < <(find "$SVG_DIR" -type f -name "*.svg" | sort -u)
 
@@ -174,27 +178,29 @@ _index_json() {
 
 		# Determine category
 		case "$file" in
-		*"/legacy/"*)
-			if [[ "$name" == armbian_* ]]; then category="armbian-legacy"
-			elif [[ "$name" == configng_* ]]; then category="configng-legacy"
-			else category="other-legacy"; fi
-			;;
-		*)
-			if [[ "$name" == armbian_* ]]; then category="armbian"
-			elif [[ "$name" == configng_* ]]; then category="configng"
-			else category="other"; fi
-			;;
+			*"/legacy/"*)
+				if [[ "$name" == armbian_* ]]; then category="armbian-legacy"
+				elif [[ "$name" == configng_* ]]; then category="configng-legacy"
+				else category="other-legacy"; fi
+				is_legacy=1
+				;;
+			*)
+				if [[ "$name" == armbian_* ]]; then category="armbian"
+				elif [[ "$name" == configng_* ]]; then category="configng"
+				else category="other"; fi
+				is_legacy=0
+				;;
 		esac
 
-		# Safely extract SVG metadata
 		svg_width=$(grep -oP 'width="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
 		svg_height=$(grep -oP 'height="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
 		svg_viewbox=$(grep -oP 'viewBox="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
-		svg_title=$(grep -oP '<title>(.*?)</title>' "$file" | head -n1 || echo "")
-		svg_desc=$(grep -oP '<desc>(.*?)</desc>' "$file" | head -n1 || echo "")
+		svg_title=$(grep -oP '<title>(.*?)</title>' "$file" | head -n1 | sed 's/<title>\(.*\)<\/title>/\1/' || echo "")
+		svg_desc=$(grep -oP '<desc>(.*?)</desc>' "$file" | head -n1 | sed 's/<desc>\(.*\)<\/desc>/\1/' || echo "")
 
 		[[ $first -eq 0 ]] && echo "," >> "$OUTPUT"
 		first=0
+
 		echo "  {" >> "$OUTPUT"
 		echo "    \"name\": \"$name\"," >> "$OUTPUT"
 		echo "    \"category\": \"$category\"," >> "$OUTPUT"
@@ -206,23 +212,33 @@ _index_json() {
 		echo "      \"title\": \"$svg_title\"," >> "$OUTPUT"
 		echo "      \"desc\": \"$svg_desc\"" >> "$OUTPUT"
 		echo "    }," >> "$OUTPUT"
-		echo "    \"pngs\": [" >> "$OUTPUT"
 
-		for i in "${!SIZES[@]}"; do
-		sz="${SIZES[$i]}"
-		png_path="images/${sz}x${sz}/${name}.png"
-		if [[ -f "$png_path" ]]; then
-			kb=$(du -k "$png_path" 2>/dev/null | cut -f1 || echo 0)
-		else
-			kb=0
-		fi
-		kb_decimal=$(printf "%.2f" "$kb")
-		echo -n "      { \"path\": \"$png_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
-		[[ $i -lt $((${#SIZES[@]}-1)) ]] && echo "," >> "$OUTPUT"
+		# Arrays for PNG, GIF, JPG
+		for fmt in png gif jpg; do
+			array_name="${fmt}s"
+			if [[ "$is_legacy" -eq 1 ]]; then
+				echo "    \"$array_name\": []" >> "$OUTPUT"
+			else
+				echo "    \"$array_name\": [" >> "$OUTPUT"
+				for i in "${!SIZES[@]}"; do
+					sz="${SIZES[$i]}"
+					img_path="images/${sz}x${sz}/${name}.${fmt}"
+					if [[ -f "$img_path" ]]; then
+						kb=$(du -k "$img_path" 2>/dev/null | cut -f1 || echo 0)
+					else
+						kb=0
+					fi
+					kb_decimal=$(printf "%.2f" "$kb")
+					echo -n "      { \"path\": \"$img_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
+					[[ $i -lt $((${#SIZES[@]}-1)) ]] && echo "," >> "$OUTPUT"
+				done
+				echo "" >> "$OUTPUT"
+				echo "    ]" >> "$OUTPUT"
+			fi
+			# Add comma after array, except after JPG array
+			[[ "$fmt" != "jpg" ]] && echo "," >> "$OUTPUT"
 		done
 
-		echo "" >> "$OUTPUT"
-		echo "    ]" >> "$OUTPUT"
 		echo -n "  }" >> "$OUTPUT"
 	done
 
@@ -230,7 +246,6 @@ _index_json() {
 	echo "]" >> "$OUTPUT"
 	echo "JSON file created: $OUTPUT"
 }
-
 
 _html_server() {
 	local DIR="${1:-.}"
@@ -262,31 +277,27 @@ _html_server() {
 	echo "Test complete"
 }
 
-
 _icon_set_from_svg() {
 	SRC_DIR="${SRC_DIR:-./brand}"
-	#SIZES=(16 48 512)
-
-	# Name of the base SVG (without extension) to use for favicon
-	FAVICON_BASE="armbian_discord_v2.1"  # change this to whatever your main icon is
+	FAVICON_BASE="armbian_discord_v2.1"  # change this to your main icon
 
 	# Check for ImageMagick's convert command
 	if ! command -v convert &> /dev/null; then
 		echo "Error: ImageMagick 'convert' command not found."
 		read -p "Would you like to install ImageMagick using 'sudo apt install imagemagick'? [Y/n] " yn
 		case "$yn" in
-		[Yy]* | "" )
-			echo "Installing ImageMagick..."
-			sudo apt update && sudo apt install imagemagick
-			if ! command -v convert &> /dev/null; then
-			echo "Installation failed or 'convert' still not found. Exiting."
-			exit 1
-			fi
-			;;
-		* )
-			echo "Cannot proceed without ImageMagick. Exiting."
-			exit 1
-			;;
+			[Yy]* | "" )
+				echo "Installing ImageMagick..."
+				sudo apt update && sudo apt install imagemagick
+				if ! command -v convert &> /dev/null; then
+					echo "Installation failed or 'convert' still not found. Exiting."
+					exit 1
+				fi
+				;;
+			* )
+				echo "Cannot proceed without ImageMagick. Exiting."
+				exit 1
+				;;
 		esac
 	fi
 
@@ -306,17 +317,32 @@ _icon_set_from_svg() {
 	for svg in "${svg_files[@]}"; do
 		base=$(basename "$svg" .svg)
 		for size in "${SIZES[@]}"; do
-		OUT_DIR="images/${size}x${size}"
-		mkdir -p "$OUT_DIR"
-		OUT_FILE="${OUT_DIR}/${base}.png"
-		if [[ ! -f "$OUT_FILE" || "$svg" -nt "$OUT_FILE" ]]; then
-			convert -background none -resize ${size}x${size} "$svg" "$OUT_FILE"
-			if [ $? -eq 0 ]; then
-			echo "Generated $OUT_FILE"
-			else
-			echo "Failed to convert $svg to $OUT_FILE"
+			OUT_DIR="images/${size}x${size}"
+			mkdir -p "$OUT_DIR"
+			OUT_FILE="${OUT_DIR}/${base}.png"
+			if [[ ! -f "$OUT_FILE" || "$svg" -nt "$OUT_FILE" ]]; then
+				convert -background none -resize ${size}x${size} "$svg" "$OUT_FILE"
+				if [ $? -eq 0 ]; then
+					echo "Generated $OUT_FILE"
+				else
+					echo "Failed to convert $svg to $OUT_FILE"
+				fi
 			fi
-		fi
+		done
+		# Add GIF and JPG generation here:
+		for size in "${SIZES[@]}"; do
+			OUT_DIR="images/${size}x${size}"
+			mkdir -p "$OUT_DIR"
+			OUT_GIF="${OUT_DIR}/${base}.gif"
+			OUT_JPG="${OUT_DIR}/${base}.jpg"
+			if [[ ! -f "$OUT_GIF" || "$svg" -nt "$OUT_GIF" ]]; then
+				convert -background white -resize ${size}x${size} "$svg" "$OUT_GIF"
+				echo "Generated $OUT_GIF"
+			fi
+			if [[ ! -f "$OUT_JPG" || "$svg" -nt "$OUT_JPG" ]]; then
+				convert -background white -resize ${size}x${size} "$svg" "$OUT_JPG"
+				echo "Generated $OUT_JPG"
+			fi
 		done
 	done
 
@@ -343,7 +369,7 @@ Usage: media_kit <command> [options]
 
 Commands:
 help    - Show this help message.
-icon    - Generate a PNG icon set from SVG files in ./images/scalable.
+icon    - Generate a PNG, JPG, and GIF icon set from SVG files in ./images/scalable.
 index   - Generate an HTML media kit index of all SVGs and icons.
 server  - Serve the HTML and icon directory using a simple HTTP server.
 all     - Run icon generation, HTML index generation and start the server.
@@ -378,7 +404,6 @@ EOF
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	SIZES=(16 48 512)
 	SVG_DIR="./brand"
-
 
 	help_output="$(media_kit help)"
 	echo "$help_output" | grep -q "Usage: media_kit" || {
