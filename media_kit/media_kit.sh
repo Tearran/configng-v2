@@ -30,6 +30,7 @@ media_kit() {
 			;;
 	esac
 }
+
 _html_index() {
 	cat <<'EOF'
 <!DOCTYPE html>
@@ -161,75 +162,73 @@ EOF
 
 _index_json() {
 
-    OUTPUT="logos.json"
+	OUTPUT="logos.json"
+	mapfile -t svg_files < <(find "$SVG_DIR" -type f -name "*.svg" | sort -u)
 
+	echo "[" > "$OUTPUT"
+	first=1
 
-    mapfile -t svg_files < <(find "$SVG_DIR" -type f -name "*.svg" | sort -u)
+	for file in "${svg_files[@]}"; do
+		[[ -e "$file" ]] || continue
+		name=$(basename "$file" .svg)
 
-    echo "[" > "$OUTPUT"
-    first=1
+		# Determine category
+		case "$file" in
+		*"/legacy/"*)
+			if [[ "$name" == armbian_* ]]; then category="armbian-legacy"
+			elif [[ "$name" == configng_* ]]; then category="configng-legacy"
+			else category="other-legacy"; fi
+			;;
+		*)
+			if [[ "$name" == armbian_* ]]; then category="armbian"
+			elif [[ "$name" == configng_* ]]; then category="configng"
+			else category="other"; fi
+			;;
+		esac
 
-    for file in "${svg_files[@]}"; do
-        [[ -e "$file" ]] || continue
-        name=$(basename "$file" .svg)
+		# Safely extract SVG metadata
+		svg_width=$(grep -oP 'width="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
+		svg_height=$(grep -oP 'height="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
+		svg_viewbox=$(grep -oP 'viewBox="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
+		svg_title=$(grep -oP '<title>(.*?)</title>' "$file" | head -n1 || echo "")
+		svg_desc=$(grep -oP '<desc>(.*?)</desc>' "$file" | head -n1 || echo "")
 
-        # Determine category
-        case "$file" in
-            *"/legacy/"*)
-                if [[ "$name" == armbian_* ]]; then category="armbian-legacy"
-                elif [[ "$name" == configng_* ]]; then category="configng-legacy"
-                else category="other-legacy"; fi
-                ;;
-            *)
-                if [[ "$name" == armbian_* ]]; then category="armbian"
-                elif [[ "$name" == configng_* ]]; then category="configng"
-                else category="other"; fi
-                ;;
-        esac
+		[[ $first -eq 0 ]] && echo "," >> "$OUTPUT"
+		first=0
+		echo "  {" >> "$OUTPUT"
+		echo "    \"name\": \"$name\"," >> "$OUTPUT"
+		echo "    \"category\": \"$category\"," >> "$OUTPUT"
+		echo "    \"svg\": \"$file\"," >> "$OUTPUT"
+		echo "    \"svg_meta\": {" >> "$OUTPUT"
+		echo "      \"width\": \"$svg_width\"," >> "$OUTPUT"
+		echo "      \"height\": \"$svg_height\"," >> "$OUTPUT"
+		echo "      \"viewBox\": \"$svg_viewbox\"," >> "$OUTPUT"
+		echo "      \"title\": \"$svg_title\"," >> "$OUTPUT"
+		echo "      \"desc\": \"$svg_desc\"" >> "$OUTPUT"
+		echo "    }," >> "$OUTPUT"
+		echo "    \"pngs\": [" >> "$OUTPUT"
 
-        # Safely extract SVG metadata
-        svg_width=$(grep -oP 'width="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
-        svg_height=$(grep -oP 'height="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
-        svg_viewbox=$(grep -oP 'viewBox="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
-        svg_title=$(grep -oP '<title>(.*?)</title>' "$file" | head -n1 || echo "")
-        svg_desc=$(grep -oP '<desc>(.*?)</desc>' "$file" | head -n1 || echo "")
+		for i in "${!SIZES[@]}"; do
+		sz="${SIZES[$i]}"
+		png_path="images/${sz}x${sz}/${name}.png"
+		if [[ -f "$png_path" ]]; then
+			kb=$(du -k "$png_path" 2>/dev/null | cut -f1 || echo 0)
+		else
+			kb=0
+		fi
+		kb_decimal=$(printf "%.2f" "$kb")
+		echo -n "      { \"path\": \"$png_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
+		[[ $i -lt $((${#SIZES[@]}-1)) ]] && echo "," >> "$OUTPUT"
+		done
 
-        [[ $first -eq 0 ]] && echo "," >> "$OUTPUT"
-        first=0
-        echo "  {" >> "$OUTPUT"
-        echo "    \"name\": \"$name\"," >> "$OUTPUT"
-        echo "    \"category\": \"$category\"," >> "$OUTPUT"
-        echo "    \"svg\": \"$file\"," >> "$OUTPUT"
-        echo "    \"svg_meta\": {" >> "$OUTPUT"
-        echo "      \"width\": \"$svg_width\"," >> "$OUTPUT"
-        echo "      \"height\": \"$svg_height\"," >> "$OUTPUT"
-        echo "      \"viewBox\": \"$svg_viewbox\"," >> "$OUTPUT"
-        echo "      \"title\": \"$svg_title\"," >> "$OUTPUT"
-        echo "      \"desc\": \"$svg_desc\"" >> "$OUTPUT"
-        echo "    }," >> "$OUTPUT"
-        echo "    \"pngs\": [" >> "$OUTPUT"
+		echo "" >> "$OUTPUT"
+		echo "    ]" >> "$OUTPUT"
+		echo -n "  }" >> "$OUTPUT"
+	done
 
-        for i in "${!SIZES[@]}"; do
-            sz="${SIZES[$i]}"
-            png_path="images/${sz}x${sz}/${name}.png"
-            if [[ -f "$png_path" ]]; then
-                kb=$(du -k "$png_path" 2>/dev/null | cut -f1 || echo 0)
-            else
-                kb=0
-            fi
-            kb_decimal=$(printf "%.2f" "$kb")
-            echo -n "      { \"path\": \"$png_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
-            [[ $i -lt $((${#SIZES[@]}-1)) ]] && echo "," >> "$OUTPUT"
-        done
-
-        echo "" >> "$OUTPUT"
-        echo "    ]" >> "$OUTPUT"
-        echo -n "  }" >> "$OUTPUT"
-    done
-
-    echo "" >> "$OUTPUT"
-    echo "]" >> "$OUTPUT"
-    echo "JSON file created: $OUTPUT"
+	echo "" >> "$OUTPUT"
+	echo "]" >> "$OUTPUT"
+	echo "JSON file created: $OUTPUT"
 }
 
 
@@ -265,77 +264,77 @@ _html_server() {
 
 
 _icon_set_from_svg() {
-    SRC_DIR="${SRC_DIR:-./brand}"
-    #SIZES=(16 48 512)
+	SRC_DIR="${SRC_DIR:-./brand}"
+	#SIZES=(16 48 512)
 
-    # Name of the base SVG (without extension) to use for favicon
-    FAVICON_BASE="armbian_discord_v2.1"  # change this to whatever your main icon is
+	# Name of the base SVG (without extension) to use for favicon
+	FAVICON_BASE="armbian_discord_v2.1"  # change this to whatever your main icon is
 
-    # Check for ImageMagick's convert command
-    if ! command -v convert &> /dev/null; then
-        echo "Error: ImageMagick 'convert' command not found."
-        read -p "Would you like to install ImageMagick using 'sudo apt install imagemagick'? [Y/n] " yn
-        case "$yn" in
-            [Yy]* | "" )
-                echo "Installing ImageMagick..."
-                sudo apt update && sudo apt install imagemagick
-                if ! command -v convert &> /dev/null; then
-                    echo "Installation failed or 'convert' still not found. Exiting."
-                    exit 1
-                fi
-                ;;
-            * )
-                echo "Cannot proceed without ImageMagick. Exiting."
-                exit 1
-                ;;
-        esac
-    fi
+	# Check for ImageMagick's convert command
+	if ! command -v convert &> /dev/null; then
+		echo "Error: ImageMagick 'convert' command not found."
+		read -p "Would you like to install ImageMagick using 'sudo apt install imagemagick'? [Y/n] " yn
+		case "$yn" in
+		[Yy]* | "" )
+			echo "Installing ImageMagick..."
+			sudo apt update && sudo apt install imagemagick
+			if ! command -v convert &> /dev/null; then
+			echo "Installation failed or 'convert' still not found. Exiting."
+			exit 1
+			fi
+			;;
+		* )
+			echo "Cannot proceed without ImageMagick. Exiting."
+			exit 1
+			;;
+		esac
+	fi
 
-    if [ ! -d "$SRC_DIR" ]; then
-        echo "Error: Source directory '$SRC_DIR' does not exist."
-        exit 1
-    fi
+	if [ ! -d "$SRC_DIR" ]; then
+		echo "Error: Source directory '$SRC_DIR' does not exist."
+		exit 1
+	fi
 
-    shopt -s nullglob
-    svg_files=("$SRC_DIR"/*.svg)
-    if [ ${#svg_files[@]} -eq 0 ]; then
-        echo "Error: No SVG files found in '$SRC_DIR'."
-        exit 1
-    fi
-    shopt -u nullglob
+	shopt -s nullglob
+	svg_files=("$SRC_DIR"/*.svg)
+	if [ ${#svg_files[@]} -eq 0 ]; then
+		echo "Error: No SVG files found in '$SRC_DIR'."
+		exit 1
+	fi
+	shopt -u nullglob
 
-    for svg in "${svg_files[@]}"; do
-        base=$(basename "$svg" .svg)
-        for size in "${SIZES[@]}"; do
-            OUT_DIR="images/${size}x${size}"
-            mkdir -p "$OUT_DIR"
-            OUT_FILE="${OUT_DIR}/${base}.png"
-            if [[ ! -f "$OUT_FILE" || "$svg" -nt "$OUT_FILE" ]]; then
-                convert -background none -resize ${size}x${size} "$svg" "$OUT_FILE"
-                if [ $? -eq 0 ]; then
-                    echo "Generated $OUT_FILE"
-                else
-                    echo "Failed to convert $svg to $OUT_FILE"
-                fi
-            fi
-        done
-    done
+	for svg in "${svg_files[@]}"; do
+		base=$(basename "$svg" .svg)
+		for size in "${SIZES[@]}"; do
+		OUT_DIR="images/${size}x${size}"
+		mkdir -p "$OUT_DIR"
+		OUT_FILE="${OUT_DIR}/${base}.png"
+		if [[ ! -f "$OUT_FILE" || "$svg" -nt "$OUT_FILE" ]]; then
+			convert -background none -resize ${size}x${size} "$svg" "$OUT_FILE"
+			if [ $? -eq 0 ]; then
+			echo "Generated $OUT_FILE"
+			else
+			echo "Failed to convert $svg to $OUT_FILE"
+			fi
+		fi
+		done
+	done
 
-    cp -r "$SRC_DIR" "images/scalable"
+	cp -r "$SRC_DIR" "images/scalable"
 
-    # Generate multi-resolution favicon.ico from chosen SVG
-    FAVICON_SVG="$SRC_DIR/${FAVICON_BASE}.svg"
-    if [[ -f "$FAVICON_SVG" ]]; then
-        echo "Creating favicon.ico from $FAVICON_SVG"
-        convert -background none "$FAVICON_SVG" -resize 16x16 favicon-16.png
-        convert -background none "$FAVICON_SVG" -resize 32x32 favicon-32.png
-        convert -background none "$FAVICON_SVG" -resize 48x48 favicon-48.png
-        convert favicon-16.png favicon-32.png favicon-48.png favicon.ico
-        rm favicon-16.png favicon-32.png favicon-48.png
-        echo "Multi-resolution favicon.ico created."
-    else
-        echo "Could not create favicon.ico (SVG not found: $FAVICON_SVG)"
-    fi
+	# Generate multi-resolution favicon.ico from chosen SVG
+	FAVICON_SVG="$SRC_DIR/${FAVICON_BASE}.svg"
+	if [[ -f "$FAVICON_SVG" ]]; then
+		echo "Creating favicon.ico from $FAVICON_SVG"
+		convert -background none "$FAVICON_SVG" -resize 16x16 favicon-16.png
+		convert -background none "$FAVICON_SVG" -resize 32x32 favicon-32.png
+		convert -background none "$FAVICON_SVG" -resize 48x48 favicon-48.png
+		convert favicon-16.png favicon-32.png favicon-48.png favicon.ico
+		rm favicon-16.png favicon-32.png favicon-48.png
+		echo "Multi-resolution favicon.ico created."
+	else
+		echo "Could not create favicon.ico (SVG not found: $FAVICON_SVG)"
+	fi
 }
 
 _about_media_kit() {
@@ -343,33 +342,33 @@ _about_media_kit() {
 Usage: media_kit <command> [options]
 
 Commands:
-    help    - Show this help message.
-    icon    - Generate a PNG icon set from SVG files in ./images/scalable.
-    index   - Generate an HTML media kit index of all SVGs and icons.
-    server  - Serve the HTML and icon directory using a simple HTTP server.
-    all     - Run icon generation, HTML index generation and start the server.
+help    - Show this help message.
+icon    - Generate a PNG icon set from SVG files in ./images/scalable.
+index   - Generate an HTML media kit index of all SVGs and icons.
+server  - Serve the HTML and icon directory using a simple HTTP server.
+all     - Run icon generation, HTML index generation and start the server.
 
 Examples:
-    # Show help
-    media_kit help
+# Show help
+media_kit help
 
-    # Generate icons from SVGs
-    media_kit icon
+# Generate icons from SVGs
+media_kit icon
 
-    # Generate the HTML media kit
-    media_kit index
+# Generate the HTML media kit
+media_kit index
 
-    # Generate the HTML and start the server
-    media_kit index serve
+# Generate the HTML and start the server
+media_kit index serve
 
-    # Start the server (serves current directory by default)
-    media_kit server [directory]
+# Start the server (serves current directory by default)
+media_kit server [directory]
 
 Notes:
-    - All commands accept '--help', '-h', or 'help' for details, if implemented.
-    - This tool is intended for use with the Armbian Config V2 menu and for scripting.
-    - Please keep this help message up to date if commands or behavior change.
-    - SVGs should be placed in ./images/scalable for indexing and icon generation.
+- All commands accept '--help', '-h', or 'help' for details, if implemented.
+- This tool is intended for use with the Armbian Config V2 menu and for scripting.
+- Please keep this help message up to date if commands or behavior change.
+- SVGs should be placed in ./images/scalable for indexing and icon generation.
 
 EOF
 }
