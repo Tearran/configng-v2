@@ -148,7 +148,7 @@ _html_index() {
 								<img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
 							</a>
 							${metaHtml}
-							<p>${logo.name} Downloads:</p>
+							<p>${logo.name}:</p>
 							<ul>
 								${pngList}
 								${gifList}
