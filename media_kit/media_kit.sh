@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ./armbian-media_kit.sh - Armbian Config V2 module
+# Armbian Media Kit V2 module
+
+DIST="dist"
+SRC_DIR="${SRC_DIR:-./brand}"
+SIZES=(16 48 512)
+SVG_DIR="$SRC_DIR"
 
 media_kit() {
 	case "${1:-}" in
@@ -9,19 +14,23 @@ media_kit() {
 			_about_media_kit
 			;;
 		index)
-			_html_index > index.html
+			_prepare_dist
+			_html_index
 			;;
 		icon)
+			_prepare_dist
 			_icon_set_from_svg
 			;;
 		server)
+			_prepare_dist
 			_html_server
 			;;
 		all)
-			_icon_set_from_svg
-			_index_json
-			_html_index > index.html
-			_html_server
+			_prepare_dist
+			_icon_set_from_svg || echo "ERROR: _icon_set_from_svg failed"
+			_index_json       || echo "ERROR: _index_json failed"
+			_html_index       || echo "ERROR: _html_index failed"
+			_html_server      || echo "ERROR: _html_server failed"
 			;;
 		*)
 			_about_media_kit
@@ -29,13 +38,135 @@ media_kit() {
 	esac
 }
 
+_prepare_dist() {
+	if [ -d "$DIST" ]; then
+		rm -rf "$DIST"
+	fi
+	mkdir -p "$DIST"
+}
+
+_icon_set_from_svg() {
+	mkdir -p "$DIST/images/scalable"
+	mkdir -p "$DIST/images/scalable/legacy"
+	# Copy SVGs to dist/images/scalable/ (non-legacy)
+	find "$SRC_DIR" -maxdepth 1 -type f -name "*.svg" -exec cp {} "$DIST/images/scalable/" \;
+	# Copy legacy SVGs
+	if [ -d "$SRC_DIR/legacy" ]; then
+		find "$SRC_DIR/legacy" -maxdepth 1 -type f -name "*.svg" -exec cp {} "$DIST/images/scalable/legacy/" \;
+	fi
+
+	for svg in "$SRC_DIR"/*.svg "$SRC_DIR/legacy"/*.svg; do
+		[ -e "$svg" ] || continue
+		base=$(basename "$svg" .svg)
+		for size in "${SIZES[@]}"; do
+			OUT_DIR="$DIST/images/${size}x${size}"
+			mkdir -p "$OUT_DIR"
+			convert -background none -resize ${size}x${size} "$svg" "$OUT_DIR/${base}.png"
+			convert -background white -resize ${size}x${size} "$svg" "$OUT_DIR/${base}.gif"
+			convert -background white -resize ${size}x${size} "$svg" "$OUT_DIR/${base}.jpg"
+		done
+	done
+
+	# Favicon
+	FAVICON_SVG="$SRC_DIR/armbian_mascot_v2.1.svg"
+	if [[ -f "$FAVICON_SVG" ]]; then
+		convert -background none "$FAVICON_SVG" -resize 16x16 "$DIST/favicon-16.png"
+		convert -background none "$FAVICON_SVG" -resize 32x32 "$DIST/favicon-32.png"
+		convert -background none "$FAVICON_SVG" -resize 48x48 "$DIST/favicon-48.png"
+		convert "$DIST/favicon-16.png" "$DIST/favicon-32.png" "$DIST/favicon-48.png" "$DIST/favicon.ico"
+		rm "$DIST/favicon-16.png" "$DIST/favicon-32.png" "$DIST/favicon-48.png"
+	fi
+}
+
+_index_json() {
+	OUTPUT="$DIST/logos.json"
+	mapfile -t svg_files < <(find "$SRC_DIR" "$SRC_DIR/legacy" -type f -name "*.svg" | sort -u)
+
+	echo "[" > "$OUTPUT"
+	first=1
+
+	for file in "${svg_files[@]}"; do
+		[[ -e "$file" ]] || continue
+		name=$(basename "$file" .svg)
+
+		# Determine category and SVG path for HTML
+		if [[ "$file" == */legacy/* ]]; then
+			if [[ "$name" == armbian_* ]]; then category="armbian-legacy"
+			elif [[ "$name" == configng_* ]]; then category="configng-legacy"
+			else category="other-legacy"; fi
+			is_legacy=1
+			rel_svg_path="images/scalable/legacy/$name.svg"
+		else
+			if [[ "$name" == armbian_* ]]; then category="armbian"
+			elif [[ "$name" == configng_* ]]; then category="configng"
+			else category="other"; fi
+			is_legacy=0
+			rel_svg_path="images/scalable/$name.svg"
+		fi
+
+		# Metadata extraction
+		svg_title=$(grep -oP '<title>(.*?)</title>' "$file" | head -n1 | sed 's/<title>\(.*\)<\/title>/\1/')
+		if [[ -z "$svg_title" ]]; then
+			svg_title=$(grep -oP '<dc:title>(.*?)</dc:title>' "$file" | head -n1 | sed 's/<dc:title>\(.*\)<\/dc:title>/\1/')
+		fi
+
+		svg_desc=$(grep -oP '<desc>(.*?)</desc>' "$file" | head -n1 | sed 's/<desc>\(.*\)<\/desc>/\1/')
+		if [[ -z "$svg_desc" ]]; then
+			svg_desc=$(grep -oP '<dc:description>(.*?)</dc:description>' "$file" | head -n1 | sed 's/<dc:description>\(.*\)<\/dc:description>/\1/')
+		fi
+
+		[[ $first -eq 0 ]] && echo "," >> "$OUTPUT"
+		first=0
+
+		echo "  {" >> "$OUTPUT"
+		echo "    \"name\": \"$name\"," >> "$OUTPUT"
+		echo "    \"category\": \"$category\"," >> "$OUTPUT"
+		echo "    \"svg\": \"$rel_svg_path\"," >> "$OUTPUT"
+		echo "    \"svg_meta\": {" >> "$OUTPUT"
+		echo "      \"title\": \"$svg_title\"," >> "$OUTPUT"
+		echo "      \"desc\": \"$svg_desc\"" >> "$OUTPUT"
+		echo "    }," >> "$OUTPUT"
+
+		# Arrays for PNG, GIF, JPG
+		for fmt in png gif jpg; do
+			array_name="${fmt}s"
+			if [[ "$is_legacy" -eq 1 ]]; then
+				echo "    \"$array_name\": []" >> "$OUTPUT"
+			else
+				echo "    \"$array_name\": [" >> "$OUTPUT"
+				for i in "${!SIZES[@]}"; do
+					sz="${SIZES[$i]}"
+					img_path="images/${sz}x${sz}/${name}.${fmt}"
+					if [[ -f "$DIST/$img_path" ]]; then
+						kb=$(du -k "$DIST/$img_path" 2>/dev/null | cut -f1 || echo 0)
+					else
+						kb=0
+					fi
+					kb_decimal=$(printf "%.2f" "$kb")
+					echo -n "      { \"path\": \"$img_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
+					[[ $i -lt $((${#SIZES[@]}-1)) ]] && echo "," >> "$OUTPUT"
+				done
+				echo "" >> "$OUTPUT"
+				echo "    ]" >> "$OUTPUT"
+			fi
+			[[ "$fmt" != "jpg" ]] && echo "," >> "$OUTPUT"
+		done
+
+		echo -n "  }" >> "$OUTPUT"
+	done
+
+	echo "" >> "$OUTPUT"
+	echo "]" >> "$OUTPUT"
+	echo "JSON file created: $OUTPUT"
+}
+
 _html_index() {
-	cat <<'EOF'
+	cat <<'EOF' > "$DIST/index.html"
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset='UTF-8'>
-	<link rel="icon" type="image/x-icon" href="./favicon.ico">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<title>Armbian Logos</title>
 	<style>
 		body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
@@ -118,8 +249,6 @@ _html_index() {
 						<div class="meta">
 							<span><b>Title:</b> ${valueOrNull(meta.title)}</span><br>
 							<span><b>Description:</b> ${valueOrNull(meta.desc)}</span>
-						<!--	<span><b>Size:</b> ${valueOrNull(meta.width)} x ${valueOrNull(meta.height)}</span>
-							<span><b>ViewBox:</b> ${valueOrNull(meta.viewBox)}</span> \-->
 						</div>
 					`;
 
@@ -165,208 +294,23 @@ _html_index() {
 EOF
 }
 
-_index_json() {
-	OUTPUT="logos.json"
-	mapfile -t svg_files < <(find "$SVG_DIR" -type f -name "*.svg" | sort -u)
-
-	echo "[" > "$OUTPUT"
-	first=1
-
-	for file in "${svg_files[@]}"; do
-		[[ -e "$file" ]] || continue
-		name=$(basename "$file" .svg)
-
-		# Determine category
-		case "$file" in
-			*"/legacy/"*)
-				if [[ "$name" == armbian_* ]]; then category="armbian-legacy"
-				elif [[ "$name" == configng_* ]]; then category="configng-legacy"
-				else category="other-legacy"; fi
-				is_legacy=1
-				;;
-			*)
-				if [[ "$name" == armbian_* ]]; then category="armbian"
-				elif [[ "$name" == configng_* ]]; then category="configng"
-				else category="other"; fi
-				is_legacy=0
-				;;
-		esac
-
-		svg_width=$(grep -oP 'width="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
-		svg_height=$(grep -oP 'height="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
-		svg_viewbox=$(grep -oP 'viewBox="[^"]+"' "$file" | head -n1 | cut -d'"' -f2 || echo "")
-		svg_title=$(grep -oP '<title>(.*?)</title>' "$file" | head -n1 | sed 's/<title>\(.*\)<\/title>/\1/' || echo "")
-		svg_desc=$(grep -oP '<desc>(.*?)</desc>' "$file" | head -n1 | sed 's/<desc>\(.*\)<\/desc>/\1/' || echo "")
-
-		[[ $first -eq 0 ]] && echo "," >> "$OUTPUT"
-		first=0
-
-		echo "  {" >> "$OUTPUT"
-		echo "    \"name\": \"$name\"," >> "$OUTPUT"
-		echo "    \"category\": \"$category\"," >> "$OUTPUT"
-		echo "    \"svg\": \"$file\"," >> "$OUTPUT"
-		echo "    \"svg_meta\": {" >> "$OUTPUT"
-		echo "      \"width\": \"$svg_width\"," >> "$OUTPUT"
-		echo "      \"height\": \"$svg_height\"," >> "$OUTPUT"
-		echo "      \"viewBox\": \"$svg_viewbox\"," >> "$OUTPUT"
-		echo "      \"title\": \"$svg_title\"," >> "$OUTPUT"
-		echo "      \"desc\": \"$svg_desc\"" >> "$OUTPUT"
-		echo "    }," >> "$OUTPUT"
-
-		# Arrays for PNG, GIF, JPG
-		for fmt in png gif jpg; do
-			array_name="${fmt}s"
-			if [[ "$is_legacy" -eq 1 ]]; then
-				echo "    \"$array_name\": []" >> "$OUTPUT"
-			else
-				echo "    \"$array_name\": [" >> "$OUTPUT"
-				for i in "${!SIZES[@]}"; do
-					sz="${SIZES[$i]}"
-					img_path="images/${sz}x${sz}/${name}.${fmt}"
-					if [[ -f "$img_path" ]]; then
-						kb=$(du -k "$img_path" 2>/dev/null | cut -f1 || echo 0)
-					else
-						kb=0
-					fi
-					kb_decimal=$(printf "%.2f" "$kb")
-					echo -n "      { \"path\": \"$img_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
-					[[ $i -lt $((${#SIZES[@]}-1)) ]] && echo "," >> "$OUTPUT"
-				done
-				echo "" >> "$OUTPUT"
-				echo "    ]" >> "$OUTPUT"
-			fi
-			# Add comma after array, except after JPG array
-			[[ "$fmt" != "jpg" ]] && echo "," >> "$OUTPUT"
-		done
-
-		echo -n "  }" >> "$OUTPUT"
-	done
-
-	echo "" >> "$OUTPUT"
-	echo "]" >> "$OUTPUT"
-	echo "JSON file created: $OUTPUT"
-}
-
 _html_server() {
-	local DIR="${1:-.}"
+	cd "$DIST"
 	if ! command -v python3 &> /dev/null; then
 		echo "Python 3 is required to run the server. Please install it."
 		exit 1
 	fi
-	echo "Starting Python web server"
+	echo "Starting Python web server in dist/"
 	python3 -m http.server 8080 &
-
 	PYTHON_PID=$!
-
 	echo "Python web server started with PID $PYTHON_PID"
-	echo "You can access the server at http://localhost:8080/$DIR"
+	echo "You can access the server at http://localhost:8080/"
 	echo "Press any key to stop the server..."
 	read -r -n 1 -s
 	echo "Stopping the server..."
-	if ! kill -0 "$PYTHON_PID" 2>/dev/null; then
-		echo "Server is not running or already stopped."
-		exit 0
-	fi
 	kill "$PYTHON_PID" && wait "$PYTHON_PID" 2>/dev/null
-	if [[ $? -eq 0 ]]; then
-		echo "Server stopped successfully."
-	else
-		echo "Failed to stop the server."
-		exit 1
-	fi
 	echo "Test complete"
-}
-
-_icon_set_from_svg() {
-	SRC_DIR="${SRC_DIR:-./brand}"
-	FAVICON_BASE="armbian_discord_v2.1"  # change this to your main icon
-
-	# Check for ImageMagick's convert command
-	if ! command -v convert &> /dev/null; then
-		echo "Error: ImageMagick 'convert' command not found."
-		read -p "Would you like to install ImageMagick using 'sudo apt install imagemagick'? [Y/n] " yn
-		case "$yn" in
-			[Yy]* | "" )
-				echo "Installing ImageMagick..."
-				sudo apt update && sudo apt install imagemagick
-				if ! command -v convert &> /dev/null; then
-					echo "Installation failed or 'convert' still not found. Exiting."
-					exit 1
-				fi
-				;;
-			* )
-				echo "Cannot proceed without ImageMagick. Exiting."
-				exit 1
-				;;
-		esac
-	fi
-
-	if [ ! -d "$SRC_DIR" ]; then
-		echo "Error: Source directory '$SRC_DIR' does not exist."
-		exit 1
-	fi
-
-	shopt -s nullglob
-	svg_files=("$SRC_DIR"/*.svg)
-	if [ ${#svg_files[@]} -eq 0 ]; then
-		echo "Error: No SVG files found in '$SRC_DIR'."
-		exit 1
-	fi
-	shopt -u nullglob
-
-	for svg in "${svg_files[@]}"; do
-		base=$(basename "$svg" .svg)
-		for size in "${SIZES[@]}"; do
-			OUT_DIR="images/${size}x${size}"
-			mkdir -p "$OUT_DIR"
-			OUT_FILE="${OUT_DIR}/${base}.png"
-			if [[ ! -f "$OUT_FILE" || "$svg" -nt "$OUT_FILE" ]]; then
-				convert -background none -resize ${size}x${size} "$svg" "$OUT_FILE"
-				if [ $? -eq 0 ]; then
-					echo "Generated $OUT_FILE"
-				else
-					echo "Failed to convert $svg to $OUT_FILE"
-				fi
-			fi
-		done
-		# Add GIF and JPG generation here:
-		for size in "${SIZES[@]}"; do
-			OUT_DIR="images/${size}x${size}"
-			mkdir -p "$OUT_DIR"
-			OUT_GIF="${OUT_DIR}/${base}.gif"
-			OUT_JPG="${OUT_DIR}/${base}.jpg"
-			if [[ ! -f "$OUT_GIF" || "$svg" -nt "$OUT_GIF" ]]; then
-				if convert -background white -resize "${size}x${size}" "$svg" "$OUT_GIF"; then
-				echo "Generated $OUT_GIF"
-				else
-				echo "Failed to convert $svg to $OUT_GIF" >&2
-				fi
-			fi
-			if [[ ! -f "$OUT_JPG" || "$svg" -nt "$OUT_JPG" ]]; then
-				if convert -background white -resize "${size}x${size}" "$svg" "$OUT_JPG"; then
-				echo "Generated $OUT_JPG"
-				else
-				echo "Failed to convert $svg to $OUT_JPG" >&2
-				fi
-			fi
-		done
-	done
-
-	cp -r "$SRC_DIR" "images/scalable"
-
-	# Generate multi-resolution favicon.ico from chosen SVG
-	FAVICON_SVG="$SRC_DIR/${FAVICON_BASE}.svg"
-	if [[ -f "$FAVICON_SVG" ]]; then
-		echo "Creating favicon.ico from $FAVICON_SVG"
-		convert -background none "$FAVICON_SVG" -resize 16x16 favicon-16.png
-		convert -background none "$FAVICON_SVG" -resize 32x32 favicon-32.png
-		convert -background none "$FAVICON_SVG" -resize 48x48 favicon-48.png
-		convert favicon-16.png favicon-32.png favicon-48.png favicon.ico
-		rm favicon-16.png favicon-32.png favicon-48.png
-		echo "Multi-resolution favicon.ico created."
-	else
-		echo "Could not create favicon.ico (SVG not found: $FAVICON_SVG)"
-	fi
+	cd ..
 }
 
 _about_media_kit() {
@@ -408,15 +352,17 @@ EOF
 ### START ./media_kit.sh - Armbian Config V2 test entrypoint
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	SIZES=(16 48 512)
-	SVG_DIR="./brand"
+    SIZES=(16 48 512)
+    SVG_DIR="./brand"
 
-	help_output="$(media_kit help)"
-	echo "$help_output" | grep -q "Usage: media_kit" || {
-		echo "fail: Help output does not contain expected usage string"
-		echo "test complete"
-		exit 1
-	}
-	media_kit "$@"
+    help_output="$(media_kit help)"
+    if ! echo "$help_output" | grep -q "Usage: media_kit"; then
+        echo "Warning: Help output does not contain expected usage string"
+        echo "test complete"
+	exit 1
+        # Do NOT exit here, continue with main command!
+    fi
+    media_kit "$@"
 fi
+
 ### END ./media_kit.sh - Armbian Config V2 test entrypoint
