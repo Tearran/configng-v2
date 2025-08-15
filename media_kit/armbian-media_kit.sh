@@ -9,21 +9,21 @@ media_kit() {
 			_about_media_kit
 			;;
 		index)
-			_html_page > ./dist/index.html
+			_html_page > index.html
 
 			;;
 		icon)
 			_icon_set_from_svg
 			;;
 		server)
-			_html_server "${2:-.}"
+			_html_server
 			;;
 		all)
 			_icon_set_from_svg
 
 			_index_json
-			_html_index > ./dist/index.html
-			_html_server "${2:-.}"
+			_html_index > index.html
+			_html_server
 			;;
 		*)
 			_about_media_kit
@@ -161,7 +161,7 @@ EOF
 
 _index_json() {
 
-    OUTPUT="./dist/logos.json"
+    OUTPUT="logos.json"
 
 
     mapfile -t svg_files < <(find "$SVG_DIR" -type f -name "*.svg" | sort -u)
