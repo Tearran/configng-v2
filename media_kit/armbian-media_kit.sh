@@ -113,7 +113,7 @@ _html_index() {
 	</main>
 
 	<footer>
-		<p>For more information, see 
+		<p>For more information, see
 			<a href="https://www.armbian.com/brand/" style="color: #fff;">Armbian Brand Guidelines</a>.
 		</p>
 	</footer>
@@ -147,7 +147,7 @@ _html_index() {
 					div.innerHTML = `
 						<hr>
 						<img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
-						<p>Download PNG:</p>
+						<p>${logo.name} PNG:</p>
 						<ul>${pngList}</ul>
 					`;
 					container.appendChild(div);
@@ -160,7 +160,7 @@ EOF
 }
 
 _index_json() {
-    SVG_DIR="./brand_src"
+
     OUTPUT="logos.json"
 
 
@@ -265,7 +265,7 @@ _html_server() {
 
 
 _icon_set_from_svg() {
-    SRC_DIR="./brand_src"
+    SRC_DIR="${SRC_DIR:-./brand}"
     #SIZES=(16 48 512)
 
     # Name of the base SVG (without extension) to use for favicon
@@ -378,6 +378,8 @@ EOF
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	SIZES=(16 48 512)
+	SVG_DIR="./brand"
+
 
 	help_output="$(media_kit help)"
 	echo "$help_output" | grep -q "Usage: media_kit" || {
