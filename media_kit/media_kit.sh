@@ -335,20 +335,20 @@ _icon_set_from_svg() {
 			mkdir -p "$OUT_DIR"
 			OUT_GIF="${OUT_DIR}/${base}.gif"
 			OUT_JPG="${OUT_DIR}/${base}.jpg"
-            if [[ ! -f "$OUT_GIF" || "$svg" -nt "$OUT_GIF" ]]; then
-                if convert -background white -resize "${size}x${size}" "$svg" "$OUT_GIF"; then
-                    echo "Generated $OUT_GIF"
-                else
-                    echo "Failed to convert $svg to $OUT_GIF" >&2
-                fi
-            fi
-            if [[ ! -f "$OUT_JPG" || "$svg" -nt "$OUT_JPG" ]]; then
-                if convert -background white -resize "${size}x${size}" "$svg" "$OUT_JPG"; then
-                    echo "Generated $OUT_JPG"
-                else
-                    echo "Failed to convert $svg to $OUT_JPG" >&2
-                fi
-            fi
+			if [[ ! -f "$OUT_GIF" || "$svg" -nt "$OUT_GIF" ]]; then
+				if convert -background white -resize "${size}x${size}" "$svg" "$OUT_GIF"; then
+				echo "Generated $OUT_GIF"
+				else
+				echo "Failed to convert $svg to $OUT_GIF" >&2
+				fi
+			fi
+			if [[ ! -f "$OUT_JPG" || "$svg" -nt "$OUT_JPG" ]]; then
+				if convert -background white -resize "${size}x${size}" "$svg" "$OUT_JPG"; then
+				echo "Generated $OUT_JPG"
+				else
+				echo "Failed to convert $svg to $OUT_JPG" >&2
+				fi
+			fi
 		done
 	done
 
