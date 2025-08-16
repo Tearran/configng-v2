@@ -4,8 +4,8 @@
     "category": "armbian",
     "svg": "images/scalable/armbian_font.v2.1.svg",
     "svg_meta": {
-      "title": "",
-      "desc": ""
+      "title": "Font",
+      "desc": "Armbian Font introduced on July 15, 2025."
     },
     "pngs": [
       { "path": "images/16x16/armbian_font.v2.1.png", "size": "16x16", "kb": 4.00 },
@@ -56,8 +56,8 @@
     "category": "armbian",
     "svg": "images/scalable/armbian_sdk_v2.0.svg",
     "svg_meta": {
-      "title": "",
-      "desc": ""
+      "title": "SDK Icon",
+      "desc": "Armbian Build icon"
     },
     "pngs": [
       { "path": "images/16x16/armbian_sdk_v2.0.png", "size": "16x16", "kb": 4.00 },
@@ -82,8 +82,8 @@
     "category": "configng",
     "svg": "images/scalable/configng_font_v1.0.svg",
     "svg_meta": {
-      "title": "",
-      "desc": ""
+      "title": "configng font",
+      "desc": "Place holder "
     },
     "pngs": [
       { "path": "images/16x16/configng_font_v1.0.png", "size": "16x16", "kb": 4.00 },
@@ -108,8 +108,8 @@
     "category": "configng",
     "svg": "images/scalable/configng_mascot_v2.0.svg",
     "svg_meta": {
-      "title": "configng",
-      "desc": ""
+      "title": "configng mascot",
+      "desc": "configng mascot introduced with desktop icon set Sep, 2024"
     },
     "pngs": [
       { "path": "images/16x16/configng_mascot_v2.0.png", "size": "16x16", "kb": 4.00 },
@@ -134,7 +134,7 @@
     "category": "configng",
     "svg": "images/scalable/configng_sdk_v2.0.svg",
     "svg_meta": {
-      "title": "",
+      "title": "configng SDK icon",
       "desc": ""
     },
     "pngs": [
@@ -174,8 +174,8 @@
     "category": "armbian-legacy",
     "svg": "images/scalable/legacy/armbian_font_v1.5.svg",
     "svg_meta": {
-      "title": "",
-      "desc": ""
+      "title": "Armbain Font v1.5",
+      "desc": "Armbian Font retired on July 15, 2025."
     },
     "pngs": []
 ,

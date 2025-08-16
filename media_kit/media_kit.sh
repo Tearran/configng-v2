@@ -14,15 +14,15 @@ media_kit() {
 			_about_media_kit
 			;;
 		index)
-			_prepare_dist
+
 			_html_index
 			;;
 		icon)
-			_prepare_dist
+
 			_icon_set_from_svg
 			;;
 		server)
-			_prepare_dist
+
 			_html_server
 			;;
 		all)

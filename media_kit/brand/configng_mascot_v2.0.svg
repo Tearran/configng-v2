@@ -6,7 +6,7 @@
    viewBox="0 0 512 512"
    id="svg1"
    xml:space="preserve"
-   sodipodi:docname="configng-mascot_v2.0.svg"
+   sodipodi:docname="configng_mascot_v2.0.svg"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    inkscape:export-filename="configng_server.png"
    inkscape:export-xdpi="96"
@@ -80,14 +80,14 @@
         
       </defs>
   <title
-   id="title1">configng</title>
+   id="title1">configng mascot</title>
   <metadata
    id="metadata1">
     <rdf:RDF>
       <cc:Work
    rdf:about="">
-        <dc:title>configng</dc:title>
-      </cc:Work>
+        <dc:title>configng mascot</dc:title>
+      <dc:description>configng mascot introduced with desktop icon set Sep, 2024</dc:description></cc:Work>
     </rdf:RDF>
   </metadata>
   <path
