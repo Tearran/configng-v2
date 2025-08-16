@@ -28,17 +28,17 @@
     ]
   },
   {
-    "name": "armbian_mascot_v2.2",
+    "name": "armbian_mascot_v2.3",
     "category": "armbian",
-    "svg": "images/scalable/armbian_mascot_v2.2.svg",
+    "svg": "images/scalable/armbian_mascot_v2.3.svg",
     "svg_meta": {
       "title": "Armbian Mascot Tux",
       "desc": "Current Discord server icon"
     },
     "pngs": [
-      { "path": "images/16x16/armbian_mascot_v2.2.png", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_mascot_v2.2.png", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_mascot_v2.2.png", "size": "512x512", "kb": 56.00 }
+      { "path": "images/16x16/armbian_mascot_v2.3.png", "size": "16x16", "kb": 4.00 },
+      { "path": "images/48x48/armbian_mascot_v2.3.png", "size": "48x48", "kb": 4.00 },
+      { "path": "images/512x512/armbian_mascot_v2.3.png", "size": "512x512", "kb": 32.00 }
     ]
   },
   {
@@ -104,6 +104,26 @@
     "svg_meta": {
       "title": "Armbain Font v1.5",
       "desc": "Armbian Font retired on July 15, 2025."
+    },
+    "pngs": []
+  },
+  {
+    "name": "armbian_os_v1.1",
+    "category": "armbian-legacy",
+    "svg": "images/scalable/legacy/armbian_os_v1.1.svg",
+    "svg_meta": {
+      "title": "Armbian SDK Icon",
+      "desc": "Last used: Unknown"
+    },
+    "pngs": []
+  },
+  {
+    "name": "armbian_sdk_v1.1",
+    "category": "armbian-legacy",
+    "svg": "images/scalable/legacy/armbian_sdk_v1.1.svg",
+    "svg_meta": {
+      "title": "Armbian SDK Icon ",
+      "desc": "Last used: Unknown"
     },
     "pngs": []
   },
