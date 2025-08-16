@@ -169,8 +169,23 @@ _html_index() {
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<title>Armbian Logos</title>
 	<style>
-		body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
-		header, footer { background: #333; color: #fff; padding: 1em; text-align: center; }
+
+	body { background: #fff; color: #000; font-family: sans-serif; margin: 0; }
+	header { background: #23262f; color: #fff; padding: 0.3rem 1rem; display: flex; align-items: center; min-height: 56px; }
+	header .header-logo { display: flex; gap: 1em; padding: 0.1rem }
+	header a { display: inline-block; }
+	header img { vertical-align: middle; height: 64px; width: auto; }
+	footer { background: #23262f; color: #fff; padding: 1rem 2rem; text-align: center; font-size: 0.9em; }
+	footer a { color: #3ea6ff; }
+	main { padding: 2rem; }
+	hr { border: 0; border-bottom: 1px solid #353535; margin: 2em 0; }
+	a { color: #3ea6ff; }
+	ul { padding-left: 1.2em; }
+	.flex-row { display: flex; justify-content: space-between; gap: 3em; }
+	.flex-col { display: flex; flex-direction: column; gap: 1.5em; }
+	.center { text-align: center; }
+	.media-group { margin-bottom: 2em; }
+
 		main {
 			padding: 1em;
 			display: grid;
@@ -192,10 +207,17 @@ _html_index() {
 	</style>
 </head>
 <body>
-	<header>
-		<h1>Armbian Logos and Icons</h1>
-	</header>
 
+<header>
+  <span class="header-logo">
+    <a href="https://www.armbian.com/" target="_blank" rel="noopener">
+      <img src="./images/scalable/armbian_mascot_v2.1.svg" alt="armbian-tux_v1.5.svg">
+    </a>
+    <a href="https://www.armbian.com/" target="_blank" rel="noopener">
+      <img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
+    </a>
+  </span>
+</header>
 	<main>
 		<div id="armbian-section" class="section">
 			<h2>Armbian</h2>
@@ -217,7 +239,7 @@ _html_index() {
 
 	<footer>
 		<p>For more information, see
-			<a href="https://www.armbian.com/brand/" style="color: #fff;">Armbian Brand Guidelines</a>.
+			<a href="https://www.armbian.com/" style="color: #fff;">Armbian</a>.
 		</p>
 	</footer>
 
