@@ -126,15 +126,5 @@
       "desc": "Last used: Unknown"
     },
     "pngs": []
-  },
-  {
-    "name": "configng_sdk",
-    "category": "configng-legacy",
-    "svg": "images/scalable/legacy/configng_sdk.svg",
-    "svg_meta": {
-      "title": "Armbian SDK",
-      "desc": ""
-    },
-    "pngs": []
   }
 ]
