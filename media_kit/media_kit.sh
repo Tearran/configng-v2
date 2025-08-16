@@ -27,6 +27,7 @@ media_kit() {
 			_icon_set_from_svg || echo "ERROR: _icon_set_from_svg failed"
 			_index_json       || echo "ERROR: _index_json failed"
 			_html_index       || echo "ERROR: _html_index failed"
+			_media_kit_html   || echo "ERROR: _media_kit_html failed"
 			_html_server      || echo "ERROR: _html_server failed"
 			;;
 		*)
@@ -155,8 +156,243 @@ _index_json() {
 	echo "JSON file created: $OUTPUT"
 }
 
-_html_index() {
-	cat <<'EOF' > "$DIST/index.html"
+_html_index(){
+cat <<'EOF' > "$DIST/index.html"
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Armbian Home</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<style>
+		/* Base Styles */
+		/* Header */
+		header {
+			background: #23262f;
+			color: #fff;
+			padding: 0.5em 1em;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+		}
+
+		header .header-logo img {
+			height: 64px;
+			vertical-align: middle;
+		}
+
+		.nav-bar ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			gap: 1em;
+		}
+
+		.nav-bar a {
+			color: #fff;
+			text-decoration: none;
+			font-weight: 500;
+		}
+
+		.nav-bar a:hover {
+			color: #3ea6ff;
+		}
+
+		/* Page Info Section */
+		#page-info {
+			padding: 1em;
+			background: #f5f5f5;
+			border-bottom: 1px solid #ddd;
+		}
+
+		#page-info h1 {
+			margin: 0;
+			font-size: 1.8em;
+			color: #23262f;
+		}
+
+		#page-info p {
+			margin: 0.5em 0 0 0;
+			font-size: 1em;
+			color: #444;
+		}
+
+		/* Main Content */
+		main {
+			padding: 1em;
+		}
+
+		/* Footer */
+	footer { background: #23262f; color: #fff; padding: 2rem 1rem; font-size: 0.9em; }
+	.footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1000px; margin: 0 auto; gap: 2em; }
+	.footer-links h4 { margin-bottom: 0.5em; font-size: 1em; }
+	.footer-links ul { list-style: none; margin: 0; padding: 0; }
+	.footer-links li { margin: 0.3em 0; }
+	.footer-links a { color: #3ea6ff; text-decoration: none; }
+	.footer-links a:hover { text-decoration: underline; }
+	.footer-about { flex: 1 1 100%; margin-top: 1em; text-align: center; color: #bbb; }
+	.footer-about p { margin: 0.3em 0; }
+	.footer-legal { margin-top: 2em; font-size: 0.8em; color: #aaa; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; }
+	.footer-legal ul { list-style: none; padding: 0; margin: 0.5em 0; }
+	.footer-legal li { margin: 0.2em 0; }
+
+		/* Dark Mode */
+		body.dark-mode {
+			background: #121212;
+			color: #ddd;
+		}
+
+		body.dark-mode #page-info {
+			background: #1e1e1e;
+			border-bottom: 1px solid #444;
+		}
+
+		body.dark-mode a {
+			color: #4aa3ff;
+		}
+
+		body.dark-mode footer {
+			color: #ccc;
+		}
+
+		/* Dark mode for Page Info */
+		body.dark-mode #page-info {
+			background: #1e1e1e;
+			/* darker background */
+			border-bottom: 1px solid #444;
+			/* subtle border */
+		}
+
+		body.dark-mode #page-info h1,
+		body.dark-mode #page-info p {
+			color: #ddd;
+			/* lighter text for contrast */
+		}
+
+		/* Dark Mode Toggle */
+		#dark-mode-toggle {
+			padding: 0.2em 0.5em;
+			font-size: 0.9em;
+			cursor: pointer;
+			background: #444;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+		}
+
+		#dark-mode-toggle:hover {
+			background: #c3c3c3;
+		}
+	</style>
+</head>
+
+<body>
+
+	<header>
+		<span class="header-logo">
+			<a href="https://www.armbian.com/" target="_blank" rel="noopener">
+				<img src="https://tearran.github.io/configng-v2/media_kit/dist/images/scalable/armbian_social.svg" alt="Armbian Logo">
+				<img src="https://tearran.github.io/configng-v2/media_kit/dist/images/scalable/armbian_font.v2.1.svg" alt="Armbian Font">
+			</a>
+		</span>
+
+		<nav class="nav-bar">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="media_kit.html">Media kit</a></li>
+				<li><a href="docs.html">Documentation</a></li>
+				<li><a href="forum.html">Forum</a></li>
+			</ul>
+		</nav>
+
+		<button id="dark-mode-toggle">🌙 Dark Mode</button>
+	</header>
+
+	<!-- Page Info Section -->
+	<section id="page-info">
+		<h1>Welcome to Armbian</h1>
+		<p>This is the home page. Use the navigation above to explore logos, documentation, and community resources.</p>
+
+	</section>
+
+	<main>
+		<!-- Main content goes here -->
+		<p>Keep this section simple or expand as needed for home page content.</p>
+
+	</main>
+
+<footer>
+
+ <div class="footer-content">
+    <div class="footer-links">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="https://www.armbian.com/" target="_blank" rel="noopener">Home</a></li>
+        <li><a href="https://docs.armbian.com/" target="_blank" rel="noopener">Documentation</a></li>
+        <li><a href="https://github.com/armbian" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://forum.armbian.com/" target="_blank" rel="noopener">Forum</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-links">
+      <h4>Community</h4>
+      <ul>
+        <li><a href="https://forum.armbian.com/" target="_blank" rel="noopener">Forum</a></li>
+        <li><a href="https://fosstodon.org/@armbian" target="_blank" rel="me noopener">Mastodon</a></li>
+        <li><a href="https://discord.gg/armbian" target="_blank" rel="noopener">Discord</a></li>
+        <li><a href="https://www.linkedin.com/company/armbian/posts/?feedView=all" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+    </div>
+   <div class="footer-legal">
+    <p><strong>Disclaimer:</strong><br>
+      This site and its logos are powered by the Armbian Community™. Please read the following very serious, totally enforceable, absolutely binding guidelines:
+    </p>
+    <ul>
+      <li><b>Do:</b> Share and remix logos responsibly, give credit, and spread the penguin love.</li>
+      <li><b>Do:</b> Use logos to show support for Armbian, community projects, or your cat’s Raspberry Pi server.</li>
+      <li><b>Don’t:</b> Pretend your project <i>is</i> Armbian, or imply official endorsement when you’re just hacking in your garage.</li>
+      <li><b>Don’t:</b> Sell the logos as NFTs, print them on cryptocurrency, or tattoo them on unwilling relatives.</li>
+    </ul>
+    <p>
+      All logos are provided “as-is,” with no warranty except the guarantee that someone will complain about the color scheme.
+      By scrolling this far, you acknowledge that you’ve probably read more legal text than most end-user license agreements.
+    </p>
+  </div>
+
+<div class="footer-about">
+      <p>&copy; 2025 Armbian Logos Media Kit</p>
+      <p>Powered by the Armbian Community — aligning innovation, coffee, and questionable life choices.</p>
+    </div>
+</footer>
+	<script>
+		// Dark Mode Toggle
+		const toggle = document.getElementById('dark-mode-toggle');
+		const body = document.body;
+		if (localStorage.getItem('darkMode') === 'true') {
+			body.classList.add('dark-mode');
+			toggle.textContent = '☀️ Light Mode';
+		}
+		toggle.addEventListener('click', () => {
+			body.classList.toggle('dark-mode');
+			const isDark = body.classList.contains('dark-mode');
+			localStorage.setItem('darkMode', isDark);
+			toggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+		});
+	</script>
+
+</body>
+
+</html>
+
+EOF
+
+}
+
+_media_kit_html() {
+	cat <<'EOF' > "$DIST/media_kit.html"
 <!DOCTYPE html>
 <html>
 <head>
@@ -180,7 +416,7 @@ _html_index() {
 	.footer-links a:hover { text-decoration: underline; }
 	.footer-about { flex: 1 1 100%; margin-top: 1em; text-align: center; color: #bbb; }
 	.footer-about p { margin: 0.3em 0; }
-	.footer-legal { margin-top: 2em; font-size: 0.8em; color: #aaa; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto; }
+	.footer-legal { margin-top: 2em; font-size: 0.8em; color: #aaa; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; }
 	.footer-legal ul { list-style: none; padding: 0; margin: 0.5em 0; }
 	.footer-legal li { margin: 0.2em 0; }
 
@@ -232,6 +468,20 @@ _html_index() {
 	  border-radius: 4px;
 	}
 	#dark-mode-toggle:hover { background: #c3c3c3; }
+
+/* Page Info Section */
+#page-info {
+  padding: 1em;
+  border-bottom: 1px solid #ddd;
+}
+
+#page-info p {
+  margin: 0.5em 0 0 0;
+  font-size: 1em;
+
+}
+
+
 	</style>
 </head>
 <body>
@@ -255,19 +505,27 @@ _html_index() {
     </ul>
   </nav>
     <!-- Dark Mode Toggle -->
-  <button id="dark-mode-toggle">🌙 Dark Mode</button>
+  <butt  on id="dark-mode-toggle">🌙 Dark Mode</button>
 </header>
 
+<!-- Page Info / Subtitle -->
+<section id="page-info">
+  <h1>Armbian Logos Media Kit</h1>
+  <p>We've put together some logos and icons for you to use in your articles and projects.</p>
+</section>
+
+
 <main>
+
   <div id="armbian-section" class="section"><h2>Armbian</h2><div id="armbian-logos"></div></div>
   <div id="configng-section" class="section"><h2>ConfigNG</h2><div id="configng-logos"></div></div>
   <div id="armbian-legacy-section" class="section legacy"><h2>Armbian Legacy</h2><div id="armbian-legacy-logos"></div></div>
   <div id="configng-legacy-section" class="section legacy"><h2>ConfigNG Legacy</h2><div id="configng-legacy-logos"></div></div>
 </main>
 
+
 <footer>
-<footer>
-  <div class="footer-content">
+<div class="footer-content">
     <div class="footer-links">
       <h4>Resources</h4>
       <ul>
@@ -288,13 +546,17 @@ _html_index() {
       </ul>
     </div>
 
-    <div class="footer-about">
-      <p>&copy; 2025 Armbian Logos Media Kit</p>
-      <p>Powered by the Armbian Community — aligning innovation, coffee, and questionable life choices.</p>
+    <div class="footer-links">
+      <h4>Community</h4>
+      <ul>
+        <li><a href="https://forum.armbian.com/" target="_blank" rel="noopener">Forum</a></li>
+        <li><a href="https://fosstodon.org/@armbian" target="_blank" rel="me noopener">Mastodon</a></li>
+        <li><a href="https://discord.gg/armbian" target="_blank" rel="noopener">Discord</a></li>
+        <li><a href="https://www.linkedin.com/company/armbian/posts/?feedView=all" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
     </div>
-  </div>
 
-  <div class="footer-legal">
+<div class="footer-legal">
     <p><strong>Disclaimer:</strong><br>
       This site and its logos are powered by the Armbian Community™. Please read the following very serious, totally enforceable, absolutely binding guidelines:
     </p>
@@ -309,9 +571,16 @@ _html_index() {
       By scrolling this far, you acknowledge that you’ve probably read more legal text than most end-user license agreements.
     </p>
   </div>
-</footer>
+
+    <div class="footer-about">
+      <p>&copy; 2025 Armbian Logos Media Kit</p>
+      <p>Powered by the Armbian Community — aligning innovation, coffee, and questionable life choices.</p>
+    </div>
+  </div>
+
 
 </footer>
+
 
 <script>
 function valueOrNull(val) {
