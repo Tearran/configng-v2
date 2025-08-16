@@ -228,6 +228,9 @@ _html_index() {
 	</main>
 
 	<footer>
+		<p>
+			This media kit is powered by the community and FOSS.
+		</p>
 		<p>For more information, see
 			<a href="https://www.armbian.com/" style="color: #fff;">Armbian</a>.
 		</p>
