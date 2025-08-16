@@ -5,10 +5,9 @@
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<title>Armbian Logos</title>
 	<style>
-
 	body { background: #fff; color: #000; font-family: sans-serif; margin: 0; }
 	header { background: #23262f; color: #fff; padding: 0.3rem 1rem; display: flex; align-items: center; min-height: 56px; }
-	header .header-logo { display: flex; gap: 1em; padding: 0.1rem }
+	header .header-logo { display: flex; gap: 0em; padding: 0.1rem }
 	header a { display: inline-block; }
 	header img { vertical-align: middle; height: 64px; width: auto; }
 	footer { background: #23262f; color: #fff; padding: 1rem 2rem; text-align: center; font-size: 0.9em; }
@@ -21,25 +20,24 @@
 	.flex-col { display: flex; flex-direction: column; gap: 1.5em; }
 	.center { text-align: center; }
 	.media-group { margin-bottom: 2em; }
-
-		main {
-			padding: 1em;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			grid-template-rows: auto auto;
-			gap: 1em;
-		}
-		@media (max-width: 768px) {
-			main { grid-template-columns: 1fr; grid-template-rows: auto; }
-		}
-		.section { padding: 1em; background: #f0f0f0; border-radius: 6px; }
-		.section h2 { margin-top: 0; }
-		img { margin: 0.5em; vertical-align: middle; }
-		.legacy { opacity: 0.85; }
-		ul { list-style-type: none; padding-left: 0; }
-		ul li { margin: 0.2em 0; }
-		.meta { font-size: 0.95em; color: #444; margin: 0.25em 0 0.5em 0; }
-		.meta span { display: inline-block; min-width: 70px; }
+	main {
+		padding: 1em;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto auto;
+		gap: 1em;
+	}
+	@media (max-width: 768px) {
+		main { grid-template-columns: 1fr; grid-template-rows: auto; }
+	}
+	.section { padding: 1em; background: #f0f0f0; border-radius: 6px; }
+	.section h2 { margin-top: 0; }
+	img { margin: 0.5em; vertical-align: middle; }
+	.legacy { opacity: 0.85; }
+	ul { list-style-type: none; padding-left: 0; }
+	ul li { margin: 0.2em 0; }
+	.meta { font-size: 0.95em; color: #444; margin: 0.25em 0 0.5em 0; }
+	.meta span { display: inline-block; min-width: 70px; }
 	</style>
 </head>
 <body>
@@ -47,10 +45,7 @@
 <header>
   <span class="header-logo">
     <a href="https://www.armbian.com/" target="_blank" rel="noopener">
-      <img src="./images/scalable/armbian_mascot_v2.1.svg" alt="armbian-tux_v1.5.svg">
-    </a>
-    <a href="https://www.armbian.com/" target="_blank" rel="noopener">
-      <img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
+      <img src="./images/scalable/armbian_social.svg" alt="armbian-tux_v1.5.svg"><img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
     </a>
   </span>
 </header>
@@ -123,12 +118,6 @@
 						const pngList = logo.pngs.map(p =>
 							`<li><a href="${p.path}">${p.size} PNG</a> – ${p.kb} KB</li>`
 						).join('');
-						const gifList = logo.gifs.map(g =>
-							`<li><a href="${g.path}">${g.size} GIF</a> – ${g.kb} KB</li>`
-						).join('');
-						const jpgList = logo.jpgs.map(j =>
-							`<li><a href="${j.path}">${j.size} JPG</a> – ${j.kb} KB</li>`
-						).join('');
 						div.innerHTML = `
 							<hr>
 							<a href="${logo.svg}" target="_blank">
@@ -138,8 +127,6 @@
 							<p>${logo.name}:</p>
 							<ul>
 								${pngList}
-								${gifList}
-								${jpgList}
 							</ul>
 						`;
 					}

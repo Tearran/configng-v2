@@ -1,5 +1,19 @@
 [
   {
+    "name": "armbian_cpu_v1.0",
+    "category": "armbian",
+    "svg": "images/scalable/armbian_cpu_v1.0.svg",
+    "svg_meta": {
+      "title": "Armbian SDK Icon",
+      "desc": "icon use as favicon for armbian.com"
+    },
+    "pngs": [
+      { "path": "images/16x16/armbian_cpu_v1.0.png", "size": "16x16", "kb": 4.00 },
+      { "path": "images/48x48/armbian_cpu_v1.0.png", "size": "48x48", "kb": 4.00 },
+      { "path": "images/512x512/armbian_cpu_v1.0.png", "size": "512x512", "kb": 44.00 }
+    ]
+  },
+  {
     "name": "armbian_font.v2.1",
     "category": "armbian",
     "svg": "images/scalable/armbian_font.v2.1.svg",
@@ -12,95 +26,47 @@
       { "path": "images/48x48/armbian_font.v2.1.png", "size": "48x48", "kb": 4.00 },
       { "path": "images/512x512/armbian_font.v2.1.png", "size": "512x512", "kb": 40.00 }
     ]
-,
-    "gifs": [
-      { "path": "images/16x16/armbian_font.v2.1.gif", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_font.v2.1.gif", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_font.v2.1.gif", "size": "512x512", "kb": 12.00 }
-    ]
-,
-    "jpgs": [
-      { "path": "images/16x16/armbian_font.v2.1.jpg", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_font.v2.1.jpg", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_font.v2.1.jpg", "size": "512x512", "kb": 20.00 }
-    ]
   },
   {
-    "name": "armbian_mascot_v2.1",
+    "name": "armbian_mascot_v2.2",
     "category": "armbian",
-    "svg": "images/scalable/armbian_mascot_v2.1.svg",
+    "svg": "images/scalable/armbian_mascot_v2.2.svg",
     "svg_meta": {
-      "title": "Armbain Mascot v2.1",
-      "desc": "This is the mascot for Armbian."
+      "title": "Armbian Mascot Tux",
+      "desc": "Current Discord server icon"
     },
     "pngs": [
-      { "path": "images/16x16/armbian_mascot_v2.1.png", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_mascot_v2.1.png", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_mascot_v2.1.png", "size": "512x512", "kb": 60.00 }
-    ]
-,
-    "gifs": [
-      { "path": "images/16x16/armbian_mascot_v2.1.gif", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_mascot_v2.1.gif", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_mascot_v2.1.gif", "size": "512x512", "kb": 24.00 }
-    ]
-,
-    "jpgs": [
-      { "path": "images/16x16/armbian_mascot_v2.1.jpg", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_mascot_v2.1.jpg", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_mascot_v2.1.jpg", "size": "512x512", "kb": 28.00 }
+      { "path": "images/16x16/armbian_mascot_v2.2.png", "size": "16x16", "kb": 4.00 },
+      { "path": "images/48x48/armbian_mascot_v2.2.png", "size": "48x48", "kb": 4.00 },
+      { "path": "images/512x512/armbian_mascot_v2.2.png", "size": "512x512", "kb": 56.00 }
     ]
   },
   {
-    "name": "armbian_sdk_v2.0",
+    "name": "armbian_social",
     "category": "armbian",
-    "svg": "images/scalable/armbian_sdk_v2.0.svg",
+    "svg": "images/scalable/armbian_social.svg",
     "svg_meta": {
-      "title": "SDK Icon",
-      "desc": "Armbian Build icon"
+      "title": "armbian tux, bust",
+      "desc": "Favicon for this page, github icon, as well as other social platforms"
     },
     "pngs": [
-      { "path": "images/16x16/armbian_sdk_v2.0.png", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_sdk_v2.0.png", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_sdk_v2.0.png", "size": "512x512", "kb": 88.00 }
-    ]
-,
-    "gifs": [
-      { "path": "images/16x16/armbian_sdk_v2.0.gif", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_sdk_v2.0.gif", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_sdk_v2.0.gif", "size": "512x512", "kb": 24.00 }
-    ]
-,
-    "jpgs": [
-      { "path": "images/16x16/armbian_sdk_v2.0.jpg", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/armbian_sdk_v2.0.jpg", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/armbian_sdk_v2.0.jpg", "size": "512x512", "kb": 48.00 }
+      { "path": "images/16x16/armbian_social.png", "size": "16x16", "kb": 4.00 },
+      { "path": "images/48x48/armbian_social.png", "size": "48x48", "kb": 4.00 },
+      { "path": "images/512x512/armbian_social.png", "size": "512x512", "kb": 52.00 }
     ]
   },
   {
-    "name": "configng_font_v1.0",
+    "name": "configng_cog_v1.0",
     "category": "configng",
-    "svg": "images/scalable/configng_font_v1.0.svg",
+    "svg": "images/scalable/configng_cog_v1.0.svg",
     "svg_meta": {
-      "title": "configng font",
-      "desc": "Place holder "
+      "title": "configng cog",
+      "desc": "configng cog introduced with desktop icon set Sep, 2024"
     },
     "pngs": [
-      { "path": "images/16x16/configng_font_v1.0.png", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_font_v1.0.png", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_font_v1.0.png", "size": "512x512", "kb": 12.00 }
-    ]
-,
-    "gifs": [
-      { "path": "images/16x16/configng_font_v1.0.gif", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_font_v1.0.gif", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_font_v1.0.gif", "size": "512x512", "kb": 8.00 }
-    ]
-,
-    "jpgs": [
-      { "path": "images/16x16/configng_font_v1.0.jpg", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_font_v1.0.jpg", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_font_v1.0.jpg", "size": "512x512", "kb": 12.00 }
+      { "path": "images/16x16/configng_cog_v1.0.png", "size": "16x16", "kb": 4.00 },
+      { "path": "images/48x48/configng_cog_v1.0.png", "size": "48x48", "kb": 4.00 },
+      { "path": "images/512x512/configng_cog_v1.0.png", "size": "512x512", "kb": 36.00 }
     ]
   },
   {
@@ -116,58 +82,20 @@
       { "path": "images/48x48/configng_mascot_v2.0.png", "size": "48x48", "kb": 4.00 },
       { "path": "images/512x512/configng_mascot_v2.0.png", "size": "512x512", "kb": 36.00 }
     ]
-,
-    "gifs": [
-      { "path": "images/16x16/configng_mascot_v2.0.gif", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_mascot_v2.0.gif", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_mascot_v2.0.gif", "size": "512x512", "kb": 20.00 }
-    ]
-,
-    "jpgs": [
-      { "path": "images/16x16/configng_mascot_v2.0.jpg", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_mascot_v2.0.jpg", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_mascot_v2.0.jpg", "size": "512x512", "kb": 32.00 }
-    ]
   },
   {
-    "name": "configng_sdk_v2.0",
+    "name": "configng_v1.0",
     "category": "configng",
-    "svg": "images/scalable/configng_sdk_v2.0.svg",
+    "svg": "images/scalable/configng_v1.0.svg",
     "svg_meta": {
-      "title": "configng SDK icon",
-      "desc": ""
+      "title": "configng icon",
+      "desc": " introduced with desktop icon set Sep, 2024"
     },
     "pngs": [
-      { "path": "images/16x16/configng_sdk_v2.0.png", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_sdk_v2.0.png", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_sdk_v2.0.png", "size": "512x512", "kb": 60.00 }
+      { "path": "images/16x16/configng_v1.0.png", "size": "16x16", "kb": 4.00 },
+      { "path": "images/48x48/configng_v1.0.png", "size": "48x48", "kb": 8.00 },
+      { "path": "images/512x512/configng_v1.0.png", "size": "512x512", "kb": 88.00 }
     ]
-,
-    "gifs": [
-      { "path": "images/16x16/configng_sdk_v2.0.gif", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_sdk_v2.0.gif", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_sdk_v2.0.gif", "size": "512x512", "kb": 16.00 }
-    ]
-,
-    "jpgs": [
-      { "path": "images/16x16/configng_sdk_v2.0.jpg", "size": "16x16", "kb": 4.00 },
-      { "path": "images/48x48/configng_sdk_v2.0.jpg", "size": "48x48", "kb": 4.00 },
-      { "path": "images/512x512/configng_sdk_v2.0.jpg", "size": "512x512", "kb": 28.00 }
-    ]
-  },
-  {
-    "name": "armbian_cpu_v1.0",
-    "category": "armbian-legacy",
-    "svg": "images/scalable/legacy/armbian_cpu_v1.0.svg",
-    "svg_meta": {
-      "title": "",
-      "desc": ""
-    },
-    "pngs": []
-,
-    "gifs": []
-,
-    "jpgs": []
   },
   {
     "name": "armbian_font_v1.5",
@@ -178,37 +106,15 @@
       "desc": "Armbian Font retired on July 15, 2025."
     },
     "pngs": []
-,
-    "gifs": []
-,
-    "jpgs": []
   },
   {
-    "name": "configng_cog_v1.0",
+    "name": "configng_sdk",
     "category": "configng-legacy",
-    "svg": "images/scalable/legacy/configng_cog_v1.0.svg",
+    "svg": "images/scalable/legacy/configng_sdk.svg",
     "svg_meta": {
-      "title": "",
+      "title": "Armbian SDK",
       "desc": ""
     },
     "pngs": []
-,
-    "gifs": []
-,
-    "jpgs": []
-  },
-  {
-    "name": "configng-tux_v1.0",
-    "category": "other-legacy",
-    "svg": "images/scalable/legacy/configng-tux_v1.0.svg",
-    "svg_meta": {
-      "title": "configng",
-      "desc": ""
-    },
-    "pngs": []
-,
-    "gifs": []
-,
-    "jpgs": []
   }
 ]

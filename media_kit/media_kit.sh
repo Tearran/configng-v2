@@ -14,15 +14,12 @@ media_kit() {
 			_about_media_kit
 			;;
 		index)
-
 			_html_index
 			;;
 		icon)
-
 			_icon_set_from_svg
 			;;
 		server)
-
 			_html_server
 			;;
 		all)
@@ -62,13 +59,11 @@ _icon_set_from_svg() {
 			OUT_DIR="$DIST/images/${size}x${size}"
 			mkdir -p "$OUT_DIR"
 			convert -background none -resize ${size}x${size} "$svg" "$OUT_DIR/${base}.png"
-			convert -background white -resize ${size}x${size} "$svg" "$OUT_DIR/${base}.gif"
-			convert -background white -resize ${size}x${size} "$svg" "$OUT_DIR/${base}.jpg"
 		done
 	done
 
 	# Favicon
-	FAVICON_SVG="$SRC_DIR/armbian_mascot_v2.1.svg"
+	FAVICON_SVG="$SRC_DIR/armbian_social.svg"
 	if [[ -f "$FAVICON_SVG" ]]; then
 		convert -background none "$FAVICON_SVG" -resize 16x16 "$DIST/favicon-16.png"
 		convert -background none "$FAVICON_SVG" -resize 32x32 "$DIST/favicon-32.png"
@@ -127,30 +122,30 @@ _index_json() {
 		echo "      \"desc\": \"$svg_desc\"" >> "$OUTPUT"
 		echo "    }," >> "$OUTPUT"
 
-		# Arrays for PNG, GIF, JPG
-		for fmt in png gif jpg; do
-			array_name="${fmt}s"
-			if [[ "$is_legacy" -eq 1 ]]; then
-				echo "    \"$array_name\": []" >> "$OUTPUT"
-			else
-				echo "    \"$array_name\": [" >> "$OUTPUT"
-				for i in "${!SIZES[@]}"; do
-					sz="${SIZES[$i]}"
-					img_path="images/${sz}x${sz}/${name}.${fmt}"
-					if [[ -f "$DIST/$img_path" ]]; then
-						kb=$(du -k "$DIST/$img_path" 2>/dev/null | cut -f1 || echo 0)
-					else
-						kb=0
+		# Array for PNG only, include only files that exist and are > 0KB
+		array_name="pngs"
+		if [[ "$is_legacy" -eq 1 ]]; then
+			echo "    \"$array_name\": []" >> "$OUTPUT"
+		else
+			echo "    \"$array_name\": [" >> "$OUTPUT"
+			png_count=0
+			for i in "${!SIZES[@]}"; do
+				sz="${SIZES[$i]}"
+				img_path="images/${sz}x${sz}/${name}.png"
+				full_img_path="$DIST/$img_path"
+				if [[ -f "$full_img_path" ]]; then
+					kb=$(du -k "$full_img_path" 2>/dev/null | cut -f1 || echo 0)
+					if (( kb > 0 )); then
+						kb_decimal=$(printf "%.2f" "$kb")
+						[[ $png_count -gt 0 ]] && echo "," >> "$OUTPUT"
+						echo -n "      { \"path\": \"$img_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
+						((png_count++))
 					fi
-					kb_decimal=$(printf "%.2f" "$kb")
-					echo -n "      { \"path\": \"$img_path\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }" >> "$OUTPUT"
-					[[ $i -lt $((${#SIZES[@]}-1)) ]] && echo "," >> "$OUTPUT"
-				done
-				echo "" >> "$OUTPUT"
-				echo "    ]" >> "$OUTPUT"
-			fi
-			[[ "$fmt" != "jpg" ]] && echo "," >> "$OUTPUT"
-		done
+				fi
+			done
+			echo "" >> "$OUTPUT"
+			echo "    ]" >> "$OUTPUT"
+		fi
 
 		echo -n "  }" >> "$OUTPUT"
 	done
@@ -169,10 +164,9 @@ _html_index() {
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<title>Armbian Logos</title>
 	<style>
-
 	body { background: #fff; color: #000; font-family: sans-serif; margin: 0; }
 	header { background: #23262f; color: #fff; padding: 0.3rem 1rem; display: flex; align-items: center; min-height: 56px; }
-	header .header-logo { display: flex; gap: 1em; padding: 0.1rem }
+	header .header-logo { display: flex; gap: 0em; padding: 0.1rem }
 	header a { display: inline-block; }
 	header img { vertical-align: middle; height: 64px; width: auto; }
 	footer { background: #23262f; color: #fff; padding: 1rem 2rem; text-align: center; font-size: 0.9em; }
@@ -185,25 +179,24 @@ _html_index() {
 	.flex-col { display: flex; flex-direction: column; gap: 1.5em; }
 	.center { text-align: center; }
 	.media-group { margin-bottom: 2em; }
-
-		main {
-			padding: 1em;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			grid-template-rows: auto auto;
-			gap: 1em;
-		}
-		@media (max-width: 768px) {
-			main { grid-template-columns: 1fr; grid-template-rows: auto; }
-		}
-		.section { padding: 1em; background: #f0f0f0; border-radius: 6px; }
-		.section h2 { margin-top: 0; }
-		img { margin: 0.5em; vertical-align: middle; }
-		.legacy { opacity: 0.85; }
-		ul { list-style-type: none; padding-left: 0; }
-		ul li { margin: 0.2em 0; }
-		.meta { font-size: 0.95em; color: #444; margin: 0.25em 0 0.5em 0; }
-		.meta span { display: inline-block; min-width: 70px; }
+	main {
+		padding: 1em;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto auto;
+		gap: 1em;
+	}
+	@media (max-width: 768px) {
+		main { grid-template-columns: 1fr; grid-template-rows: auto; }
+	}
+	.section { padding: 1em; background: #f0f0f0; border-radius: 6px; }
+	.section h2 { margin-top: 0; }
+	img { margin: 0.5em; vertical-align: middle; }
+	.legacy { opacity: 0.85; }
+	ul { list-style-type: none; padding-left: 0; }
+	ul li { margin: 0.2em 0; }
+	.meta { font-size: 0.95em; color: #444; margin: 0.25em 0 0.5em 0; }
+	.meta span { display: inline-block; min-width: 70px; }
 	</style>
 </head>
 <body>
@@ -211,10 +204,7 @@ _html_index() {
 <header>
   <span class="header-logo">
     <a href="https://www.armbian.com/" target="_blank" rel="noopener">
-      <img src="./images/scalable/armbian_mascot_v2.1.svg" alt="armbian-tux_v1.5.svg">
-    </a>
-    <a href="https://www.armbian.com/" target="_blank" rel="noopener">
-      <img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
+      <img src="./images/scalable/armbian_social.svg" alt="armbian-tux_v1.5.svg"><img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
     </a>
   </span>
 </header>
@@ -287,12 +277,6 @@ _html_index() {
 						const pngList = logo.pngs.map(p =>
 							`<li><a href="${p.path}">${p.size} PNG</a> – ${p.kb} KB</li>`
 						).join('');
-						const gifList = logo.gifs.map(g =>
-							`<li><a href="${g.path}">${g.size} GIF</a> – ${g.kb} KB</li>`
-						).join('');
-						const jpgList = logo.jpgs.map(j =>
-							`<li><a href="${j.path}">${j.size} JPG</a> – ${j.kb} KB</li>`
-						).join('');
 						div.innerHTML = `
 							<hr>
 							<a href="${logo.svg}" target="_blank">
@@ -302,8 +286,6 @@ _html_index() {
 							<p>${logo.name}:</p>
 							<ul>
 								${pngList}
-								${gifList}
-								${jpgList}
 							</ul>
 						`;
 					}
@@ -341,7 +323,7 @@ Usage: media_kit <command> [options]
 
 Commands:
 help    - Show this help message.
-icon    - Generate a PNG, JPG, and GIF icon set from SVG files in ./images/scalable.
+icon    - Generate a PNG icon set from SVG files in ./images/scalable.
 index   - Generate an HTML media kit index of all SVGs and icons.
 server  - Serve the HTML and icon directory using a simple HTTP server.
 all     - Run icon generation, HTML index generation and start the server.
