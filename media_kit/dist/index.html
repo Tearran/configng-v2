@@ -5,128 +5,41 @@
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<title>Armbian Logos</title>
 	<style>
+	/* Default Light Mode */
 	body { background: #fff; color: #000; font-family: sans-serif; margin: 0; }
 	header { background: #23262f; color: #fff; padding: 0.3rem 1rem; display: flex; align-items: center; min-height: 56px; }
 	header .header-logo { display: flex; gap: 0em; padding: 0.1rem }
 	header a { display: inline-block; }
 	header img { vertical-align: middle; height: 64px; width: auto; }
 
-footer {
-  background: #23262f;
-  color: #fff;
-  padding: 2rem 1rem;
-  font-size: 0.9em;
-}
-.footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-width: 1000px;
-  margin: 0 auto;
-  gap: 2em;
-}
-.footer-links h4 {
-  margin-bottom: 0.5em;
-  font-size: 1em;
-}
-.footer-links ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.footer-links li {
-  margin: 0.3em 0;
-}
-.footer-links a {
-  color: #3ea6ff;
-  text-decoration: none;
-}
-.footer-links a:hover {
-  text-decoration: underline;
-}
-.footer-about {
-  flex: 1 1 100%;
-  margin-top: 1em;
-  text-align: center;
-  color: #bbb;
-}
-.footer-about p {
-  margin: 0.3em 0;
-}
-.footer-legal {
-  margin-top: 2em;
-  font-size: 0.8em;
-  color: #aaa;
-  text-align: center;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.footer-legal ul {
-  list-style: none;
-  padding: 0;
-  margin: 0.5em 0;
-}
-.footer-legal li {
-  margin: 0.2em 0;
-}
+	footer { background: #23262f; color: #fff; padding: 2rem 1rem; font-size: 0.9em; }
+	.footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1000px; margin: 0 auto; gap: 2em; }
+	.footer-links h4 { margin-bottom: 0.5em; font-size: 1em; }
+	.footer-links ul { list-style: none; margin: 0; padding: 0; }
+	.footer-links li { margin: 0.3em 0; }
+	.footer-links a { color: #3ea6ff; text-decoration: none; }
+	.footer-links a:hover { text-decoration: underline; }
+	.footer-about { flex: 1 1 100%; margin-top: 1em; text-align: center; color: #bbb; }
+	.footer-about p { margin: 0.3em 0; }
+	.footer-legal { margin-top: 2em; font-size: 0.8em; color: #aaa; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto; }
+	.footer-legal ul { list-style: none; padding: 0; margin: 0.5em 0; }
+	.footer-legal li { margin: 0.2em 0; }
 
 	/* Nav Bar */
-.nav-bar {
-  margin-left: auto; /* push nav to the right */
-}
-.nav-bar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 1.2em;
-}
-.nav-bar li {
-  display: inline;
-}
-.nav-bar a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease-in-out;
-}
-.nav-bar a:hover {
-  color: #3ea6ff;
-}
+	.nav-bar { margin-left: auto; }
+	.nav-bar ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.2em; }
+	.nav-bar li { display: inline; }
+	.nav-bar a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.2s ease-in-out; }
+	.nav-bar a:hover { color: #3ea6ff; }
 
-/* Responsive: stack nav under logo on small screens */
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0.5rem 1rem;
-  }
-  .nav-bar ul {
-    flex-direction: column;
-    gap: 0.5em;
-    margin-top: 0.5em;
-  }
-}
-
-	main { padding: 2rem; }
-	hr { border: 0; border-bottom: 1px solid #353535; margin: 2em 0; }
-	a { color: #3ea6ff; }
-	ul { padding-left: 1.2em; }
-	.flex-row { display: flex; justify-content: space-between; gap: 3em; }
-	.flex-col { display: flex; flex-direction: column; gap: 1.5em; }
-	.center { text-align: center; }
-	.media-group { margin-bottom: 2em; }
-	main {
-		padding: 1em;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: auto auto;
-		gap: 1em;
-	}
+	/* Responsive */
 	@media (max-width: 768px) {
-		main { grid-template-columns: 1fr; grid-template-rows: auto; }
+	  header { flex-direction: column; align-items: flex-start; padding: 0.5rem 1rem; }
+	  .nav-bar ul { flex-direction: column; gap: 0.5em; margin-top: 0.5em; }
+	  main { grid-template-columns: 1fr; grid-template-rows: auto; }
 	}
+
+	main { padding: 1em; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 1em; }
 	.section { padding: 1em; background: #f0f0f0; border-radius: 6px; }
 	.section h2 { margin-top: 0; }
 	img { margin: 0.5em; vertical-align: middle; }
@@ -135,6 +48,31 @@ footer {
 	ul li { margin: 0.2em 0; }
 	.meta { font-size: 0.95em; color: #444; margin: 0.25em 0 0.5em 0; }
 	.meta span { display: inline-block; min-width: 70px; }
+
+	/* Dark Mode */
+	body.dark-mode { background: #121212; color: #ddd; }
+
+	body.dark-mode .section { background: #1e1e1e; color: #ddd; }
+	body.dark-mode .legacy { opacity: 0.7; }
+	body.dark-mode a { color: #4aa3ff; }
+	body.dark-mode .footer-links a { color: #4aa3ff; }
+	body.dark-mode .footer-about { color: #ccc; }
+	body.dark-mode .footer-legal { color: #888; }
+	body.dark-mode hr { border-bottom: 1px solid #444; }
+	body.dark-mode .meta { font-size: 0.95em; color: #fff; margin: 0.25em 0 0.5em 0; }
+
+	/* Dark mode toggle button */
+	#dark-mode-toggle {
+	  margin-left: 1em;
+	  padding: 0.2em 0.5em;
+	  font-size: 0.9em;
+	  cursor: pointer;
+	  background: #444;
+	  color: #fff;
+	  border: none;
+	  border-radius: 4px;
+	}
+	#dark-mode-toggle:hover { background: #c3c3c3; }
 	</style>
 </head>
 <body>
@@ -142,11 +80,14 @@ footer {
 <header>
   <span class="header-logo">
     <a href="https://www.armbian.com/" target="_blank" rel="noopener">
-      <img src="./images/scalable/armbian_social.svg" alt="armbian-tux_v1.5.svg"><img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
+      <img src="./images/scalable/armbian_social.svg" alt="armbian-tux_v1.5.svg">
+      <img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
     </a>
   </span>
 
-    <!-- Navigation -->
+
+
+  <!-- Navigation -->
   <nav class="nav-bar">
     <ul>
       <li><a href="https://www.armbian.com/">Home</a></li>
@@ -154,26 +95,18 @@ footer {
       <li><a href="https://docs.armbian.com/">Documentation</a></li>
     </ul>
   </nav>
+    <!-- Dark Mode Toggle -->
+  <button id="dark-mode-toggle">🌙 Dark Mode</button>
 </header>
-	<main>
-		<div id="armbian-section" class="section">
-			<h2>Armbian</h2>
-			<div id="armbian-logos"></div>
-		</div>
-		<div id="configng-section" class="section">
-			<h2>ConfigNG</h2>
-			<div id="configng-logos"></div>
-		</div>
-		<div id="armbian-legacy-section" class="section legacy">
-			<h2>Armbian Legacy</h2>
-			<div id="armbian-legacy-logos"></div>
-		</div>
-		<div id="configng-legacy-section" class="section legacy">
-			<h2>ConfigNG Legacy</h2>
-			<div id="configng-legacy-logos"></div>
-		</div>
-	</main>
 
+<main>
+  <div id="armbian-section" class="section"><h2>Armbian</h2><div id="armbian-logos"></div></div>
+  <div id="configng-section" class="section"><h2>ConfigNG</h2><div id="configng-logos"></div></div>
+  <div id="armbian-legacy-section" class="section legacy"><h2>Armbian Legacy</h2><div id="armbian-legacy-logos"></div></div>
+  <div id="configng-legacy-section" class="section legacy"><h2>ConfigNG Legacy</h2><div id="configng-legacy-logos"></div></div>
+</main>
+
+<footer>
 <footer>
   <div class="footer-content">
     <div class="footer-links">
@@ -186,107 +119,105 @@ footer {
       </ul>
     </div>
 
-<div class="footer-links">
-  <h4>Community</h4>
-  <ul>
-    <li><a href="https://forum.armbian.com/" target="_blank" rel="noopener">Forum</a></li>
-    <li><a href="https://fosstodon.org/@armbian" target="_blank" rel="me noopener">Mastodon</a></li>
-    <li><a href="https://discord.gg/armbian" target="_blank" rel="noopener">Discord</a></li>
-    <li><a href="https://www.linkedin.com/company/armbian/posts/?feedView=all" target="_blank" rel="noopener">LinkedIn</a></li>
-  </ul>
-</div>
-
-
+    <div class="footer-links">
+      <h4>Community</h4>
+      <ul>
+        <li><a href="https://forum.armbian.com/" target="_blank" rel="noopener">Forum</a></li>
+        <li><a href="https://fosstodon.org/@armbian" target="_blank" rel="me noopener">Mastodon</a></li>
+        <li><a href="https://discord.gg/armbian" target="_blank" rel="noopener">Discord</a></li>
+        <li><a href="https://www.linkedin.com/company/armbian/posts/?feedView=all" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+    </div>
 
     <div class="footer-about">
       <p>&copy; 2025 Armbian Logos Media Kit</p>
-	<p>
-	Powered by the Armbian Community — aligning innovation, coffee, and questionable life choices.
-      	</p>
+      <p>Powered by the Armbian Community — aligning innovation, coffee, and questionable life choices.</p>
     </div>
   </div>
 
-<div class="footer-legal">
-  <p><strong>Disclaimer:</strong><br>
-  This site and its logos are powered by the Armbian Community™. Please read the following very serious, totally enforceable, absolutely binding guidelines:</p>
-
-  <ul>
-    <li><b>Do:</b> Share and remix logos responsibly, give credit, and spread the penguin love.</li>
-    <li><b>Do:</b> Use logos to show support for Armbian, community projects, or your cat’s Raspberry Pi server.</li>
-    <li><b>Don’t:</b> Pretend your project <i>is</i> Armbian, or imply official endorsement when you’re just hacking in your garage.</li>
-    <li><b>Don’t:</b> Sell the logos as NFTs, print them on cryptocurrency, or tattoo them on unwilling relatives.</li>
-  </ul>
-
-  <p>
-    All logos are provided “as-is,” with no warranty except the guarantee that someone will complain about the color scheme.
-    By scrolling this far, you acknowledge that you’ve probably read more legal text than most end-user license agreements.
-  </p>
-</div>
+  <div class="footer-legal">
+    <p><strong>Disclaimer:</strong><br>
+      This site and its logos are powered by the Armbian Community™. Please read the following very serious, totally enforceable, absolutely binding guidelines:
+    </p>
+    <ul>
+      <li><b>Do:</b> Share and remix logos responsibly, give credit, and spread the penguin love.</li>
+      <li><b>Do:</b> Use logos to show support for Armbian, community projects, or your cat’s Raspberry Pi server.</li>
+      <li><b>Don’t:</b> Pretend your project <i>is</i> Armbian, or imply official endorsement when you’re just hacking in your garage.</li>
+      <li><b>Don’t:</b> Sell the logos as NFTs, print them on cryptocurrency, or tattoo them on unwilling relatives.</li>
+    </ul>
+    <p>
+      All logos are provided “as-is,” with no warranty except the guarantee that someone will complain about the color scheme.
+      By scrolling this far, you acknowledge that you’ve probably read more legal text than most end-user license agreements.
+    </p>
+  </div>
+</footer>
 
 </footer>
 
+<script>
+function valueOrNull(val) {
+  return (val === undefined || val === null || val === "") ? "<span style='color:#c00'>null</span>" : val;
+}
 
+// Load logos
+fetch('logos.json')
+  .then(response => response.json())
+  .then(data => {
+    data.forEach(logo => {
+      let sectionId;
+      switch (logo.category) {
+        case 'armbian': sectionId = 'armbian-logos'; break;
+        case 'armbian-legacy': sectionId = 'armbian-legacy-logos'; break;
+        case 'configng': sectionId = 'configng-logos'; break;
+        case 'configng-legacy': sectionId = 'configng-legacy-logos'; break;
+        default: return;
+      }
+      const container = document.getElementById(sectionId);
+      if (!container) return;
+      let div = document.createElement('div');
+      let meta = logo.svg_meta || {};
+      let metaHtml = `<div class="meta">
+        <span><b>Title:</b> ${valueOrNull(meta.title)}</span><br>
+        <span><b>Description:</b> ${valueOrNull(meta.desc)}</span>
+      </div>`;
+      if (!logo.pngs || logo.pngs.length === 0 || logo.category.endsWith('legacy')) {
+        div.innerHTML = `<hr>
+          <a href="${logo.svg}" target="_blank">
+            <img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
+          </a>
+          ${metaHtml}
+          <p><a href="${logo.svg}" target="_blank">Open SVG / Download</a></p>`;
+      } else {
+        const pngList = logo.pngs.map(p => `<li><a href="${p.path}">${p.size} PNG</a> – ${p.kb} KB</li>`).join('');
+        div.innerHTML = `<hr>
+          <a href="${logo.svg}" target="_blank">
+            <img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
+          </a>
+          ${metaHtml}
+          <p>${logo.name}:</p>
+          <ul>${pngList}</ul>`;
+      }
+      container.appendChild(div);
+    });
+  });
 
+// Dark Mode Toggle
+const toggle = document.getElementById('dark-mode-toggle');
+const body = document.body;
 
-	<script>
-		function valueOrNull(val) {
-			// Null, empty string, or undefined become 'null'
-			return (val === undefined || val === null || val === "") ? "<span style='color:#c00'>null</span>" : val;
-		}
+// Initialize from localStorage
+if (localStorage.getItem('darkMode') === 'true') {
+  body.classList.add('dark-mode');
+  toggle.textContent = '☀️ Light Mode';
+}
 
-		fetch('logos.json')
-			.then(response => response.json())
-			.then(data => {
-				data.forEach(logo => {
-					let sectionId;
-					switch (logo.category) {
-						case 'armbian': sectionId = 'armbian-logos'; break;
-						case 'armbian-legacy': sectionId = 'armbian-legacy-logos'; break;
-						case 'configng': sectionId = 'configng-logos'; break;
-						case 'configng-legacy': sectionId = 'configng-legacy-logos'; break;
-						default: return;
-					}
-					const container = document.getElementById(sectionId);
-					if (!container) return;
+toggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+  const isDark = body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDark);
+  toggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+});
+</script>
 
-					let div = document.createElement('div');
-
-					let meta = logo.svg_meta || {};
-					let metaHtml = `
-						<div class="meta">
-							<span><b>Title:</b> ${valueOrNull(meta.title)}</span><br>
-							<span><b>Description:</b> ${valueOrNull(meta.desc)}</span>
-						</div>
-					`;
-
-					if (!logo.pngs || logo.pngs.length === 0 || logo.category.endsWith('legacy')) {
-						div.innerHTML = `
-							<hr>
-							<a href="${logo.svg}" target="_blank">
-								<img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
-							</a>
-							${metaHtml}
-							<p><a href="${logo.svg}" target="_blank">Open SVG / Download</a></p>
-						`;
-					} else {
-						const pngList = logo.pngs.map(p =>
-							`<li><a href="${p.path}">${p.size} PNG</a> – ${p.kb} KB</li>`
-						).join('');
-						div.innerHTML = `
-							<hr>
-							<a href="${logo.svg}" target="_blank">
-								<img src="${logo.svg}" alt="${logo.name}" width="64" height="64">
-							</a>
-							${metaHtml}
-							<p>${logo.name}:</p>
-							<ul>
-								${pngList}
-							</ul>
-						`;
-					}
-					container.appendChild(div);
-				});
-			});
-	</script>
 </body>
 </html>
