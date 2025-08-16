@@ -30,13 +30,36 @@ media_kit() {
 			_index_js	   || echo "ERROR:"
 			_html_index       || echo "ERROR: _html_index failed"
 			cp ../docs/modules_metadata.json ./dist/modules_metadata.json
-			cp ../docs/index.html ./dist/docs.html
+			_configng_docs
 			_html_server      || echo "ERROR: _html_server failed"
 			;;
 		*)
 			_about_media_kit
 			;;
 	esac
+}
+
+_configng_docs(){
+
+	cat <<EOF > "$DIST/docs.html"
+<!DOCTYPE html>
+<html>
+	$(cat ./templates/head.html)
+<body>
+	$(cat ./templates/nav.html)
+
+<section id="page-info">
+  <h1>Armbian Module Metadata</h1>
+  <div id="modules-container"><em>Loading modules…</em></div>
+</section>
+	$(cat ./templates/footer.html)
+
+	<script src="./script.js"></script>
+</body>
+</html>
+
+EOF
+
 }
 
 _prepare_dist() {
@@ -76,6 +99,8 @@ _icon_set_from_svg() {
 		rm "$DIST/favicon-16.png" "$DIST/favicon-32.png" "$DIST/favicon-48.png"
 	fi
 }
+
+
 
 _index_json() {
 	OUTPUT="$DIST/logos.json"
@@ -244,6 +269,63 @@ toggle.addEventListener("click", () => {
 	localStorage.setItem("darkMode", isDark);
 	toggle.textContent = isDark ? "☀️" : "🌙";
 });
+
+// configng docs
+const JSON_URL = "https://raw.githubusercontent.com/Tearran/configng-v2/refs/heads/main/media_kit/dist/modules_metadata.json";
+
+fetch(JSON_URL)
+  .then(r => r.json())
+  .then(data => renderModules(data))
+  .catch(err => {
+    document.getElementById("modules-container").innerHTML = "<b>Failed to load metadata.</b>";
+    console.error(err);
+  });
+
+function renderModules(data) {
+  const cont = document.getElementById("modules-container");
+  cont.innerHTML = "";
+
+  (data.menu || []).forEach(cat => {
+    const catDiv = document.createElement("article");
+    catDiv.className = "category";
+    catDiv.innerHTML = `<h2>${escapeHTML(cat.id)}</h2>
+                        ${cat.description ? `<p class="desc">${escapeHTML(cat.description)}</p>` : ""}`;
+
+    (cat.sub || []).forEach(entry => {
+      if (entry.sub) {
+        const groupDiv = document.createElement("div");
+        groupDiv.className = "group";
+        groupDiv.innerHTML = `<h3>${escapeHTML(entry.id)}</h3>
+                              ${entry.description ? `<p class="desc">${escapeHTML(entry.description)}</p>` : ""}`;
+
+        (entry.sub || []).forEach(mod => groupDiv.appendChild(renderModule(mod)));
+        catDiv.appendChild(groupDiv);
+      } else {
+        catDiv.appendChild(renderModule(entry));
+      }
+    });
+    cont.appendChild(catDiv);
+  });
+}
+
+function renderModule(mod) {
+  const div = document.createElement("div");
+  div.className = "module";
+  div.innerHTML = `<h4>${escapeHTML(mod.id)}</h4>
+                   ${mod.description ? `<p class="desc">${escapeHTML(mod.description)}</p>` : ""}`;
+  if (mod.options) {
+    const opts = mod.options.split(",").map(o=>o.trim()).filter(Boolean);
+    if (opts.length) {
+      const spanWrap = opts.map(o=>`<span>${escapeHTML(o)}</span>`).join("");
+      div.innerHTML += `<div class="options"><strong>Options:</strong> ${spanWrap}</div>`;
+    }
+  }
+  return div;
+}
+
+function escapeHTML(str) {
+  return (str||"").replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 EOF
 }
@@ -479,6 +561,28 @@ body.dark-mode .meta {
 	margin: 0.5em 0 0 0;
 	font-size: 1em;
 }
+
+   section#page-info { padding: 1em 2em; max-width: 1000px; margin: auto; }
+    .category, .group, .module {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 1em;
+      margin: 1em 0;
+      background: #f9f9f9;
+    }
+    .category h2, .group h3, .module h4 { margin-top: 0; }
+    .options { margin-top: .5em; }
+    .options span {
+      display: inline-block;
+      background: #eef;
+      border: 1px solid #99c;
+      border-radius: 4px;
+      padding: .2em .5em;
+      margin: .2em;
+      font-size: .9em;
+    }
+    .desc { color: #666; font-style: italic; }
+
 EOF
 }
 

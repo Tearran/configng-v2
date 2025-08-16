@@ -227,3 +227,25 @@ body.dark-mode .meta {
 	margin: 0.5em 0 0 0;
 	font-size: 1em;
 }
+
+   section#page-info { padding: 1em 2em; max-width: 1000px; margin: auto; }
+    .category, .group, .module {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 1em;
+      margin: 1em 0;
+      background: #f9f9f9;
+    }
+    .category h2, .group h3, .module h4 { margin-top: 0; }
+    .options { margin-top: .5em; }
+    .options span {
+      display: inline-block;
+      background: #eef;
+      border: 1px solid #99c;
+      border-radius: 4px;
+      padding: .2em .5em;
+      margin: .2em;
+      font-size: .9em;
+    }
+    .desc { color: #666; font-style: italic; }
+
