@@ -10,8 +10,88 @@
 	header .header-logo { display: flex; gap: 0em; padding: 0.1rem }
 	header a { display: inline-block; }
 	header img { vertical-align: middle; height: 64px; width: auto; }
-	footer { background: #23262f; color: #fff; padding: 1rem 2rem; text-align: center; font-size: 0.9em; }
-	footer a { color: #3ea6ff; }
+
+footer {
+  background: #23262f;
+  color: #fff;
+  padding: 2rem 1rem;
+  font-size: 0.9em;
+}
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 2em;
+}
+.footer-links h4 {
+  margin-bottom: 0.5em;
+  font-size: 1em;
+}
+.footer-links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.footer-links li {
+  margin: 0.3em 0;
+}
+.footer-links a {
+  color: #3ea6ff;
+  text-decoration: none;
+}
+.footer-links a:hover {
+  text-decoration: underline;
+}
+.footer-about {
+  flex: 1 1 100%;
+  margin-top: 1em;
+  text-align: center;
+  color: #bbb;
+}
+.footer-about p {
+  margin: 0.3em 0;
+}
+
+	/* Nav Bar */
+.nav-bar {
+  margin-left: auto; /* push nav to the right */
+}
+.nav-bar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.2em;
+}
+.nav-bar li {
+  display: inline;
+}
+.nav-bar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+.nav-bar a:hover {
+  color: #3ea6ff;
+}
+
+/* Responsive: stack nav under logo on small screens */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+  }
+  .nav-bar ul {
+    flex-direction: column;
+    gap: 0.5em;
+    margin-top: 0.5em;
+  }
+}
+
 	main { padding: 2rem; }
 	hr { border: 0; border-bottom: 1px solid #353535; margin: 2em 0; }
 	a { color: #3ea6ff; }
@@ -48,6 +128,15 @@
       <img src="./images/scalable/armbian_social.svg" alt="armbian-tux_v1.5.svg"><img src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
     </a>
   </span>
+
+    <!-- Navigation -->
+  <nav class="nav-bar">
+    <ul>
+      <li><a href="https://www.armbian.com/">Home</a></li>
+      <li><a href="https://forum.armbian.com/">Forum</a></li>
+      <li><a href="https://docs.armbian.com/">Documentation</a></li>
+    </ul>
+  </nav>
 </header>
 	<main>
 		<div id="armbian-section" class="section">
@@ -68,14 +157,42 @@
 		</div>
 	</main>
 
-	<footer>
-		<p>
-			This media kit is powered by the community and FOSS.
-		</p>
-		<p>For more information, see
-			<a href="https://www.armbian.com/" style="color: #fff;">Armbian</a>.
-		</p>
-	</footer>
+<footer>
+  <div class="footer-content">
+    <div class="footer-links">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="https://www.armbian.com/" target="_blank" rel="noopener">Home</a></li>
+        <li><a href="https://docs.armbian.com/" target="_blank" rel="noopener">Documentation</a></li>
+        <li><a href="https://github.com/armbian" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://forum.armbian.com/" target="_blank" rel="noopener">Forum</a></li>
+      </ul>
+    </div>
+
+<div class="footer-links">
+  <h4>Community</h4>
+  <ul>
+    <li><a href="https://forum.armbian.com/" target="_blank" rel="noopener">Forum</a></li>
+    <li><a href="https://fosstodon.org/@armbian" target="_blank" rel="me noopener">Mastodon</a></li>
+    <li><a href="https://discord.gg/armbian" target="_blank" rel="noopener">Discord</a></li>
+  </ul>
+</div>
+
+
+    <div class="footer-about">
+      <p>&copy; 2025 Armbian Logos Media Kit</p>
+	<p>
+	Powered by the Armbian Community — aligning innovation, coffee, and questionable life choices.
+      	</p>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+  </div>
+</footer>
+
 
 	<script>
 		function valueOrNull(val) {
