@@ -19,7 +19,7 @@
 
                 <!-- <base href=""> -->
                 <link rel="icon" type="image/x-icon" href="favicon.ico">
-                <link rel="stylesheet" href="./css/green.css">
+                <link rel="stylesheet" href="./css/style.css">
 
                 <!-- age rating based on the document's content -->
                 <meta name="rating" content="General">
@@ -211,7 +211,7 @@
                                                 if (mod.about)
                                                         html += `<div class="desc"><small>${escapeHTML(mod.about)}</small></div>`;
                                                 if (mod.options) {
-                                                        html += `<div class="options-block"><b>Options:</b>`;
+                                                        html += `<div class="options-block"><b>Options:</b><br>`;
                                                         for (const opt of mod.options.split(",")) {
                                                                 const trimmed = opt.trim();
                                                                 if (!trimmed) continue;

@@ -25,7 +25,7 @@ header {
 	padding: 0.1rem;
 }
 
-header a {
+a {
 	display: inline-block;
 }
 
@@ -323,7 +323,7 @@ main#home .step .fa {
 	color: #ff5252;
 }
 
-main#home a {
+a {
 	color: #ff5252;
 	text-decoration: none;
 }
