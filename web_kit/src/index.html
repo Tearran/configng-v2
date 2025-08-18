@@ -26,6 +26,31 @@
 
 
                 <title>Armbian home</title>
+                <style>
+                        nav {
+                                padding: 0.8em 1.2em;
+                        }
+
+                        .theme-selector-menu {
+                                position: fixed;
+                                top: 0;
+                                right: 0;
+                                z-index: 1000;
+                                padding: 0.8em 1.2em;
+                                border-bottom-left-radius: 12px;
+                                background: rgba(0, 0, 0, 0.04);
+                                box-shadow: 0 2px 8px #0001;
+                                display: flex;
+                                align-items: center;
+                                gap: 1em;
+                        }
+
+                        .theme-selector-menu span {
+                                font-size: 1em;
+                                font-weight: 500;
+                                letter-spacing: 0.04em;
+                        }
+                </style>
 
         </head>
 
@@ -41,7 +66,20 @@
                                 <li><a href="#contact-main" class="nav-link" data-section="contact-main">Contact Us</a>
                                 </li>
                         </ul>
+                        <div class="theme-selector-menu">
+                                <label for="theme-select">Theme:</label>
+                                <select id="theme-select">
+                                        <option value="style.css">Default</option>
+                                        <option value="blue.css">Blue</option>
+                                        <option value="green.css">Green</option>
+                                        <option value="grey.css">Grey</option>
+                                        <option value="white.css">White</option>
+                                        <option value="red.css">Red</option>
+                                </select>
+
+                        </div>
                 </nav>
+
         </div>
         <header>
                 <span class="header-logo">
@@ -50,17 +88,7 @@
                                         src="./images/scalable/armbian_font.v2.1.svg" alt="armbian_font.v2.1.svg">
                         </a>
                 </span>
-                <div class="theme-selector">
-                        <label for="theme-select">Theme:</label>
-                        <select id="theme-select">
-                                <option value="style.css">Default</option>
-                                <option value="blue.css">Blue</option>
-                                <option value="green.css">Green</option>
-                                <option value="grey.css">Grey</option>
-                                <option value="white.css">White</option>
-                                <option value="red.css">Red</option>
-                        </select>
-                </div>
+
 
         </header>
 
