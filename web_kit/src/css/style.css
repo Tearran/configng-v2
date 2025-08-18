@@ -414,3 +414,50 @@ create a body.light-mode selector and corresponding styles.
 .breadcrumb:focus {
 	background: #3eaf7c;
 }
+
+main#contact {
+	max-width: 600px;
+	margin: auto;
+	font-family: sans-serif;
+}
+
+main#contact section {
+	margin-bottom: 2em;
+}
+
+main#contact img.icon {
+	height: 1em;
+	vertical-align: middle;
+	margin-right: 0.5em;
+}
+
+main#contact img.image {
+	height: 2em;
+	vertical-align: middle;
+	margin-right: 0.5em;
+}
+
+main#contact ul {
+	list-style: none;
+	padding: 0;
+}
+
+main#contact li {
+	margin-bottom: 0.5em;
+}
+
+
+main a:hover,
+main a:focus {
+	background: #e3f2fd;
+	color: #4aa3ff;
+	text-decoration: none;
+	outline: none;
+}
+
+main a {
+	color: #549ced;
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.2s ease-in-out;
+}

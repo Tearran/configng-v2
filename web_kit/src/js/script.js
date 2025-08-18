@@ -68,19 +68,6 @@ fetch("./json/logos.json")
 const toggle = document.getElementById("dark-mode-toggle");
 const body = document.body;
 
-// Initialize from localStorage
-if (localStorage.getItem("darkMode") === "true") {
-  body.classList.add("dark-mode");
-  toggle.textContent = "☀️";
-}
-
-toggle.addEventListener("click", () => {
-  body.classList.toggle("dark-mode");
-  const isDark = body.classList.contains("dark-mode");
-  localStorage.setItem("darkMode", isDark);
-  toggle.textContent = isDark ? "☀️" : "🌙";
-});
-
 // configng docs
 const JSON_URL = "https://raw.githubusercontent.com/Tearran/configng-v2/refs/heads/main/media_kit/dist/modules_metadata.json";
 
