@@ -1,16 +1,14 @@
-/* Default Blue Theme */
+/* Default Blue Dark Theme */
 
 body {
-	background: rgba(18, 36, 66, 1);
-	/* Deep blue */
-	color: #ddeeff;
+	background: #10182A;
+	color: #e0e8f2;
 	font-family: sans-serif;
 	margin: 0;
 }
 
 header {
-	background: rgba(35, 54, 111, 1);
-	/* Dark blue */
+	background: #173564;
 	color: #fff;
 	padding: 0.3rem 1rem;
 	display: flex;
@@ -52,7 +50,7 @@ header img {
 }
 
 .nav-bar a {
-	color: #ddeeff;
+	color: #fff;
 	text-decoration: none;
 	font-weight: 500;
 	transition: color 0.2s ease-in-out;
@@ -65,18 +63,14 @@ header img {
 /* Main Content and Responsive */
 main {
 	padding: 1em;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto auto;
 	gap: 1em;
 }
 
 .section {
 	padding: 1em;
-	background: rgba(30, 38, 80, 0.98);
-	/* Slightly lighter blue */
+	background: #132044;
 	border-radius: 6px;
-	color: #ddeeff;
+	color: #e0e8f2;
 }
 
 .section h2 {
@@ -109,8 +103,8 @@ ul li {
 
 /* Footer */
 footer {
-	background: rgba(35, 54, 111, 1);
-	color: #ddeeff;
+	background: #173564;
+	color: #fff;
 	padding: 2rem 1rem;
 	font-size: 0.9em;
 }
@@ -146,14 +140,13 @@ footer {
 
 .footer-links a:hover {
 	text-decoration: underline;
-	color: #90caff;
 }
 
 .footer-about {
 	flex: 1 1 100%;
 	margin-top: 1em;
 	text-align: center;
-	color: #bbd7ff;
+	color: #b5c2da;
 }
 
 .footer-about p {
@@ -163,7 +156,7 @@ footer {
 .footer-legal {
 	margin-top: 2em;
 	font-size: 0.8em;
-	color: #88bbee;
+	color: #7a8bbd;
 	text-align: left;
 	max-width: 800px;
 	margin-left: auto;
@@ -183,7 +176,7 @@ footer {
 /* Page Info Section */
 #page-info {
 	padding: 1em;
-	border-bottom: 1px solid #4488ff;
+	border-bottom: 1px solid #244080;
 }
 
 #page-info p {
@@ -200,11 +193,11 @@ section#page-info {
 .category,
 .group,
 .module {
-	border: 1px solid #4488ff;
+	border: 1px solid #27418c;
 	border-radius: 6px;
 	padding: 1em;
 	margin: 1em 0;
-	background: rgba(30, 38, 80, 0.98);
+	background: #192A4D;
 }
 
 .category h2,
@@ -214,29 +207,28 @@ section#page-info {
 }
 
 .options {
-	margin-top: .5em;
+	margin-top: 0.5em;
 }
 
 .options span {
 	display: inline-block;
-	background: #223366;
-	border: 1px solid #4455aa;
+	background: #223b73;
+	border: 1px solid #445da0;
 	border-radius: 4px;
-	padding: .2em .5em;
-	margin: .2em;
-	font-size: .9em;
-	color: #ddeeff;
+	padding: 0.2em 0.5em;
+	margin: 0.2em;
+	font-size: 0.9em;
 }
 
 .desc {
-	color: #bbd7ff;
+	color: #90a4d4;
 	font-style: italic;
 }
 
 /* Home Page Sections */
 main#home {
 	font-family: Arial, sans-serif;
-	background: rgba(25, 30, 50, 1);
+	background: #192A4D;
 	margin: 0;
 	min-height: 100vh;
 	display: block;
@@ -245,10 +237,10 @@ main#home {
 main#home section {
 	max-width: 900px;
 	margin: 24px auto;
-	background: rgba(30, 38, 80, 0.98);
+	background: #132044;
 	padding: 24px;
 	border-radius: 8px;
-	box-shadow: 0 2px 8px #0001;
+	box-shadow: 0 2px 8px #17356433;
 }
 
 main#home .features,
@@ -264,11 +256,10 @@ main#home .features-list {
 
 main#home .feature {
 	flex: 1;
-	background: #223366;
+	background: #183067;
 	border-radius: 6px;
 	padding: 18px;
 	margin-bottom: 12px;
-	color: #ddeeff;
 }
 
 main#home .feature h3 {
@@ -288,10 +279,9 @@ main#home .uefi-devices-list {
 main#home .uefi-device {
 	text-align: center;
 	flex: 1;
-	background: #223366;
+	background: #183067;
 	border-radius: 6px;
 	padding: 16px;
-	color: #ddeeff;
 }
 
 main#home .uefi-device img {
@@ -306,10 +296,9 @@ main#home .getting-started-steps {
 }
 
 main#home .step {
-	background: #223366;
+	background: #183067;
 	border-radius: 6px;
 	padding: 16px;
-	color: #ddeeff;
 }
 
 main#home .step-title {
@@ -318,16 +307,12 @@ main#home .step-title {
 
 main#home .step .fa {
 	margin-right: 10px;
-	color: #4aa3ff;
+	color: #369afc;
 }
 
 main#home a {
 	color: #4aa3ff;
 	text-decoration: none;
-}
-
-main#home a:hover {
-	color: #90caff;
 }
 
 /* Responsive */
@@ -348,4 +333,156 @@ main#home a:hover {
 		grid-template-columns: 1fr;
 		grid-template-rows: auto;
 	}
+
+	main#media_kit,
+	main#home {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+/* 
+==================================================
+To add a light theme, create a body.light-mode selector and corresponding styles.
+==================================================
+*/
+
+.menu-btn,
+.feature-btn,
+.option-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	padding: 0.5em 1.2em;
+	margin: 6px 0;
+	border: none;
+	border-radius: 8px;
+	background: linear-gradient(90deg, #3eaf7c 0%, #2383c4 100%);
+	color: #fff;
+	font-size: 1.05em;
+	font-weight: 500;
+	cursor: pointer;
+	box-shadow: 0 2px 8px #17356422;
+	transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.menu-btn:hover,
+.feature-btn:hover,
+.option-btn:hover,
+.menu-btn:focus,
+.feature-btn:focus,
+.option-btn:focus {
+	background: linear-gradient(90deg, #2383c4 0%, #3eaf7c 100%);
+	box-shadow: 0 4px 16px #2383c444;
+	outline: none;
+	transform: translateY(-2px) scale(1.03);
+}
+
+.menu-btn:active,
+.feature-btn:active,
+.option-btn:active {
+	background: #183067;
+	color: #fff;
+	box-shadow: 0 2px 6px #17356499;
+	transform: scale(0.97);
+}
+
+.feature-label {
+	font-weight: bold;
+}
+
+.feature-desc,
+.option-desc {
+	color: #c0d4fa;
+	font-size: 0.95em;
+	font-style: italic;
+	margin-left: 0.5em;
+}
+
+.breadcrumb {
+	display: inline-block;
+	padding: 0.2em 0.7em;
+	margin: 0 0.2em;
+	background: #2383c4;
+	color: #fff;
+	border-radius: 4px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background 0.18s;
+}
+
+.breadcrumb:hover,
+.breadcrumb:focus {
+	background: #3eaf7c;
+}
+
+main#contact {
+	max-width: 600px;
+	margin: auto;
+	font-family: sans-serif;
+}
+
+main#contact section {
+	margin-bottom: 2em;
+}
+
+main#contact img.icon {
+	height: 1em;
+	vertical-align: middle;
+	margin-right: 0.5em;
+}
+
+main#contact img.image {
+	height: 2em;
+	vertical-align: middle;
+	margin-right: 0.5em;
+}
+
+main#contact ul {
+	list-style: none;
+	padding: 0;
+}
+
+main#contact li {
+	margin-bottom: 0.5em;
+}
+
+main a:hover,
+main a:focus {
+	background: #e3f2fd;
+	color: #4aa3ff;
+	text-decoration: none;
+	outline: none;
+}
+
+main a {
+	color: #4aa3ff;
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.2s ease-in-out;
+}
+
+/* Layouts for different main sections */
+main#media_kit {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1em;
+}
+
+main#docs,
+main#contact-main {
+	display: block;
+}
+
+/* Responsive: stack columns on small screens */
+@media (max-width: 768px) {
+
+	main#media_kit,
+	main#home {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+/* Example: docs layout, single column */
+main#docs {
+	display: block;
 }
