@@ -38,6 +38,7 @@ media_kit() {
 			_prepare_dist
 			_icon_set_from_svg || echo "ERROR: _icon_set_from_svg failed"
 			_index_json       || echo "ERROR: _index_json failed"
+			# TODO add error handeling and messages
 			cp ../docs/modules_metadata.json ./dist/modules_metadata.json
 			cp ./contributors.json ./dist/contributors.json || echo "run -c first"
 			_html_server      || echo "ERROR: _html_server failed"

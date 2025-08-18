@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-        const JSON_URL = "./json/modules_metadata.json";
+        const JSON_URL = "./json/configng.json";
         let data = {};
         let state = { cat: null, group: null, feature: null };
 

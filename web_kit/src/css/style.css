@@ -207,7 +207,7 @@ section#page-info {
 }
 
 .options {
-	margin-top: .5em;
+	margin-top: 0.5em;
 }
 
 .options span {
@@ -215,9 +215,9 @@ section#page-info {
 	background: #223;
 	border: 1px solid #445;
 	border-radius: 4px;
-	padding: .2em .5em;
-	margin: .2em;
-	font-size: .9em;
+	padding: 0.2em 0.5em;
+	margin: 0.2em;
+	font-size: 0.9em;
 }
 
 .desc {
@@ -333,13 +333,16 @@ main#home a {
 		grid-template-columns: 1fr;
 		grid-template-rows: auto;
 	}
-}
 
+	main#media_kit,
+	main#home {
+		grid-template-columns: 1fr !important;
+	}
+}
 
 /* 
 ==================================================
-If you want to add a light theme back, 
-create a body.light-mode selector and corresponding styles.
+To add a light theme, create a body.light-mode selector and corresponding styles.
 ==================================================
 */
 
@@ -443,7 +446,6 @@ main#contact li {
 	margin-bottom: 0.5em;
 }
 
-
 main a:hover,
 main a:focus {
 	background: #e3f2fd;
@@ -459,26 +461,19 @@ main a {
 	transition: color 0.2s ease-in-out;
 }
 
-/* Each main can have its own grid layout as needed */
-
-/* Media Kit: 2 columns */
+/* Layouts for different main sections */
 main#media_kit {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 1em;
 }
 
-/* Docs: single column, default block */
-main#docs {
-	display: block;
-}
-
-/* Contact: single column, default block */
+main#docs,
 main#contact-main {
 	display: block;
 }
 
-/* Responsive, stacks all to 1 column on small screens */
+/* Responsive: stack columns on small screens */
 @media (max-width: 768px) {
 
 	main#media_kit,
@@ -487,16 +482,7 @@ main#contact-main {
 	}
 }
 
-/* Example: for another layout */
+/* Example: docs layout, single column */
 main#docs {
 	display: block;
-	/* default single column */
-}
-
-@media (max-width: 768px) {
-
-	main#media_kit,
-	main#home {
-		grid-template-columns: 1fr;
-	}
 }
