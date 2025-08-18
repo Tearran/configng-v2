@@ -10,18 +10,9 @@ function injectFragment(selector, url) {
 // Inject shared fragments
 document.addEventListener('DOMContentLoaded', () => {
         // Inject nav/header/footer
-        injectFragment('#header', './blocks/nav.html');
+        injectFragment('#header', './blocks/header.html');
         injectFragment('#nav', './blocks/nav.html'); // if you want nav separate, or skip if in header
         injectFragment('#footer', './blocks/footer.html');
-
-        // Inject head fragment (special handling, can't use innerHTML for <head>)
-        fetch('./blocks/head.html')
-                .then(r => r.text())
-                .then(html => {
-                        const doc = new DOMParser().parseFromString(html, 'text/html');
-                        // Append all children from fragment to actual head
-                        Array.from(doc.head.children).forEach(node => document.head.appendChild(node));
-                });
 
         // Load main content from JSON and render
         fetch('./json/home.json')

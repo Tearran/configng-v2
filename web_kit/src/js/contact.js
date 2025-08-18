@@ -7,7 +7,7 @@ function renderImg(src, className, alt = '') {
         return img;
 }
 
-fetch('contact-info.json')
+fetch('./json/contact-info.json')
         .then(response => response.json())
         .then(data => {
                 // Office Hours

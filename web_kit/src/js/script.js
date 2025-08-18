@@ -61,15 +61,12 @@ fetch("./json/logos.json")
     });
   });
 
-
-
-
 // Dark Mode Toggle
 const toggle = document.getElementById("dark-mode-toggle");
 const body = document.body;
 
 // configng docs
-const JSON_URL = "https://raw.githubusercontent.com/Tearran/configng-v2/refs/heads/main/media_kit/dist/modules_metadata.json";
+const JSON_URL = "./json/modules_metadata.json";
 
 fetch(JSON_URL)
   .then(r => r.json())

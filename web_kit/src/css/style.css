@@ -63,9 +63,6 @@ header img {
 /* Main Content and Responsive */
 main {
 	padding: 1em;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto auto;
 	gap: 1em;
 }
 
@@ -460,4 +457,46 @@ main a {
 	text-decoration: none;
 	font-weight: 500;
 	transition: color 0.2s ease-in-out;
+}
+
+/* Each main can have its own grid layout as needed */
+
+/* Media Kit: 2 columns */
+main#media_kit {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1em;
+}
+
+/* Docs: single column, default block */
+main#docs {
+	display: block;
+}
+
+/* Contact: single column, default block */
+main#contact-main {
+	display: block;
+}
+
+/* Responsive, stacks all to 1 column on small screens */
+@media (max-width: 768px) {
+
+	main#media_kit,
+	main#home {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+/* Example: for another layout */
+main#docs {
+	display: block;
+	/* default single column */
+}
+
+@media (max-width: 768px) {
+
+	main#media_kit,
+	main#home {
+		grid-template-columns: 1fr;
+	}
 }
