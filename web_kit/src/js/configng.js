@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-        const JSON_URL = "./json/configng.json";
+        const JSON_URL = "https://raw.githubusercontent.com/armbian/configng/refs/heads/main/tools/json/config.software.json";
         let data = {};
         let state = { cat: null, group: null, feature: null };
 
