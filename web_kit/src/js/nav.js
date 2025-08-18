@@ -1,21 +1,30 @@
-// Show/hide main sections on nav click
-function showMainSection(sectionId) {
-        document.querySelectorAll('main').forEach(main => {
-                if (main.id === sectionId) {
-                        main.style.display = ''; // Show (let CSS decide grid/block)
+document.addEventListener('DOMContentLoaded', function () {
+        function showSection(sectionId) {
+                document.querySelectorAll('main').forEach(main => {
+                        main.style.display = 'none';
+                });
+                const section = document.getElementById(sectionId);
+                if (section) {
+                        section.style.display = '';
+                }
+        }
+
+        function handleHashChange() {
+                const hash = window.location.hash.replace('#', '');
+                if (hash) {
+                        showSection(hash);
                 } else {
-                        main.style.display = 'none'; // Hide
+                        showSection('home');
                 }
+        }
+
+        window.addEventListener('hashchange', handleHashChange);
+        handleHashChange();
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                        const section = link.getAttribute('data-section');
+                        window.location.hash = section;
+                });
         });
-}
-document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('nav').addEventListener('click', function (e) {
-                if (e.target.matches('.nav-link')) {
-                        const sectionId = e.target.getAttribute('data-section');
-                        showMainSection(sectionId);
-                        e.preventDefault();
-                }
-        });
-        // Show home by default
-        showMainSection('home');
 });
