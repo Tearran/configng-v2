@@ -1,0 +1,13 @@
+[
+  {
+    "name": "armbian_font_v1.5",
+    "category": "armbian-legacy",
+    "svg": "images/logos/scalable/legacy/armbian_font_v1.5.svg",
+    "svg_meta": {
+      "title": "Armbain Font v1.5",
+      "desc": "Armbian Font retired on July 15, 2025."
+    },
+    "pngs": [
+    ]
+  }
+]

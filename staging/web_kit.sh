@@ -51,83 +51,75 @@ web_kit() {
 			;;
 	esac
 }
-
 _web_kit_logo_json() {
-	# --- Edit only these variables if you need to change locations ---
 	local BIN_ROOT
 	BIN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-	local SVG_SRC_DIR="${SVG_SRC_DIR:-$BIN_ROOT/../assets/images/logos}"   # where your source SVGs live
-	local LOGO_JSON_OUT="${LOGO_JSON_OUT:-$BIN_ROOT/../public_html/json/logos.json}" # output file
-	local LOGO_IMG_ROOT="${LOGO_IMG_ROOT:-$BIN_ROOT/../public_html/images}" # where PNG files live (filesystem)
-	local LOGO_IMG_WEB="${LOGO_IMG_WEB:-images}"                            # web path prefix in JSON (e.g. "images")
+	local WEB_ROOT="${WEB_ROOT:-$BIN_ROOT/../public_html}"
+	local SVG_SRC_DIR="${SVG_SRC_DIR:-$BIN_ROOT/../assets/images/logos}"   # filesystem source SVGs
+	local LOGO_JSON_DIR="${LOGO_JSON_DIR:-$WEB_ROOT/json/images}"          # output directory for per-file JSONs
+	local LOGO_IMG_ROOT="${LOGO_IMG_ROOT:-$WEB_ROOT/images}"              # filesystem PNG root
+	local LOGO_IMG_WEB="${LOGO_IMG_WEB:-images/logos}"                    # desired web prefix (will be normalized)
 
-	# Sizes (override by setting ICON_SIZES to comma-separated string, e.g. "16,32,48")
+	# If WEB_LOGO_ROOT (filesystem) provided and user left LOGO_IMG_WEB default, prefer deriving web prefix from it
+	if [[ -n "${WEB_LOGO_ROOT:-}" && "${LOGO_IMG_WEB:-}" == "images/logos" ]]; then
+		LOGO_IMG_WEB="${WEB_LOGO_ROOT}"
+	fi
+
+	# Normalize LOGO_IMG_WEB: if it's an absolute/filesystem path under WEB_ROOT, convert to web-rel path.
+	LOGO_IMG_WEB="${LOGO_IMG_WEB%/}"
+	if [[ -n "$WEB_ROOT" && "${LOGO_IMG_WEB#"$WEB_ROOT"/}" != "$LOGO_IMG_WEB" ]]; then
+		LOGO_IMG_WEB="${LOGO_IMG_WEB#"$WEB_ROOT"/}"
+	fi
+	# Remove leading slash or ./ if present
+	LOGO_IMG_WEB="${LOGO_IMG_WEB#/}"
+	LOGO_IMG_WEB="${LOGO_IMG_WEB#./}"
+
+	# Sizes (override by setting ICON_SIZES as comma-separated list)
 	if [ -n "${ICON_SIZES:-}" ]; then
 		IFS=',' read -r -a SIZES <<< "${ICON_SIZES}"
 	else
 		SIZES=(16 32 48 64 96 128 180 192 256 384 512 1024)
 	fi
-	# --- end editable section ---
 
 	# Ensure output directory exists
-	mkdir -p "$(dirname "$LOGO_JSON_OUT")"
+	mkdir -p "$LOGO_JSON_DIR"
 
-	# Collect SVG files (include legacy subdir if present)
+	# Collect SVG files
 	mapfile -t svg_files < <(find "$SVG_SRC_DIR" -type f -name "*.svg" 2>/dev/null | sort -u)
 
-	# Helper to escape strings for JSON (handles backslash, double quotes, and newlines)
+	# Escape helper for JSON strings
 	json_escape() {
 		local s="$1"
-		# escape backslashes, then double quotes, then convert newlines to spaces
 		s="${s//\\/\\\\}"
 		s="${s//\"/\\\"}"
-		# replace actual newlines with space to keep JSON single-line values
 		s="${s//$'\n'/ }"
 		printf '%s' "$s"
 	}
 
-	# Helper to extract the first matching tag content without using GNU -P
-	# usage: extract_tag_content "$file" "dc:title" "title"
+	# Extract tag content helper
 	extract_tag_content() {
-		local file="$1"
-		local primary_tag="$2"
-		local fallback_tag="$3"
-		local val
-
-		# Try primary tag
-		if val="$(grep -m1 -o "<${primary_tag}>[^<]*</${primary_tag}>" "$file" 2>/dev/null)"; then
-			# strip tags
+		local file="$1"; local primary="$2"; local fallback="$3"; local val
+		if val="$(grep -m1 -o "<${primary}>[^<]*</${primary}>" "$file" 2>/dev/null)"; then
 			val="$(printf '%s' "$val" | sed 's|<[^>]*>||g')"
-			printf '%s' "$val"
-			return 0
+			printf '%s' "$val"; return 0
 		fi
-
-		# Fallback tag
-		if [ -n "$fallback_tag" ]; then
-			if val="$(grep -m1 -o "<${fallback_tag}>[^<]*</${fallback_tag}>" "$file" 2>/dev/null)"; then
+		if [ -n "$fallback" ]; then
+			if val="$(grep -m1 -o "<${fallback}>[^<]*</${fallback}>" "$file" 2>/dev/null)"; then
 				val="$(printf '%s' "$val" | sed 's|<[^>]*>||g')"
-				printf '%s' "$val"
-				return 0
+				printf '%s' "$val"; return 0
 			fi
 		fi
-
-		# empty
-		printf ''
-		return 1
+		printf ''; return 1
 	}
 
-	# Start JSON
-	printf '[\n' > "$LOGO_JSON_OUT"
-	local first=1
-
+	# Generate one JSON file per SVG
 	for file in "${svg_files[@]}"; do
 		[ -e "$file" ] || continue
-		local name base category rel_svg_path is_legacy svg_title svg_desc
+		local base name category is_legacy svg_title svg_desc rel_svg_path
 		base="$(basename "$file")"
 		name="${base%.svg}"
 
-		# Determine category and SVG web path
 		is_legacy=0
 		if [[ "$file" == */legacy/* ]]; then
 			if [[ "$name" == armbian_* ]]; then category="armbian-legacy"
@@ -142,73 +134,66 @@ _web_kit_logo_json() {
 			rel_svg_path="${LOGO_IMG_WEB}/scalable/${name}.svg"
 		fi
 
-		# Extract metadata: prefer dc:title / dc:description, fall back to title/desc
+		# metadata
 		svg_title="$(extract_tag_content "$file" "dc:title" "title")"
 		[ -z "$svg_title" ] && svg_title="$(extract_tag_content "$file" "title" "")"
 		svg_desc="$(extract_tag_content "$file" "dc:description" "desc")"
 		[ -z "$svg_desc" ] && svg_desc="$(extract_tag_content "$file" "desc" "")"
-
-		# Escape metadata for JSON
 		svg_title="$(json_escape "$svg_title")"
 		svg_desc="$(json_escape "$svg_desc")"
 
-		# Comma between items
-		if [ "$first" -eq 0 ]; then
-			printf ',\n' >> "$LOGO_JSON_OUT"
-		fi
-		first=0
-
-		# Write object start
-		printf '  {\n' >> "$LOGO_JSON_OUT"
-		printf '    "name": "%s",' "$name" >> "$LOGO_JSON_OUT"
-		printf '\n' >> "$LOGO_JSON_OUT"
-		printf '    "category": "%s",' "$category" >> "$LOGO_JSON_OUT"
-		printf '\n' >> "$LOGO_JSON_OUT"
-		printf '    "svg": "%s",' "$rel_svg_path" >> "$LOGO_JSON_OUT"
-		printf '\n' >> "$LOGO_JSON_OUT"
-		printf '    "svg_meta": {\n' >> "$LOGO_JSON_OUT"
-		printf '      "title": "%s",' "$svg_title" >> "$LOGO_JSON_OUT"
-		printf '\n' >> "$LOGO_JSON_OUT"
-		printf '      "desc": "%s"\n' "$svg_desc" >> "$LOGO_JSON_OUT"
-		printf '    },\n' >> "$LOGO_JSON_OUT"
-
-		# PNG array
-		printf '    "pngs": [' >> "$LOGO_JSON_OUT"
-		if [ "$is_legacy" -eq 1 ]; then
-			printf '] \n' >> "$LOGO_JSON_OUT"
-		else
-			local png_first=1
-			printf '\n' >> "$LOGO_JSON_OUT"
-			local sz img_path full_img_path kb kb_decimal
-			for sz in "${SIZES[@]}"; do
-				# build paths
-				img_path="${LOGO_IMG_WEB}/${sz}x${sz}/${name}.png"
-				full_img_path="${LOGO_IMG_ROOT}/${sz}x${sz}/${name}.png"
-				if [ -f "$full_img_path" ]; then
-					kb=$(du -k "$full_img_path" 2>/dev/null | cut -f1 || echo 0)
-					if [ "$kb" -gt 0 ]; then
-						kb_decimal="$(printf "%.2f" "$kb")"
-						if [ "$png_first" -eq 0 ]; then
-							printf ',\n' >> "$LOGO_JSON_OUT"
-						fi
-						printf '      { "path": "%s", "size": "%sx%s", "kb": %s }' "$img_path" "$sz" "$sz" "$kb_decimal" >> "$LOGO_JSON_OUT"
-						png_first=0
+		# Build pngs array entries (if PNG files exist)
+		local png_lines=""
+		local png_count=0
+		local sz img_path full_img_path kb kb_decimal
+		for sz in "${SIZES[@]}"; do
+			img_path="${LOGO_IMG_WEB}/${sz}x${sz}/${name}.png"
+			full_img_path="${LOGO_IMG_ROOT}/${sz}x${sz}/${name}.png"
+			if [[ -f "$full_img_path" ]]; then
+				kb=$(du -k "$full_img_path" 2>/dev/null | cut -f1 || echo 0)
+				if (( kb > 0 )); then
+					kb_decimal="$(printf "%.2f" "$kb")"
+					# append with comma if needed
+					if (( png_count > 0 )); then
+						png_lines="${png_lines},\n      { \"path\": \"${img_path}\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }"
+					else
+						png_lines="      { \"path\": \"${img_path}\", \"size\": \"${sz}x${sz}\", \"kb\": ${kb_decimal} }"
 					fi
+					((png_count++))
 				fi
-			done
-			printf '\n    ]\n' >> "$LOGO_JSON_OUT"
-		fi
+			fi
+		done
 
-		# Close object
-		printf '  }' >> "$LOGO_JSON_OUT"
+		# Write per-file JSON as an array containing the single object
+		local OUTFILE="${LOGO_JSON_DIR}/${name}.json"
+		mkdir -p "$(dirname "$OUTFILE")"
+
+		{
+			printf '[\n'
+			printf '  {\n'
+			printf '    "name": "%s",\n' "$name"
+			printf '    "category": "%s",\n' "$category"
+			printf '    "svg": "%s",\n' "$rel_svg_path"
+			printf '    "svg_meta": {\n'
+			printf '      "title": "%s",\n' "$svg_title"
+			printf '      "desc": "%s"\n' "$svg_desc"
+			printf '    },\n'
+			printf '    "pngs": [\n'
+			if [[ -n "$png_lines" ]]; then
+				printf '%b\n' "$png_lines"
+				printf '    ]\n'
+			else
+				printf '    ]\n'
+			fi
+			printf '  }\n'
+			printf ']\n'
+		} > "$OUTFILE"
+
+		printf 'Wrote: %s\n' "$OUTFILE"
 	done
 
-	# Close JSON array
-	printf '\n]\n' >> "$LOGO_JSON_OUT"
-
-	printf 'JSON file created: %s\n' "$LOGO_JSON_OUT"
+	printf 'Per-image JSON files written to: %s\n' "$LOGO_JSON_DIR"
 }
-
 
  _web_kit_images_page() {
     local BIN_ROOT

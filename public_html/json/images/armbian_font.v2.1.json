@@ -1,0 +1,13 @@
+[
+  {
+    "name": "armbian_font.v2.1",
+    "category": "armbian",
+    "svg": "images/logos/scalable/armbian_font.v2.1.svg",
+    "svg_meta": {
+      "title": "Font",
+      "desc": "Armbian Font introduced on July 15, 2025."
+    },
+    "pngs": [
+    ]
+  }
+]

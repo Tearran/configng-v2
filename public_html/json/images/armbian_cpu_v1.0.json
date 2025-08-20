@@ -1,0 +1,13 @@
+[
+  {
+    "name": "armbian_cpu_v1.0",
+    "category": "armbian",
+    "svg": "images/logos/scalable/armbian_cpu_v1.0.svg",
+    "svg_meta": {
+      "title": "Armbian SDK Icon",
+      "desc": "icon use as favicon for armbian.com"
+    },
+    "pngs": [
+    ]
+  }
+]

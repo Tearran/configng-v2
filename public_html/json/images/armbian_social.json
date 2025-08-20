@@ -1,0 +1,13 @@
+[
+  {
+    "name": "armbian_social",
+    "category": "armbian",
+    "svg": "images/logos/scalable/armbian_social.svg",
+    "svg_meta": {
+      "title": "armbian tux, bust",
+      "desc": "Favicon for this page, github icon, as well as other social platforms"
+    },
+    "pngs": [
+    ]
+  }
+]
