@@ -184,7 +184,54 @@ EOF
 }
 
 _make_module() {
+	local STAGING_DIR="${STAGING_DIR:-./staging}"
+	local MODULE="${1:-}"
 
+	# Validate module name
+	if [[ -z "$MODULE" ]]; then
+		echo "No argument provided"
+		_about_setup_module
+		return 1
+	fi
+	if ! [[ "$MODULE" =~ ^[a-zA-Z0-9_]+$ ]]; then
+		echo "Invalid module name: $MODULE"
+		exit 1
+	fi
+
+	# Ensure ./staging exists
+	if [[ ! -d "$STAGING_DIR" ]]; then
+		mkdir -p "$STAGING_DIR"
+	fi
+
+	local created=0
+	local skipped=0
+
+	# .conf
+	local conf="${STAGING_DIR}/${MODULE}.conf"
+	if [[ -f "$conf" ]]; then
+		echo "Skip: $conf already exists"
+		skipped=$((skipped+1))
+	else
+		_template_conf "$MODULE" > "$conf"
+		echo "Created: $conf"
+		created=$((created+1))
+	fi
+
+	# .sh
+	local modsh="${STAGING_DIR}/${MODULE}.sh"
+	if [[ -f "$modsh" ]]; then
+		echo "Skip: $modsh already exists"
+		skipped=$((skipped+1))
+	else
+		_template_sh "$MODULE" > "$modsh"
+		echo "Created: $modsh"
+		created=$((created+1))
+	fi
+
+	# .md is deprecated; call deprecating_md manually if needed.
+
+	echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
+	echo "Created: $created, Skipped: $skipped"
 }
 
 deprecating_md() {
