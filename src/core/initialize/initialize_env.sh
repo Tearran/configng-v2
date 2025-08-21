@@ -140,18 +140,18 @@ _initialize_env_show() {
 
 
 _about_initialize_env() {
-	cat <<'EOF'
+	cat <<"EOF"
 Usage: initialize_env [help|-h|--help]
 
 About:
-  The 'initialize_env' module provides environment detection utilities.
+	The 'initialize_env' module provides environment detection utilities.
 
 Commands:
-  help    - Show this help message.
+	help    - Show this help message.
 
 Notes:
-  - To set variables in the current shell: source this file and call _initialize_env_vars
-  - When executed, this file's test entrypoint verifies the environment and prints variables.
+	- To set variables in the current shell: source this file and call _initialize_env_vars
+	- When executed, this file's test entrypoint verifies the environment and prints variables.
 EOF
 }
 
