@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 # ./setup_module.sh - Scaffold generator for Configng V2 modules
