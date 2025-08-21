@@ -570,25 +570,41 @@ _web_kit_server_py() {
 		exit 1
 	fi
 
+
+
 	cd "${root}"
 
-	echo "Starting Python web server in $(pwd) on port ${port}"
-	python3 -m http.server "${port}" --bind 127.0.0.1 &
-	PYTHON_PID=$!
-	echo "Python web server started with PID ${PYTHON_PID}"
-	echo "You can access the server at http://localhost:${port}/"
-	echo "Press any key to stop the server..."
 
-	trap 'echo; echo "Stopping the server..."; kill "${PYTHON_PID}" >/dev/null 2>&1 || true; wait "${PYTHON_PID}" 2>/dev/null || true' INT TERM EXIT
 
-	read -r -n 1 -s
 
-	echo
-	echo "Stopping the server..."
-	kill "${PYTHON_PID}" >/dev/null 2>&1 || true
-	wait "${PYTHON_PID}" 2>/dev/null || true
-	trap - INT TERM EXIT
-	echo "Server stopped."
+	# Only wait for a keypress if not in CI
+	if [[ -n "${CI:-}" || -n "${GITHUB_ACTIONS:-}" || -n "${TRAVIS:-}" || -n "${JENKINS_URL:-}" || -n "${CIRCLECI:-}" ]]; then
+		echo "CI environment detected - nothing to serve in CI context"
+		echo "Exiting gracefully..."
+		kill "${PYTHON_PID}" >/dev/null 2>&1 || true
+		wait "${PYTHON_PID}" 2>/dev/null || true
+		trap - INT TERM EXIT
+		return 0
+	else
+		echo "Starting Python web server in $(pwd) on port ${port}"
+		python3 -m http.server "${port}" --bind 127.0.0.1 &
+		PYTHON_PID=$!
+		echo "Python web server started with PID ${PYTHON_PID}"
+		echo "You can access the server at http://localhost:${port}/"
+		echo "Press any key to stop the server..."
+		trap 'echo; echo "Stopping the server..."; kill "${PYTHON_PID}" >/dev/null 2>&1 || true; wait "${PYTHON_PID}" 2>/dev/null || true' INT TERM EXIT
+
+		read -r -n 1 -s
+
+		echo
+		echo "Stopping the server..."
+		kill "${PYTHON_PID}" >/dev/null 2>&1 || true
+		wait "${PYTHON_PID}" 2>/dev/null || true
+		trap - INT TERM EXIT
+		echo "Server stopped."
+	fi
+
+
 }
 
 _web_kit_contributors_json() {

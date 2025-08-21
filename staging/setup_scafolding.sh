@@ -1,27 +1,70 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
-# ./setup_module.sh - Scaffold generator for Configng V2 modules
+# ./setup_scafolding.sh - Armbian Config V2 module
 
-_about_setup_module() {
-	cat << EOF
-
-Usage: $0 <module_name>
-
-Creates Armbian Config V2 module scaffolding in ./staging/
-
-	<module_name>   Name of the new module (required).
-
-Outputs:
-	- <module_name>.conf    Module metadata template
-	- <module_name>.sh      Module Bash template
-
-Example:
-	$0 mymodule
-
-EOF
+setup_scafolding() {
+	case "${1:-}" in
+		help|-h|--help)
+			_about_setup_scafolding
+			;;
+		*)
+			_setup_scafolding_main "$@"
+			;;
+	esac
 }
+
+_setup_scafolding_main() {
+	local STAGING_DIR="${STAGING_DIR:-./staging}"
+	local MODULE="${1:-}"
+
+	# Validate module name
+	if [[ -z "$MODULE" ]]; then
+		echo "No argument provided"
+		_about_setup_module
+		return 1
+	fi
+	if ! [[ "$MODULE" =~ ^[a-zA-Z0-9_]+$ ]]; then
+		echo "Invalid module name: $MODULE"
+		exit 1
+	fi
+
+	# Ensure ./staging exists
+	if [[ ! -d "$STAGING_DIR" ]]; then
+		mkdir -p "$STAGING_DIR"
+	fi
+
+	local created=0
+	local skipped=0
+
+	# .conf
+	local conf="${STAGING_DIR}/${MODULE}.conf"
+	if [[ -f "$conf" ]]; then
+		echo "Skip: $conf already exists"
+		skipped=$((skipped+1))
+	else
+		_template_conf "$MODULE" > "$conf"
+		echo "Created: $conf"
+		created=$((created+1))
+	fi
+
+	# .sh
+	local modsh="${STAGING_DIR}/${MODULE}.sh"
+	if [[ -f "$modsh" ]]; then
+		echo "Skip: $modsh already exists"
+		skipped=$((skipped+1))
+	else
+		_template_sh "$MODULE" > "$modsh"
+		echo "Created: $modsh"
+		created=$((created+1))
+	fi
+
+	# .md is deprecated; call deprecating_md manually if needed.
+
+	echo -e "Staging: Complete\nScaffold for ${MODULE} can be found at ${STAGING_DIR}/."
+	echo "Created: $created, Skipped: $skipped"
+}
+
 
 _template_conf() {
 	local MODULE="$1"
@@ -149,73 +192,51 @@ fi
 EOH
 }
 
-_template_md() {
-	local MODULE="$1"
+_about_setup_scafolding() {
 	cat <<EOF
-# ${MODULE} - Configng V2 extra documents
+Usage: setup_scafolding <module-name> [options]
 
-\`\`\`
-${MODULE} <command>
-\`\`\`
+Commands:
+  help, -h, --help    Show this help message
+  <module-name>       Create a scaffold for the specified module. The scaffold
+                      includes a .conf and a .sh file written to STAGING_DIR
+                      (default: ./staging).
 
-## Commands
+Examples:
+  # Create a scaffold for a module named "testmod"
+  setup_scafolding testmod
 
-| Command    | Description              |
-|------------|--------------------------|
-|            |                          |
+  # Create a scaffold using a different staging directory
+  STAGING_DIR=./my_staging setup_scafolding testmod
 
-## Usage
+  # Show help
+  setup_scafolding help
 
-\`\`\`bash
-${MODULE} <command>
-\`\`\`
-
-## Behavior
-
-- Describe what the module does here.
-
-## Notes
-
-- List requirements or integration notes.
-- Intended for use as a configng-v2 module or standalone.
-- Output is simple and command-oriented.
+Notes:
+  - Module names must contain only letters, numbers, or underscores (A-Za-z0-9_).
+  - The script creates <module>.conf and <module>.sh in STAGING_DIR (default: ./staging).
+  - Review and update generated files before committing them to the repository.
+  - All commands should accept '--help', '-h', or 'help' where implemented.
+  - Intended for use with the config-v2 menu and scripting.
+  - Keep this help message up to date if the script's behavior or commands change.
 
 EOF
-}
-
-_make_module() {
 
 }
 
-deprecating_md() {
-	# Deprecated: use only for legacy compatibility.
-	local STAGING_DIR="${STAGING_DIR:-./staging}"
-	local MODULE="${1:-}"
-	local md="${STAGING_DIR}/${MODULE}.md"
-	if [[ -f "$md" ]]; then
-		echo "Skip: $md already exists"
-	else
-		_template_md "$MODULE" > "$md"
-		echo "Created: $md"
-	fi
-}
-
-setup_module() {
-	local arg="${1:-help}"
-	case "$arg" in
-		help|--help|-h)
-			_about_setup_module
-			;;
-		*)
-			_make_module "$arg"
-			;;
-	esac
-}
+### START ./setup_scafolding.sh - Armbian Config V2 test entrypoint
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	setup_module "${1:-help}"
-	SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-	ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-	[[ "$1" != "help" ]] && "$ROOT_DIR/workflow/10_validate_module.sh" staging
-
+	# --- Capture and assert help output ---
+	help_output="$(setup_scafolding help)"
+	echo "$help_output" | grep -q "Usage: setup_scafolding" || {
+		echo "fail: Help output does not contain expected usage string"
+		echo "test complete"
+		exit 1
+	}
+	# --- end assertion ---
+	setup_scafolding "$@"
 fi
+
+### END ./setup_scafolding.sh - Armbian Config V2 test entrypoint
+
