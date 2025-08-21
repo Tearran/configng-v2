@@ -197,28 +197,28 @@ _about_setup_scafolding() {
 Usage: setup_scafolding <module-name> [options]
 
 Commands:
-  help, -h, --help    Show this help message
-  <module-name>       Create a scaffold for the specified module. The scaffold
-                      includes a .conf and a .sh file written to STAGING_DIR
-                      (default: ./staging).
+	help, -h, --help    Show this help message
+	<module-name>       Create a scaffold for the specified module. The scaffold
+			includes a .conf and a .sh file written to STAGING_DIR
+			(default: ./staging).
 
 Examples:
-  # Create a scaffold for a module named "testmod"
-  setup_scafolding testmod
+	# Create a scaffold for a module named "testmod"
+	setup_scafolding testmod
 
-  # Create a scaffold using a different staging directory
-  STAGING_DIR=./my_staging setup_scafolding testmod
+	# Create a scaffold using a different staging directory
+	STAGING_DIR=./my_staging setup_scafolding testmod
 
-  # Show help
-  setup_scafolding help
+	# Show help
+	setup_scafolding help
 
 Notes:
-  - Module names must contain only letters, numbers, or underscores (A-Za-z0-9_).
-  - The script creates <module>.conf and <module>.sh in STAGING_DIR (default: ./staging).
-  - Review and update generated files before committing them to the repository.
-  - All commands should accept '--help', '-h', or 'help' where implemented.
-  - Intended for use with the config-v2 menu and scripting.
-  - Keep this help message up to date if the script's behavior or commands change.
+	- Module names must contain only letters, numbers, or underscores (A-Za-z0-9_).
+	- The script creates <module>.conf and <module>.sh in STAGING_DIR (default: ./staging).
+	- Review and update generated files before committing them to the repository.
+	- All commands should accept '--help', '-h', or 'help' where implemented.
+	- Intended for use with the config-v2 menu and scripting.
+	- Keep this help message up to date if the script's behavior or commands change.
 
 EOF
 
