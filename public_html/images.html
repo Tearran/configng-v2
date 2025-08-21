@@ -4,295 +4,258 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Images (json/images/*.json)</title>
+  <title>Images — json/images/logo.json</title>
   <style>
     :root {
-      --bg: #0f1011;
-      --card: #141416;
-      --muted: #b9b9b9;
-      --accent: #2ea44f
+      --bg: #0f1113;
+      --card: #131417;
+      --muted: #9ea3a8;
+      --accent: #2ea44f;
+      --gap: 12px;
     }
 
+    html,
     body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: var(--bg);
-      color: #eee;
+      height: 100%;
       margin: 0;
-      padding: 1rem
+      background: var(--bg);
+      color: #eef;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial
     }
 
-    header {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap
+    header,
+    footer {
+      padding: 12px;
+      background: transparent;
+      color: var(--muted)
     }
 
-    h1 {
-      margin: .2rem 0
+    main {
+      padding: 18px;
+      max-width: 1200px;
+      margin: 0 auto
     }
 
     .controls {
       display: flex;
-      gap: .5rem;
-      align-items: center
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px
     }
 
-    .filter,
-    input[type=search],
-    button {
-      background: #222;
-      border: 1px solid #333;
-      color: #eee;
-      padding: .35rem .6rem;
+    .controls .input,
+    .controls select,
+    .controls button {
+      background: #121216;
+      border: 1px solid #222;
+      color: #eef;
+      padding: 8px;
       border-radius: 6px
     }
 
+    .meta-row {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .summary {
+      color: var(--muted);
+      font-size: 0.95rem
+    }
+
     .grid {
-      margin-top: 1rem;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--gap);
+      align-items: start
     }
 
     .card {
       background: var(--card);
       border-radius: 8px;
-      padding: .75rem;
-      text-align: center;
-      min-height: 160px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
+      gap: 8px;
+      min-height: 170px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset
+    }
+
+    .thumb {
+      height: 110px;
+      display: flex;
       align-items: center;
-      gap: .5rem
+      justify-content: center
     }
 
-    .card img {
+    .thumb img {
       max-width: 100%;
-      height: 100px;
-      object-fit: contain;
-      display: block
+      max-height: 100%;
+      object-fit: contain
     }
 
-    .meta {
-      font-size: .85rem;
-      color: var(--muted);
+    .title {
+      font-weight: 600;
+      color: #fff;
       word-break: break-word
     }
 
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.92rem
+    }
+
+    .desc {
+      color: #bfc6c9;
+      font-size: 0.88rem;
+      margin-top: 6px
+    }
+
     .badge {
-      background: #333;
-      padding: .25rem .5rem;
+      background: #222;
+      padding: 4px 8px;
       border-radius: 6px;
-      font-size: .75rem;
-      color: #ddd
+      font-size: 0.78rem;
+      color: #ddd;
+      display: inline-block
     }
 
     .empty {
-      color: #999;
-      padding: 2rem 0;
-      text-align: center
+      padding: 36px;
+      text-align: center;
+      color: var(--muted)
     }
 
-    footer {
-      margin-top: 1rem;
-      color: #9b9b9b;
-      font-size: .85rem
+    footer small {
+      color: var(--muted)
     }
 
-    a.small {
-      font-size: .85rem;
-      color: var(--muted);
-      display: inline-block;
-      margin-left: .5rem
+    /* responsive tweaks */
+    @media (max-width:460px) {
+      .controls {
+        flex-direction: column;
+        align-items: stretch
+      }
+
+      .meta-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px
+      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div>
-      <h1>Images</h1>
-      <div style="color:#bdbdbd;font-size:.95rem">Loads JSON files from <code>json/images/*.json</code> and displays
-        entries.</div>
-    </div>
-
-    <div class="controls">
-      <label class="filter">Category
-        <select id="categoryFilter" style="margin-left:.5rem">
-          <option value="">All</option>
-        </select>
-      </label>
-
-      <label class="filter">Search
-        <input id="search" type="search" placeholder="name, title or description" style="margin-left:.5rem">
-      </label>
-
-      <button id="refresh" title="Reload data">Refresh</button>
+  <!-- header placeholder (kept minimal intentionally, main is the focus) -->
+  <header role="banner">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div><strong>Images</strong> <span style="color:var(--muted)">— data: json/images/logo.json</span></div>
+      <div class="summary" id="count">Loading…</div>
     </div>
   </header>
 
-  <main>
-    <div id="grid" class="grid" aria-live="polite"></div>
+  <!-- main: primary focus of the page -->
+  <main role="main">
+    <div class="controls" aria-controls="grid">
+      <div class="meta-row" style="flex:1">
+        <label>
+          Category
+          <select id="categoryFilter" class="input" aria-label="Filter by category">
+            <option value="">All</option>
+          </select>
+        </label>
+
+        <label>
+          Search
+          <input id="search" class="input" type="search" placeholder="name, title or description"
+            aria-label="Search images">
+        </label>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="refresh" title="Reload data">Refresh</button>
+        <button id="download" title="Download JSON">Download JSON</button>
+      </div>
+    </div>
+
+    <!-- content grid -->
+    <section id="grid" class="grid" aria-live="polite"></section>
     <div id="empty" class="empty" style="display:none">No images found.</div>
   </main>
 
-  <footer>
-    Note: this page attempts to auto-enumerate the directory listing at <code>/json/images/</code>.
-    If your web server doesn't expose a directory index, add an index file (for example a small JSON list)
-    or run the generator to write filenames into a list file.
-    <a class="small" href="#" id="debugOpen">Open debug console</a>
+  <!-- footer placeholder (kept minimal intentionally) -->
+  <footer role="contentinfo">
+    <small>Ensure the combined JSON exists at <code>public_html/json/images/logo.json</code>.</small>
   </footer>
 
   <script>
     (async () => {
-      const DIR = 'json/images/';                // relative to web root
-      const FALLBACKS = ['json/images/index.json', 'json/images/list.json', 'json/logos.json', 'json/logos.json'];
+      const JSON_URL = 'json/images/logo.json';
       const grid = document.getElementById('grid');
       const empty = document.getElementById('empty');
+      const countEl = document.getElementById('count');
       const categorySelect = document.getElementById('categoryFilter');
       const searchInput = document.getElementById('search');
       const refreshBtn = document.getElementById('refresh');
+      const downloadBtn = document.getElementById('download');
 
       function normalize(s) { return (s || '').toString().toLowerCase(); }
 
-      // Try to fetch directory listing. Many simple servers (python -m http.server, nginx autoindex) return HTML
-      async function fetchDirectoryJsonFiles() {
+      async function fetchJson() {
         try {
-          const res = await fetch(DIR, { cache: 'no-cache' });
-          if (!res.ok) throw new Error('Directory listing not available: ' + res.status);
-          const ct = res.headers.get('content-type') || '';
-          if (ct.includes('text/html')) {
-            const text = await res.text();
-            const doc = new DOMParser().parseFromString(text, 'text/html');
-            const hrefs = Array.from(doc.querySelectorAll('a'))
-              .map(a => a.getAttribute('href'))
-              .filter(h => h && h.toLowerCase().endsWith('.json'));
-            // normalize to relative paths (json/images/filename)
-            const files = hrefs.map(h => {
-              try {
-                const url = new URL(h, location.origin + '/' + DIR);
-                return url.pathname.replace(/^\//, ''); // remove leading slash so fetch('json/images/..') works
-              } catch (e) {
-                // fallback: join
-                return DIR + h.replace(/^\.\/|^\//, '');
-              }
-            });
-            return Array.from(new Set(files));
-          } else if (ct.includes('application/json')) {
-            // Server returned JSON for the directory - could be a list of filenames or an array of objects.
-            const j = await res.json();
-            if (Array.isArray(j) && j.length && typeof j[0] === 'string') {
-              return j.map(fn => (fn.startsWith('json/') ? fn : DIR + fn));
-            }
-            // Not a filename list - no directory file list available
-            return [];
-          } else {
-            return [];
-          }
+          const res = await fetch(JSON_URL + '?_=' + Date.now(), { cache: 'no-cache' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (!Array.isArray(data)) throw new Error('JSON root is not an array');
+          return data;
         } catch (err) {
-          console.debug('fetchDirectoryJsonFiles failed:', err);
-          return [];
+          console.error('Failed to load', JSON_URL, err);
+          return { error: err };
         }
       }
 
-      // Try fallbacks if directory listing unavailable
-      async function findFiles() {
-        let files = await fetchDirectoryJsonFiles();
-        if (files.length > 0) return files;
-        for (const fb of FALLBACKS) {
-          try {
-            const r = await fetch(fb, { cache: 'no-cache' });
-            if (!r.ok) continue;
-            // If fallback is index JSON containing an array of filenames
-            const j = await r.json();
-            if (Array.isArray(j) && j.length && typeof j[0] === 'string') {
-              return j.map(fn => (fn.startsWith('json/') ? fn : DIR + fn));
-            }
-            // If the fallback is actually the desired content (array of image entries), return this file
-            if (Array.isArray(j) && j.length && (j[0].name || j[0].svg || j[0].category)) {
-              return [fb];
-            }
-          } catch (e) {
-            // ignore and continue
-          }
-        }
-        return [];
-      }
-
-      async function loadAll() {
-        grid.innerHTML = '';
-        empty.style.display = 'none';
-        const files = await findFiles();
-        if (!files || files.length === 0) {
-          empty.textContent = 'No JSON files found in ' + DIR;
-          empty.style.display = 'block';
-          return [];
-        }
-
-        const merged = [];
-        for (const f of files) {
-          try {
-            const res = await fetch(f + (f.includes('?') ? '&' : '?') + '_=' + Date.now(), { cache: 'no-cache' });
-            if (!res.ok) { console.warn('failed to fetch', f, res.status); continue; }
-            const data = await res.json();
-            if (Array.isArray(data)) merged.push(...data);
-            else if (data && typeof data === 'object') merged.push(data);
-          } catch (err) {
-            console.warn('failed to load json', f, err);
-          }
-        }
-        // keep unique by name (last wins)
-        const byName = new Map();
-        for (const it of merged) {
-          if (!it || !it.name) continue;
-          byName.set(it.name, it);
-        }
-        const items = Array.from(byName.values());
-        window._IMAGES_CACHE = items;
-        populateCategorySelect(items);
-        render(items);
-        return items;
-      }
-
-      function populateCategorySelect(items) {
+      function populateCategories(items) {
         const cats = Array.from(new Set(items.map(i => i.category || 'other'))).sort();
-        // preserve first "All" option
         while (categorySelect.options.length > 1) categorySelect.remove(1);
         for (const c of cats) {
-          const opt = document.createElement('option'); opt.value = c; opt.textContent = c;
-          categorySelect.appendChild(opt);
+          const o = document.createElement('option'); o.value = c; o.textContent = c; categorySelect.appendChild(o);
         }
       }
 
       function render(items) {
         grid.innerHTML = '';
         if (!items || items.length === 0) {
-          empty.textContent = 'No images matched your filters.';
+          empty.textContent = 'No images found.';
           empty.style.display = 'block';
+          countEl.textContent = '0';
           return;
         }
         empty.style.display = 'none';
+        countEl.textContent = items.length + ' items';
         for (const it of items) {
-          const card = document.createElement('div'); card.className = 'card';
+          const card = document.createElement('article'); card.className = 'card'; card.setAttribute('aria-label', it.name || 'image');
+          // thumbnail
+          const t = document.createElement('div'); t.className = 'thumb';
           const img = document.createElement('img');
-          // pick a thumbnail: first PNG path (web) else svg (web)
           let src = '';
-          if (Array.isArray(it.pngs) && it.pngs.length) {
-            src = it.pngs[0].path;
-          } else if (it.svg) {
-            src = it.svg;
-          }
-          img.src = src;
+          if (Array.isArray(it.pngs) && it.pngs.length && it.pngs[0].path) src = it.pngs[0].path;
+          else if (it.svg) src = it.svg;
+          img.src = src || '';
           img.alt = it.name || '';
-          img.loading = 'lazy';
+          t.appendChild(img);
+          // meta
           const meta = document.createElement('div'); meta.className = 'meta';
-          const title = document.createElement('div'); title.innerHTML = '<strong>' + (it.name || '') + '</strong>';
-          const subt = document.createElement('div'); subt.textContent = (it.svg_meta && it.svg_meta.title) ? it.svg_meta.title : '';
+          const title = document.createElement('div'); title.className = 'title'; title.textContent = it.name || '';
+          const subtitle = document.createElement('div'); subtitle.className = 'subtitle'; subtitle.textContent = (it.svg_meta && it.svg_meta.title) ? it.svg_meta.title : '';
+          const desc = document.createElement('div'); desc.className = 'desc'; desc.textContent = (it.svg_meta && it.svg_meta.desc) ? it.svg_meta.desc : '';
           const badge = document.createElement('div'); badge.className = 'badge'; badge.textContent = it.category || '';
-          meta.appendChild(title); meta.appendChild(subt); meta.appendChild(badge);
-          card.appendChild(img); card.appendChild(meta);
+          meta.appendChild(title); meta.appendChild(subtitle); meta.appendChild(desc); meta.appendChild(badge);
+
+          card.appendChild(t);
+          card.appendChild(meta);
           grid.appendChild(card);
         }
       }
@@ -312,17 +275,46 @@
       }
 
       refreshBtn.addEventListener('click', async () => {
-        await loadAll();
+        await loadAndRender();
       });
+      downloadBtn.addEventListener('click', async () => {
+        try {
+          const res = await fetch(JSON_URL);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'logo.json';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        } catch (e) { alert('Download failed: ' + e.message); }
+      });
+
       searchInput.addEventListener('input', applyFilters);
       categorySelect.addEventListener('change', applyFilters);
 
-      // debug link to open console easily (focuses console in browsers with devtools open)
-      document.getElementById('debugOpen').addEventListener('click', (e) => { e.preventDefault(); console.log('DEBUG: _IMAGES_CACHE', window._IMAGES_CACHE); alert('See console for debug info.'); });
+      async function loadAndRender() {
+        grid.innerHTML = '';
+        empty.style.display = 'none';
+        countEl.textContent = 'Loading…';
+        const result = await fetchJson();
+        if (result && result.error) {
+          empty.textContent = 'Failed to load JSON: ' + result.error.message;
+          empty.style.display = 'block';
+          countEl.textContent = '0';
+          window._IMAGES_CACHE = [];
+          return;
+        }
+        window._IMAGES_CACHE = result;
+        populateCategories(result);
+        render(result);
+      }
 
-      // initial load
-      await loadAll();
-
+      // initial
+      await loadAndRender();
     })();
   </script>
 </body>
