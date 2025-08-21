@@ -1039,50 +1039,50 @@ _about_web_kit() {
 Usage: web_kit <command> [options]
 
 Commands:
-    server,  -s [PATH]         Run a Python 3 simple web server for the specified
-                               path, or use the default web root.
-    icons,   -i [SRC] [OUT]    Generate icon sets and favicon from SVG sources.
-                               Defaults: SRC=\$SVG_LOGO_ROOT, OUT=\$WEB_LOGO_ROOT
-    json,    -j                Generate a logos JSON file from all SVGs and PNGs.
-    contrib, -c [USER] [REPO]  Generate a contributors JSON file for a GitHub repo.
-    build,   -b                Build icons, logos JSON, and contributors JSON.
-    help,    -h                Show this help message.
+	server,  -s [PATH]         Run a Python 3 simple web server for the specified
+				path, or use the default web root.
+	icons,   -i [SRC] [OUT]    Generate icon sets and favicon from SVG sources.
+				Defaults: SRC=\$SVG_LOGO_ROOT, OUT=\$WEB_LOGO_ROOT
+	json,    -j                Generate a logos JSON file from all SVGs and PNGs.
+	contrib, -c [USER] [REPO]  Generate a contributors JSON file for a GitHub repo.
+	build,   -b                Build icons, logos JSON, and contributors JSON.
+	help,    -h                Show this help message.
 
 Environment:
-    ICON_SIZES                 Comma-separated list of sizes. Default:
-                               16,32,48,64,96,128,180,192,256,384,512,1024
-    SVG_LOGO_ROOT             (defaults to \$BIN_ROOT/../assets/images/logos)
-    WEB_LOGO_ROOT             (defaults to \$WEB_ROOT/images/logos)
+	ICON_SIZES                 Comma-separated list of sizes. Default:
+				16,32,48,64,96,128,180,192,256,384,512,1024
+	SVG_LOGO_ROOT             (defaults to \$BIN_ROOT/../assets/images/logos)
+	WEB_LOGO_ROOT             (defaults to \$WEB_ROOT/images/logos)
 
 Examples:
-    # Run server in a specific directory
-    web_kit -s ~/public_html
-    web_kit server /var/www/html
+	# Run server in a specific directory
+	web_kit -s ~/public_html
+	web_kit server /var/www/html
 
-    # Run server in default web root
-    web_kit server
-    web_kit -s
+# Run server in default web root
+	web_kit server
+	web_kit -s
 
-    # Generate icons
-    web_kit icons
-    web_kit -i
+# Generate icons
+	web_kit icons
+	web_kit -i
 
-    # Generate logos JSON
-    web_kit json
-    web_kit -j
+# Generate logos JSON
+	web_kit json
+	web_kit -j
 
-    # Generate contributors JSON
-    web_kit contrib Tearran configng-v2
-    web_kit -c Tearran configng-v2
+# Generate contributors JSON
+	web_kit contrib Tearran configng-v2
+	web_kit -c Tearran configng-v2
 
-    # Build all
-    web_kit build
-    web_kit -b
+# Build all
+	web_kit build
+	web_kit -b
 
 Notes:
-    - Requires Python 3, jq, and ImageMagick ('magick' or 'convert') in PATH.
-    - Server runs on port 8080 and stops with any key press.
-    - Keep this help text updated if commands or usage change.
+	- Requires Python 3, jq, and ImageMagick ('magick' or 'convert') in PATH.
+	- Server runs on port 8080 and stops with any key press.
+	- Keep this help text updated if commands or usage change.
 EOF
 }
 
