@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Directory containing SVGs
-SRC_DIR="images/scalable"
+SRC_DIR="assets/images/logos"
 # List of desired sizes
-SIZES=(16 32 64 128 256 512)
+SIZES=(16 32 48 64 128 256 512)
 
 # Check for ImageMagick's convert command
 if ! command -v convert &> /dev/null; then
