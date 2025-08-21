@@ -1,28 +1,41 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-_about_validate_module() {
-	cat <<EOF
+# ./validate_staged_modules.sh - Armbian Config V2 module
 
-usage: $0 staging|all|help
-
-Check results:
-	OK      - File exists and passes checks
-	MISSING - File is missing
-	FAIL    - File exists but is incomplete
-
-Checks performed:
-	- <modulename>.md   (must have more than a top-level header)
-	- <modulename>.sh   (must contain Help info in _about_<modulename>() function)
-	- <modulename>.conf (must have required non-comment fields.)
-	- Checks for duplicate-named files in src/** and docs/** (outside of ./staging)
-
-Examples:
-	$0 ok_box
-	$0 all
-
-EOF
+validate_staged_modules() {
+	case "${1:-}" in
+		help|-h|--help)
+			_about_validate_staged_modules
+			;;
+		*)
+			_validate_staged_modules_main
+			;;
+	esac
 }
+
+_validate_staged_modules_main() {
+shopt -s nullglob   # <--- Add this!
+			local failed=0
+			local shfiles=(./staging/*.sh)
+			if [ ${#shfiles[@]} -eq 0 ]; then
+				echo "No modules found in ./staging/"
+				#Sexit 1
+			fi
+			for shfile in "${shfiles[@]}"; do
+				modname="$(basename "$shfile" .sh)"
+				echo "==> Checking module: $modname"
+				_check_sh "./staging/$modname.sh" || failed=1
+				_check_conf "./staging/$modname.conf" || failed=1
+				_check_duplicate_anywhere "$modname" || failed=1
+				echo
+			done
+			if [[ "$failed" -ne 0 ]]; then
+				echo "One or more modules failed validation" >&2
+				exit 1
+			fi
+}
+
 
 
 _check_sh() {
@@ -144,62 +157,48 @@ _check_duplicate_anywhere() {
 	return $found
 }
 
-validate_module() {
-	local cmd="${1:-all}"
-	local status=0
-	case "$cmd" in
-		help|--help|-h)
-			_about_validate_module
-			exit 0
-		;;
-		all|"")
-			shopt -s nullglob   # <--- Add this!
-			local failed=0
-			local shfiles=(./staging/*.sh)
-			if [ ${#shfiles[@]} -eq 0 ]; then
-				echo "No modules found in ./staging/"
-				#Sexit 1
-			fi
-			for shfile in "${shfiles[@]}"; do
-				modname="$(basename "$shfile" .sh)"
-				echo "==> Checking module: $modname"
-				_check_sh "./staging/$modname.sh" || failed=1
-				_check_conf "./staging/$modname.conf" || failed=1
-				_check_duplicate_anywhere "$modname" || failed=1
-				echo
-			done
-			if [[ "$failed" -ne 0 ]]; then
-				echo "One or more modules failed validation" >&2
-				exit 1
-			fi
-		;;
-		staging)
-			shopt -s nullglob   # <--- Add this!
-			local failed=0
-			local shfiles=(./staging/*.sh)
-			if [ ${#shfiles[@]} -eq 0 ]; then
-				echo "No modules found in ./staging/"
-				#exit 1
-			fi
-			for shfile in "${shfiles[@]}"; do
-				modname="$(basename "$shfile" .sh)"
-				echo "==> Checking module: $modname"
-				_check_duplicate_anywhere "$modname" || failed=1
-				echo
-			done
-			if [[ "$failed" -ne 0 ]]; then
-				echo "One or more modules failed validation" >&2
-				exit 1
-			fi
-		;;
-		*)
-			echo "error: $1 is an Unknown command" >&2
-			exit 1
+_about_validate_staged_modules() {
+	cat <<EOF
+Usage: validate_staged_modules <command> [options]
 
-		;;
-	esac
+Commands:
+	test        - Run a basic test of the validate_staged_modules module
+	foo         - Example 'foo' operation (replace with real command)
+	bar         - Example 'bar' operation (replace with real command)
+	help        - Show this help message
+
+Examples:
+	# Run the test operation
+	validate_staged_modules test
+
+	# Perform the foo operation with an argument
+	validate_staged_modules foo arg1
+
+	# Show help
+	validate_staged_modules help
+
+Notes:
+	- Replace 'foo' and 'bar' with real commands for your module.
+	- All commands should accept '--help', '-h', or 'help' for details, if implemented.
+	- Intended for use with the config-v2 menu and scripting.
+	- Keep this help message up to date if commands change.
+
+EOF
 }
 
+### START ./validate_staged_modules.sh - Armbian Config V2 test entrypoint
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-	validate_module "${1:-all}"
+	# --- Capture and assert help output ---
+	help_output="$(validate_staged_modules help)"
+	echo "$help_output" | grep -q "Usage: validate_staged_modules" || {
+		echo "fail: Help output does not contain expected usage string"
+		echo "test complete"
+		exit 1
+	}
+	# --- end assertion ---
+	validate_staged_modules "$@"
 fi
+
+### END ./validate_staged_modules.sh - Armbian Config V2 test entrypoint
+

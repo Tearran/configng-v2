@@ -238,7 +238,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	source "$ROOT_DIR/lib/armbian-config/module_options_arrays.sh"
 
 	array_to_json | jq --indent 4 . > "$ROOT_DIR/lib/armbian-config/config.jobs.json"
-	cp "$ROOT_DIR/lib/armbian-config/config.jobs.json" "$ROOT_DIR/modules_browsers/modules_metadata.json"
+	#cp "$ROOT_DIR/lib/armbian-config/config.jobs.json" "$ROOT_DIR/modules_browsers/modules_metadata.json"
 #	cp "$ROOT_DIR/lib/armbian-config/config.jobs.json" "$ROOT_DIR/docs/modules_metadata.json"
 	cp "$ROOT_DIR/src/module_browser.html" "$ROOT_DIR/docs/index.html"
 #	cp "$ROOT_DIR/src/module_browser.html" "$ROOT_DIR/modules_browsers/modules_browser.html"

@@ -2,6 +2,7 @@
 
 ## core
 - initialize
+    - [initialize_env](./initialize_env.md) — Detect and expose common environment variables for other config-v2 modules
     - [list_options](./list_options.md) — Show available option groups and their usage for configng-v2 modules.
     - [trace](./trace.md) — Lightweight timing and trace message utility for Configng V2 modules.
     - [submenu](./submenu.md) — Parse a list_options message and present commands as an interactive menu.
@@ -23,6 +24,9 @@
 ## software
 - management
     - [cockpit](./cockpit.md) — Web-based administrative interface for managing Linux servers.
+    - [webmin](./webmin.md) — Webmin setup and service control.
+- mediaserver
+    - [plexmediaserver](./plexmediaserver.md) — SDK/development tool to install, remove, or check the status of Plex Media Server via the official repository. Not intended for production use unless otherwise secured and configured.
 
 ## system
 - kernel
