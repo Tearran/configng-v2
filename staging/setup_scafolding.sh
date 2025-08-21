@@ -21,7 +21,7 @@ _setup_scafolding_main() {
 	# Validate module name
 	if [[ -z "$MODULE" ]]; then
 		echo "No argument provided"
-		_about_setup_module
+		_about_setup_scafolding
 		return 1
 	fi
 	if ! [[ "$MODULE" =~ ^[a-zA-Z0-9_]+$ ]]; then
