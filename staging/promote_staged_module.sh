@@ -24,9 +24,9 @@ _promote_staged_module_main() {
 			group="$(grep -Em1 '^group=' "$conf_file" | cut -d= -f2- | xargs)"
 			# quick presence/format checks (feature/helpers/description/parent at minimum)
 			if ! grep -Eqm1 '^feature=' "$conf_file" \
-			 || ! grep -Eqm1 '^helpers=' "$conf_file" \
-			 || ! grep -Eqm1 '^description=' "$conf_file" \
-			 || ! grep -Eqm1 '^parent=' "$conf_file"; then
+				|| ! grep -Eqm1 '^helpers=' "$conf_file" \
+				|| ! grep -Eqm1 '^description=' "$conf_file" \
+				|| ! grep -Eqm1 '^parent=' "$conf_file"; then
 				echo "ERROR: $conf_file missing one or more required fields (feature/helpers/description/parent). Aborting."
 				exit 1
 			fi
