@@ -20,12 +20,15 @@ _promote_staged_module_main() {
 		base_name="$(basename "$sh_file" .sh)"
 		conf_file="./staging/${base_name}.conf"
 		if [[ -f "$conf_file" ]]; then
-			parent="$(grep '^parent=' "$conf_file" | head -n1 | cut -d= -f2- | xargs)"
-			group="$(grep '^group=' "$conf_file" | head -n1 | cut -d= -f2- | xargs)"
-
-			if [[ -z "$parent" ]]; then
-				echo "No parent= in $conf_file, skipping $sh_file"
-				continue
+			parent="$(grep -Em1 '^parent=' "$conf_file" | cut -d= -f2- | xargs)"
+			group="$(grep -Em1 '^group=' "$conf_file" | cut -d= -f2- | xargs)"
+			# quick presence/format checks (feature/helpers/description/parent at minimum)
+			if ! grep -Eqm1 '^feature=' "$conf_file" \
+			 || ! grep -Eqm1 '^helpers=' "$conf_file" \
+			 || ! grep -Eqm1 '^description=' "$conf_file" \
+			 || ! grep -Eqm1 '^parent=' "$conf_file"; then
+				echo "ERROR: $conf_file missing one or more required fields (feature/helpers/description/parent). Aborting."
+				exit 1
 			fi
 
 			if [[ -n "$group" ]]; then
@@ -33,7 +36,20 @@ _promote_staged_module_main() {
 			else
 				dest_dir="./src/$parent"
 			fi
+			# Fail if parent path does not pre-exist (typo guard)
+			if [[ ! -d "./src/$parent" ]]; then
+				echo "ERROR: Destination './src/$parent' does not exist. Check 'parent=' in $conf_file."
+				exit 1
+			fi
 			mkdir -p "$dest_dir"
+
+			for f in "$sh_file" "$conf_file"; do
+				t="$dest_dir/$(basename "$f")"
+				if [[ -e "$t" ]]; then
+					echo "ERROR: Destination already contains $(basename "$f") at $dest_dir/. Aborting to prevent overwrite."
+					exit 1
+				fi
+			done
 
 			echo "Moving $sh_file and $conf_file to $dest_dir/"
 			mv "$sh_file" "$dest_dir/"
