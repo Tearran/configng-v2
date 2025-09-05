@@ -1,0 +1,8 @@
+- name: Check for unvetted files outside staging
+  run: |
+    unvetted=$(git diff --name-only origin/main HEAD | grep -E '^(src/.*\.(sh|conf|png|jpg|jpeg|gif|svg))$' || true)
+    if [[ -n "$unvetted" ]]; then
+      echo "ERROR: Found unvetted files outside ./staging:"
+      echo "$unvetted"
+      exit 1
+    fi
